@@ -1,5 +1,5 @@
 {
-    "name": "rafaeldenheijer/int-class",
+    "name": "reestyle-it/int-class",
     "description": "Chainable numeric values, arithmetic, comparisons, trigonometry and currency formatting for PHP.",
     "type": "library",
     "license": "proprietary",
