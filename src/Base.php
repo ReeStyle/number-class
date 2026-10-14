@@ -1,6 +1,6 @@
 <?php
 
-namespace ReeStyleIt\IntClass;
+namespace ReeStyleIt\NumberClass;
 
 use UnexpectedValueException;
 

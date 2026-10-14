@@ -1,10 +1,10 @@
 <?php
 
-namespace ReeStyleIt\IntClass\Mathmatical;
+namespace ReeStyleIt\NumberClass\Mathmatical;
 
 use InvalidArgumentException;
-use ReeStyleIt\IntClass\Base;
-use ReeStyleIt\IntClass\Number;
+use ReeStyleIt\NumberClass\Base;
+use ReeStyleIt\NumberClass\Number;
 
 class Pythagoras extends Base
 {

@@ -1,8 +1,8 @@
 <?php
 
-use ReeStyleIt\IntClass\Base;
-use ReeStyleIt\IntClass\Format\Rounded;
-use ReeStyleIt\IntClass\Number;
+use ReeStyleIt\NumberClass\Base;
+use ReeStyleIt\NumberClass\Format\Rounded;
+use ReeStyleIt\NumberClass\Number;
 
 it('converts a Number into a Rounded formatter without changing its value', function () {
     $number = new Number(1234.56);

@@ -1,8 +1,8 @@
 <?php
 
-namespace ReeStyleIt\IntClass\Mathmatical;
+namespace ReeStyleIt\NumberClass\Mathmatical;
 
-use ReeStyleIt\IntClass\Base;
+use ReeStyleIt\NumberClass\Base;
 
 /**
  * Trigonometric angles are expressed in radians.

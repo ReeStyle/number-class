@@ -1,13 +1,13 @@
 <?php
 
-namespace ReeStyleIt\IntClass;
+namespace ReeStyleIt\NumberClass;
 
-use ReeStyleIt\IntClass\Format\Currency;
-use ReeStyleIt\IntClass\Format\Rounded;
-use ReeStyleIt\IntClass\Mathmatical\Arithmetic;
-use ReeStyleIt\IntClass\Mathmatical\Pythagoras;
-use ReeStyleIt\IntClass\Mathmatical\Trigonometry;
-use ReeStyleIt\IntClass\Number\Compare;
+use ReeStyleIt\NumberClass\Format\Currency;
+use ReeStyleIt\NumberClass\Format\Rounded;
+use ReeStyleIt\NumberClass\Mathmatical\Arithmetic;
+use ReeStyleIt\NumberClass\Mathmatical\Pythagoras;
+use ReeStyleIt\NumberClass\Mathmatical\Trigonometry;
+use ReeStyleIt\NumberClass\Number\Compare;
 
 class Number extends Base
 {

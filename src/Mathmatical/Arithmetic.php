@@ -1,10 +1,10 @@
 <?php
 
-namespace ReeStyleIt\IntClass\Mathmatical;
+namespace ReeStyleIt\NumberClass\Mathmatical;
 
 use DivisionByZeroError;
 use InvalidArgumentException;
-use ReeStyleIt\IntClass\Base;
+use ReeStyleIt\NumberClass\Base;
 
 class Arithmetic extends Base
 {

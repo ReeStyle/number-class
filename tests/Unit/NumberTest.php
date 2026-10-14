@@ -1,7 +1,7 @@
 <?php
 
-use ReeStyleIt\IntClass\Base;
-use ReeStyleIt\IntClass\Number;
+use ReeStyleIt\NumberClass\Base;
+use ReeStyleIt\NumberClass\Number;
 
 dataset('values', [
     'integer' => [7, true, false],

@@ -1,6 +1,6 @@
 <?php
 
-use ReeStyleIt\IntClass\Enums\Currencies;
+use ReeStyleIt\NumberClass\Enums\Currencies;
 
 it('provides currency symbols', function (Currencies $currency, string $expected) {
     expect($currency->symbol())->toBe($expected);

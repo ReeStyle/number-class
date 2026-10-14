@@ -1,11 +1,11 @@
 <?php
 
-namespace ReeStyleIt\IntClass\Format;
+namespace ReeStyleIt\NumberClass\Format;
 
 use InvalidArgumentException;
 use NumberFormatter;
-use ReeStyleIt\IntClass\Base;
-use ReeStyleIt\IntClass\Enums\Currencies;
+use ReeStyleIt\NumberClass\Base;
+use ReeStyleIt\NumberClass\Enums\Currencies;
 use RuntimeException;
 use UnexpectedValueException;
 

@@ -1,8 +1,8 @@
 <?php
 
-namespace ReeStyleIt\IntClass;
+namespace ReeStyleIt\NumberClass;
 
-use ReeStyleIt\IntClass\Format\Currency;
+use ReeStyleIt\NumberClass\Format\Currency;
 
 if (!function_exists(__NAMESPACE__ . '\\number')) {
     function number(mixed $value): Number

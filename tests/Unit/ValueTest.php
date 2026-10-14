@@ -1,6 +1,6 @@
 <?php
 
-use ReeStyleIt\IntClass\Base;
+use ReeStyleIt\NumberClass\Base;
 
 it('exposes the stored value through its getter', function () {
     $value = new class('example') extends Base {};

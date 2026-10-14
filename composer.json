@@ -1,5 +1,5 @@
 {
-    "name": "reestyle-it/int-class",
+    "name": "reestyle-it/number-class",
     "description": "Chainable numeric values, arithmetic, comparisons, trigonometry and currency formatting for PHP.",
     "type": "library",
     "license": "proprietary",
@@ -8,8 +8,8 @@
             "src/helper.php"
         ],
         "psr-4": {
-            "ReeStyleIt\\IntClass\\": "src/",
-            "ReeStyleIt\\IntClass\\Enums\\": "src/enum/"
+            "ReeStyleIt\\NumberClass\\": "src/",
+            "ReeStyleIt\\NumberClass\\Enums\\": "src/enum/"
         }
     },
     "autoload-dev": {

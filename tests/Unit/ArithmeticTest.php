@@ -1,9 +1,9 @@
 <?php
 
-use ReeStyleIt\IntClass\Mathmatical\Arithmetic;
-use ReeStyleIt\IntClass\Number;
+use ReeStyleIt\NumberClass\Mathmatical\Arithmetic;
+use ReeStyleIt\NumberClass\Number;
 
-use function ReeStyleIt\IntClass\number;
+use function ReeStyleIt\NumberClass\number;
 
 it('creates arithmetic calculations from a Number', function () {
     $number = number(7);

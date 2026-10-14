@@ -1,11 +1,11 @@
 <?php
 
-use ReeStyleIt\IntClass\Enums\Currencies;
-use ReeStyleIt\IntClass\Format\Currency;
-use ReeStyleIt\IntClass\Number;
+use ReeStyleIt\NumberClass\Enums\Currencies;
+use ReeStyleIt\NumberClass\Format\Currency;
+use ReeStyleIt\NumberClass\Number;
 
-use function ReeStyleIt\IntClass\number;
-use function ReeStyleIt\IntClass\currencyFormatter;
+use function ReeStyleIt\NumberClass\number;
+use function ReeStyleIt\NumberClass\currencyFormatter;
 
 it('creates a Number through the number helper without converting its value', function (mixed $value) {
     $number = number(value: $value);

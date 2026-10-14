@@ -1,4 +1,4 @@
-# int-class
+# number-class
 
 Chainable numeric values, arithmetic, comparisons, trigonometry, right triangle calculations, rounding, and currency formatting for PHP.
 
@@ -12,7 +12,7 @@ Chainable numeric values, arithmetic, comparisons, trigonometry, right triangle 
 After the package is published on Packagist:
 
 ```bash
-composer require rafaeldenheijer/int-class
+composer require reestyle-it/number-class
 ```
 
 ## Getting started
@@ -22,10 +22,10 @@ composer require rafaeldenheijer/int-class
 
 require 'vendor/autoload.php';
 
-use ReeStyleIt\IntClass\Number;
-use ReeStyleIt\IntClass\Enums\Currencies;
-use function ReeStyleIt\IntClass\number;
-use function ReeStyleIt\IntClass\currencyFormatter;
+use ReeStyleIt\NumberClass\Number;
+use ReeStyleIt\NumberClass\Enums\Currencies;
+use function ReeStyleIt\NumberClass\number;
+use function ReeStyleIt\NumberClass\currencyFormatter;
 
 $value = number(12)->increase(3)->multiply(2);
 echo $value->get(); // 30
@@ -39,12 +39,12 @@ echo currencyFormatter(1234.5)
     ->locale('en_US'); // $1,234.50
 ```
 
-Classes and helper functions use the `ReeStyleIt\IntClass` namespace. Import the helpers with `use function` before calling them by their short names.
+Classes and helper functions use the `ReeStyleIt\NumberClass` namespace. Import the helpers with `use function` before calling them by their short names.
 
 ## Arithmetic
 
 ```php
-use function ReeStyleIt\IntClass\number;
+use function ReeStyleIt\NumberClass\number;
 
 $original = number(9);
 $result = $original->increase(3)->multiply(2)->divide(4);
@@ -102,9 +102,9 @@ number(1234.56)->format(2, ',', '.'); // "1.234,56"
 ## Currency
 
 ```php
-use ReeStyleIt\IntClass\Enums\Currencies;
-use ReeStyleIt\IntClass\Format\Currency;
-use function ReeStyleIt\IntClass\currencyFormatter;
+use ReeStyleIt\NumberClass\Enums\Currencies;
+use ReeStyleIt\NumberClass\Format\Currency;
+use function ReeStyleIt\NumberClass\currencyFormatter;
 
 echo number(1234.5)->currency(); // € 1.234,50
 echo new Currency(1234.5)->currency('USD')->locale('en_US'); // $1,234.50

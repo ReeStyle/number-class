@@ -1,6 +1,6 @@
-# Publishing int-class
+# Publishing number-class
 
-The package name is `rafaeldenheijer/int-class`. Classes and helper functions are namespaced under `ReeStyleIt\IntClass`.
+The package name is `reestyle-it/number-class`. Classes and helper functions are namespaced under `ReeStyleIt\NumberClass`.
 
 ## Before the first release
 
@@ -27,6 +27,6 @@ Inspect the archive. It should contain the source, `composer.json`, README, and 
 2. Create and push a semantic version tag, for example `v1.0.0` once the API is ready for a stable release. Do not add a `version` field to `composer.json`; Composer derives versions from Git tags.
 3. Submit the public repository URL through [Packagist's submission page](https://packagist.org/packages/submit).
 4. Configure the repository integration or webhook for automatic Packagist updates.
-5. Verify installation from a separate project with `composer require rafaeldenheijer/int-class`.
+5. Verify installation from a separate project with `composer require reestyle-it/number-class`.
 
 For subsequent releases, update the changelog, run the checks, commit, and push a new version tag. Follow [Packagist's publication guide](https://packagist.org/about) for repository integrations.

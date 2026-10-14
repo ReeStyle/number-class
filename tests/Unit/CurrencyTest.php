@@ -1,9 +1,9 @@
 <?php
 
-use ReeStyleIt\IntClass\Base;
-use ReeStyleIt\IntClass\Enums\Currencies;
-use ReeStyleIt\IntClass\Format\Currency;
-use ReeStyleIt\IntClass\Number;
+use ReeStyleIt\NumberClass\Base;
+use ReeStyleIt\NumberClass\Enums\Currencies;
+use ReeStyleIt\NumberClass\Format\Currency;
+use ReeStyleIt\NumberClass\Number;
 
 it('formats currency for the configured locale', function (int|float $value, string $currency, string $locale, string $expected) {
     $format = (new Currency($value))->currency($currency)->locale($locale);

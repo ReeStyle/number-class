@@ -1,7 +1,7 @@
 <?php
 
-use ReeStyleIt\IntClass\Number;
-use ReeStyleIt\IntClass\Number\Compare;
+use ReeStyleIt\NumberClass\Number;
+use ReeStyleIt\NumberClass\Number\Compare;
 
 it('creates a comparison object with the original number value', function () {
     $number = new Number(7);

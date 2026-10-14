@@ -1,9 +1,9 @@
 <?php
 
-use ReeStyleIt\IntClass\Mathmatical\Pythagoras;
-use ReeStyleIt\IntClass\Number;
+use ReeStyleIt\NumberClass\Mathmatical\Pythagoras;
+use ReeStyleIt\NumberClass\Number;
 
-use function ReeStyleIt\IntClass\number;
+use function ReeStyleIt\NumberClass\number;
 
 it('calculates right triangle lengths in a new instance', function (int|float $value, string $method, int|float $otherLeg, float $expected) {
     $pythagoras = new Pythagoras($value);

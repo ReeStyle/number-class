@@ -1,9 +1,9 @@
 <?php
 
-namespace ReeStyleIt\IntClass\Number;
+namespace ReeStyleIt\NumberClass\Number;
 
-use ReeStyleIt\IntClass\Base;
-use ReeStyleIt\IntClass\Number;
+use ReeStyleIt\NumberClass\Base;
+use ReeStyleIt\NumberClass\Number;
 
 class Compare extends Base
 {

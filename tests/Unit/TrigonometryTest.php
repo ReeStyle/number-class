@@ -1,9 +1,9 @@
 <?php
 
-use ReeStyleIt\IntClass\Mathmatical\Trigonometry;
-use ReeStyleIt\IntClass\Number;
+use ReeStyleIt\NumberClass\Mathmatical\Trigonometry;
+use ReeStyleIt\NumberClass\Number;
 
-use function ReeStyleIt\IntClass\number;
+use function ReeStyleIt\NumberClass\number;
 
 it('calculates trigonometry in a new instance without changing the original', function (int|float $value, string $method, array $arguments, float $expected) {
     $trigonometry = new Trigonometry($value);

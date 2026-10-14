@@ -1,9 +1,9 @@
 <?php
 
-namespace ReeStyleIt\IntClass\Enums;
+namespace ReeStyleIt\NumberClass\Enums;
 
 use NumberFormatter;
-use ReeStyleIt\IntClass\Format\Currency;
+use ReeStyleIt\NumberClass\Format\Currency;
 use RuntimeException;
 
 enum Currencies: string

@@ -1,9 +1,9 @@
 <?php
 
-use ReeStyleIt\IntClass\Base;
-use ReeStyleIt\IntClass\Format\Rounded;
-use ReeStyleIt\IntClass\Number;
-use ReeStyleIt\IntClass\Number\Compare;
+use ReeStyleIt\NumberClass\Base;
+use ReeStyleIt\NumberClass\Format\Rounded;
+use ReeStyleIt\NumberClass\Number;
+use ReeStyleIt\NumberClass\Number\Compare;
 
 it('provides comparison access as a property', function () {
     $number = new Number(7);

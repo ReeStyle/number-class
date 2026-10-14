@@ -1,9 +1,9 @@
 <?php
 
-namespace ReeStyleIt\IntClass\Format;
+namespace ReeStyleIt\NumberClass\Format;
 
 use InvalidArgumentException;
-use ReeStyleIt\IntClass\Base;
+use ReeStyleIt\NumberClass\Base;
 use RoundingMode;
 use ValueError;
 
