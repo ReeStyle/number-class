@@ -1,0 +1,14 @@
+* text=auto
+*.php text eol=lf
+*.json text eol=lf
+*.md text eol=lf
+*.yml text eol=lf
+
+/.github export-ignore
+/.idea export-ignore
+/.phpunit.cache export-ignore
+/tests export-ignore
+/vendor export-ignore
+/composer.lock export-ignore
+/phpunit.xml export-ignore
+/RELEASING.md export-ignore

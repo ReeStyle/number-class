@@ -1,0 +1,62 @@
+{
+    "name": "rafaeldenheijer/int-class",
+    "description": "Chainable numeric values, arithmetic, comparisons, trigonometry and currency formatting for PHP.",
+    "type": "library",
+    "license": "proprietary",
+    "autoload": {
+        "files": [
+            "src/helper.php"
+        ],
+        "psr-4": {
+            "ReeStyleIt\\IntClass\\": "src/",
+            "ReeStyleIt\\IntClass\\Enums\\": "src/enum/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Rafael den Heijer",
+            "email": "rdheijer@reestyle.net"
+        }
+    ],
+    "config": {
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        },
+        "sort-packages": true
+    },
+    "require-dev": {
+        "pestphp/pest": "^5.3"
+    },
+    "scripts": {
+        "test": "@php vendor/bin/pest"
+    },
+    "require": {
+        "php": "^8.4",
+        "ext-intl": "*"
+    },
+    "keywords": [
+        "number",
+        "arithmetic",
+        "math",
+        "trigonometry",
+        "currency",
+        "formatting"
+    ],
+    "archive": {
+        "exclude": [
+            "/.github/",
+            "/.idea/",
+            "/.phpunit.cache/",
+            "/tests/",
+            "/vendor/",
+            "/composer.lock",
+            "/phpunit.xml",
+            "/RELEASING.md"
+        ]
+    }
+}
