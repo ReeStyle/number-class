@@ -5,6 +5,7 @@ namespace ReeStyleIt\NumberClass;
 use ReeStyleIt\NumberClass\Format\Currency;
 use ReeStyleIt\NumberClass\Format\Round;
 use ReeStyleIt\NumberClass\Mathematical\Arithmetic;
+use ReeStyleIt\NumberClass\Mathematical\Geometry;
 use ReeStyleIt\NumberClass\Mathematical\Pythagoras;
 use ReeStyleIt\NumberClass\Mathematical\Trigonometry;
 use ReeStyleIt\NumberClass\Number\Compare;
@@ -34,6 +35,13 @@ if (!function_exists(__NAMESPACE__ . '\\arithmetic')) {
     function arithmetic(mixed $value): Arithmetic
     {
         return new Arithmetic($value);
+    }
+}
+
+if (!function_exists(__NAMESPACE__ . '\\geometry')) {
+    function geometry(mixed $value, int|float|null $latitude = null, int|float $elevation = 0): Geometry
+    {
+        return new Geometry($value, $latitude, $elevation);
     }
 }
 

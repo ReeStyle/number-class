@@ -7,6 +7,7 @@ use ReeStyleIt\NumberClass\Exceptions\MustBeNumberException;
 use ReeStyleIt\NumberClass\Format\Currency;
 use ReeStyleIt\NumberClass\Format\Round;
 use ReeStyleIt\NumberClass\Mathematical\Arithmetic;
+use ReeStyleIt\NumberClass\Mathematical\Geometry;
 use ReeStyleIt\NumberClass\Mathematical\Pythagoras;
 use ReeStyleIt\NumberClass\Mathematical\Trigonometry;
 use ReeStyleIt\NumberClass\Number;
@@ -16,6 +17,7 @@ dataset('helper properties', [
     'compare' => ['compare', Compare::class],
     'round' => ['round', Round::class],
     'arithmetic' => ['arithmetic', Arithmetic::class],
+    'geometry' => ['geometry', Geometry::class],
     'trigonometry' => ['trigonometry', Trigonometry::class],
     'pythagoras' => ['pythagoras', Pythagoras::class],
     'currency' => ['currency', Currency::class],

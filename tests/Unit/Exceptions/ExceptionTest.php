@@ -10,6 +10,7 @@ use ReeStyleIt\NumberClass\Exceptions\BaseRuntimeException;
 use ReeStyleIt\NumberClass\Exceptions\CurrencyFormattingException;
 use ReeStyleIt\NumberClass\Exceptions\CurrencySymbolLookupException;
 use ReeStyleIt\NumberClass\Exceptions\EmptyLocaleException;
+use ReeStyleIt\NumberClass\Exceptions\GeometryException;
 use ReeStyleIt\NumberClass\Exceptions\InvalidCurrencyCodeException;
 use ReeStyleIt\NumberClass\Exceptions\MustBeFiniteCurrencyValue;
 use ReeStyleIt\NumberClass\Exceptions\MustBeNumberException;
@@ -27,6 +28,7 @@ it('provides default messages and allows catching named exceptions through their
     [BaseInvalidArgumentException::class, 'Invalid argument.'],
     [CurrencyFormattingException::class, 'Currency formatting failed.'],
     [EmptyLocaleException::class, 'Locale must not be empty.'],
+    [GeometryException::class, 'Invalid geometry dimensions.'],
     [InvalidCurrencyCodeException::class, 'Currency must be a three-letter currency code.'],
     [MustBeFiniteCurrencyValue::class, 'Currency value must be finite.'],
     [MustBeNumberException::class, 'Value must be an integer or float.'],

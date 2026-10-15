@@ -5,6 +5,7 @@ namespace ReeStyleIt\NumberClass;
 use ReeStyleIt\NumberClass\Format\Currency;
 use ReeStyleIt\NumberClass\Format\Round;
 use ReeStyleIt\NumberClass\Mathematical\Arithmetic;
+use ReeStyleIt\NumberClass\Mathematical\Geometry;
 use ReeStyleIt\NumberClass\Mathematical\Pythagoras;
 use ReeStyleIt\NumberClass\Mathematical\Trigonometry;
 use ReeStyleIt\NumberClass\Number\Compare;
@@ -21,6 +22,10 @@ class Number extends Base
 
     public Currency $currency {
         get => $this->currency();
+    }
+
+    public Geometry $geometry {
+        get => $this->geometry();
     }
 
     public Pythagoras $pythagoras {
@@ -91,6 +96,13 @@ class Number extends Base
         $this->assertNumber();
 
         return number_format($this->value, $decimals, $decimal_separator, $thousands_separator);
+    }
+
+    public function geometry(int|float|null $latitude = null, int|float $elevation = 0): Geometry
+    {
+        $this->assertNumber();
+
+        return new Geometry($this->value, $latitude, $elevation);
     }
 
     public function increase(int|float $amount = 1): self

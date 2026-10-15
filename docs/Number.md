@@ -1,0 +1,148 @@
+# Number
+
+[Usage index](README.md)
+
+`ReeStyleIt\NumberClass\Number` is the main numeric value class. It extends [Base](Base.md),
+inheriting `__construct(mixed $value)`, `public readonly mixed $value`, and `get(): mixed`.
+
+## Create and calculate
+
+Arithmetic operations return a new `Number`; they leave the original value unchanged.
+
+```php
+use ReeStyleIt\NumberClass\Number;
+
+$price = new Number(10);
+$total = $price->add(5)->multiply(2)->subtract(4)->divide(2);
+echo $total->get(); // 13
+echo $price->get(); // 10
+```
+
+## Arithmetic methods
+
+Every method below returns `self`. Parameters marked `int|float` accept either numeric type.
+See [Arithmetic](Mathematical/Arithmetic.md) for detailed root, remainder, and numeric behavior.
+
+| Method | Example result from `get()` |
+| --- | --- |
+| `abs()` | `new Number(-8)->abs()->get()` → `8` |
+| `add(int|float $amount = 1)` | `new Number(8)->add(2)->get()` → `10` |
+| `ceil()` | `new Number(8.2)->ceil()->get()` → `9.0` |
+| `decrease(int|float $amount = 1)` | Alias of `subtract()`; `8` becomes `7` by default |
+| `divide(int|float $divisor)` | `new Number(8)->divide(2)->get()` → `4` |
+| `floor()` | `new Number(8.9)->floor()->get()` → `8.0` |
+| `increase(int|float $amount = 1)` | Alias of `add()`; `8` becomes `9` by default |
+| `mod(int|float $divisor)` | `new Number(8)->mod(3)->get()` → `2` |
+| `multiply(int|float $factor)` | `new Number(8)->multiply(2)->get()` → `16` |
+| `negate()` | `new Number(8)->negate()->get()` → `-8` |
+| `pow(int|float $exponent)` | `new Number(8)->pow(2)->get()` → `64` |
+| `sqrt(int $exponent = 2)` | `new Number(27)->sqrt(3)->get()` → approximately `3.0` |
+| `subtract(int|float $amount = 1)` | `new Number(8)->subtract(2)->get()` → `6` |
+
+```php
+use ReeStyleIt\NumberClass\Number;
+
+$squareRoot = new Number(81)->sqrt()->get();       // 9.0
+$cubeRoot = new Number(-27)->sqrt(3)->get();        // approximately -3.0
+$power = new Number(2)->pow(-2)->get();            // 0.25
+$remainder = new Number(5.5)->mod(2)->get();       // 1.5
+$negative = new Number(4)->negate()->abs()->get(); // 4
+```
+
+## Type checks
+
+`isInt()`, `isFloat()`, `isNumber()`, and `isNumeric()` all return `bool`.
+`isNumeric()` aliases `isNumber()` and checks actual PHP numeric types, unlike PHP's `is_numeric()`.
+
+```php
+use ReeStyleIt\NumberClass\Number;
+
+$integer = new Number(7);
+$integer->isInt();     // true
+$integer->isFloat();   // false
+$integer->isNumber();  // true
+$integer->isNumeric(); // true
+
+$float = new Number(7.0);
+$float->isFloat(); // true
+
+$string = new Number('7');
+$string->get();      // '7'; storage itself permits mixed values
+$string->isNumber(); // false; arithmetic would throw MustBeNumberException
+```
+
+## Display formatting
+
+`format(int $decimals = 0, ?string $decimal_separator = '.', ?string $thousands_separator = ','): string`
+uses PHP's `number_format()` parameters and returns text. It does not change the stored value.
+Negative decimal counts round digits before the decimal point. Null separators use PHP's defaults.
+
+```php
+use ReeStyleIt\NumberClass\Number;
+
+$number = new Number(1234.567);
+echo $number->format();              // 1,235
+echo $number->format(2);             // 1,234.57
+echo $number->format(2, ',', '.');   // 1.234,57
+echo $number->format(2, '.', '');    // 1234.57
+echo $number->format(-2);            // 1,200
+echo $number->format(decimals: 1, decimal_separator: ',', thousands_separator: ' '); // 1 234,6
+```
+
+For numeric rounding results use [Round](Format/Round.md). For currency text use
+[Currency](Format/Currency.md).
+
+## Helper methods and properties
+
+All seven accessors work as a method or a read-only property. Each access creates a fresh helper
+with the current value and validates that the value is numeric.
+
+| Method / property | Return type and usage |
+| --- | --- |
+| `arithmetic()` / `$arithmetic` | [Arithmetic](Mathematical/Arithmetic.md) |
+| `compare()` / `$compare` | [Compare](Number/Compare.md) |
+| `currency()` / `$currency` | [Currency](Format/Currency.md) |
+| `geometry(int|float|null $latitude = null, int|float $elevation = 0)` / `$geometry` | [Geometry](Mathematical/Geometry.md); provide latitude for geographic points, using the stored value as longitude |
+| `pythagoras()` / `$pythagoras` | [Pythagoras](Mathematical/Pythagoras.md) |
+| `round()` / `$round` | [Round](Format/Round.md) |
+| `trigonometry()` / `$trigonometry` | [Trigonometry](Mathematical/Trigonometry.md) |
+
+```php
+use ReeStyleIt\NumberClass\Number;
+
+$number = new Number(3);
+$equal = $number->compare->equals(3.0);              // true
+$greater = $number->compare()->higherThan(2);        // true
+$product = $number->arithmetic->multiply(4)->get();  // 12
+$length = $number->pythagoras->hypotenuse(4)->get();  // 5.0
+$rounded = new Number(12.345)->round->decimals(2)->get(); // 12.35
+$sine = new Number(90)->trigonometry->deg2rad()->sin()->get(); // 1.0
+```
+
+Keep a currency helper in a variable if you want to reuse its configuration:
+
+```php
+use ReeStyleIt\NumberClass\Enums\Currencies;
+use ReeStyleIt\NumberClass\Enums\Locales;
+use ReeStyleIt\NumberClass\Number;
+
+$formatter = new Number(25)->currency->currency(Currencies::USD)->locale(Locales::EN_US);
+echo $formatter; // $25.00; requires intl
+```
+
+## Helper usage
+
+```php
+use function ReeStyleIt\NumberClass\number;
+
+$result = number(12)->add(3)->multiply(2);
+echo $result->get(); // 30
+```
+
+## Errors
+
+Non-numeric stored values cause [MustBeNumberException](Exceptions/MustBeNumberException.md)
+when performing arithmetic, formatting, or obtaining a helper. Type checks and `get()` remain usable.
+Zero divisors, including `0 / 0`, throw `DivisionByZeroError`.
+Root exponents at or below zero throw [MustBePositiveNumberException](Exceptions/MustBePositiveNumberException.md).
+Even roots of negative numbers produce `NAN`. Floating point calculations use PHP's native precision.

@@ -24,6 +24,8 @@ composer require reestyle-it/number-class
 
 ## Getting started
 
+See the [complete usage documentation](docs/README.md) for every class, enum, helper function, and exception.
+
 ```php
 <?php
 
@@ -48,9 +50,9 @@ echo currencyFormatter(1234.5)
 
 Classes and helper functions use the `ReeStyleIt\NumberClass` namespace. Import the helpers with `use function` before calling them by their short names.
 
-All helper accessors work as methods or read-only properties: `arithmetic`, `compare`, `currency`, `pythagoras`, `round`, and `trigonometry`. For example, `number(3)->pythagoras->hypotenuse(4)->get()` returns `5.0`. Each access creates a helper instance containing the number's value.
+All helper accessors work as methods or read-only properties: `arithmetic`, `compare`, `currency`, `geometry`, `pythagoras`, `round`, and `trigonometry`. For example, `number(3)->pythagoras->hypotenuse(4)->get()` returns `5.0`. Each access creates a helper instance containing the number's value.
 
-Each concrete value class also has a factory helper accepting `mixed $value`: `number()`, `compare()`, `currencyFormatter()`, `arithmetic()`, `pythagoras()`, `round()`, and `trigonometry()`.
+Each concrete value class also has a factory helper accepting `mixed $value`: `number()`, `compare()`, `currencyFormatter()`, `arithmetic()`, `geometry()`, `pythagoras()`, `round()`, and `trigonometry()`.
 
 ```php
 use function ReeStyleIt\NumberClass\arithmetic;
@@ -175,6 +177,40 @@ Locales::DE_CH->symbolPosition(); // prefix
 
 The currency and locale configuration methods return the same formatter. The stored amount remains readonly. `Currency` is stringable through `__toString()`.
 
+## Geometry: circles, ellipses, and haversine distance
+
+`Mathematical\Geometry` calculates circle and ellipse surfaces and circumferences,
+and converts between circle radius and diameter. All methods return a new `Geometry`.
+
+```php
+use function ReeStyleIt\NumberClass\geometry;
+
+geometry(3)->circleSurface()->get();         // approximately 28.2743; stored value is radius
+geometry(3)->circleCircumference()->get();   // approximately 18.8496; stored value is radius
+geometry(3)->circleDiameter()->get();        // 6; stored value is radius
+geometry(6)->circleRadius()->get();          // 3; stored value is diameter
+geometry(3)->ellipseSurface(2)->get();       // approximately 18.8496; inputs are semi-axis lengths
+geometry(3)->ellipseCircumference(2)->get(); // approximately 15.8654; Ramanujan approximation
+```
+
+`Mathematical\Geometry` calculates the great-circle distance between two latitude/longitude pairs.
+Construct the starting point with longitude, latitude, and elevation, then supply those same
+three coordinates for the destination. Longitude and latitude use degrees; elevations and
+returned distances use metres with the default sphere radius.
+
+```php
+use function ReeStyleIt\NumberClass\geometry;
+
+// London to Paris, with elevations in metres and a sphere radius of 6,371,000 metres.
+$distance = geometry(-0.1278, 51.5074, 10)->haversine(2.3522, 48.8566, 35)->get();
+// Approximately 343556.061251 metres.
+```
+
+The result combines haversine surface distance and elevation difference using `hypot()`;
+the elevation correction is a short-distance approximation. Use the optional `radius`
+argument to choose another sphere or distance unit, keeping elevations in the same unit.
+See [Geometry usage](docs/Mathematical/Geometry.md) for examples, validation, and `Number` access.
+
 ## Trigonometry and right triangles
 
 ```php
@@ -203,6 +239,7 @@ The following exceptions are available under `ReeStyleIt\NumberClass\Exceptions`
 - `RoundingException`: an integer rounding mode is outside the supported cases.
 - `MustBePositiveNumberException`: a root exponent is not greater than zero, or a nearest-rounding multiple is not positive and finite.
 - `PythagorasException`: a triangle length is negative or non-finite, or a leg exceeds the hypotenuse.
+- `GeometryException`: a shape length is invalid, starting latitude is missing, coordinates or elevations are invalid, or a sphere radius is not positive and finite.
 
 Currency formatting provides these additional named exceptions:
 

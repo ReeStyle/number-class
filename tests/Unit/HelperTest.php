@@ -8,6 +8,7 @@ use ReeStyleIt\NumberClass\Enums\Currencies;
 use ReeStyleIt\NumberClass\Format\Currency;
 use ReeStyleIt\NumberClass\Format\Round;
 use ReeStyleIt\NumberClass\Mathematical\Arithmetic;
+use ReeStyleIt\NumberClass\Mathematical\Geometry;
 use ReeStyleIt\NumberClass\Mathematical\Pythagoras;
 use ReeStyleIt\NumberClass\Mathematical\Trigonometry;
 use ReeStyleIt\NumberClass\Number;
@@ -15,6 +16,7 @@ use ReeStyleIt\NumberClass\Number\Compare;
 
 use function ReeStyleIt\NumberClass\compare;
 use function ReeStyleIt\NumberClass\arithmetic;
+use function ReeStyleIt\NumberClass\geometry;
 use function ReeStyleIt\NumberClass\pythagoras;
 use function ReeStyleIt\NumberClass\round;
 use function ReeStyleIt\NumberClass\trigonometry;
@@ -70,6 +72,17 @@ it('creates arithmetic calculations through the helper', function () {
         ->and($arithmetic->get())->toBe(7);
 });
 
+it('creates geometry calculations through the helper', function () {
+    $geometry = geometry(value: 0, latitude: 0, elevation: 10);
+
+    expect($geometry)->toBeInstanceOf(Geometry::class)
+        ->and($geometry->haversine(90, 0, 10, radius: 1)->get())->toEqualWithDelta(M_PI / 2, 1e-12)
+        ->and($geometry->latitude)->toBe(0)
+        ->and($geometry->longitude)->toBe(0)
+        ->and($geometry->elevation)->toBe(10)
+        ->and($geometry->get())->toBe(0);
+});
+
 it('creates Pythagoras calculations through the helper', function () {
     $pythagoras = pythagoras(value: 3);
 
@@ -98,6 +111,7 @@ it('validates values from the new helpers when calculating', function (Closure $
     expect($calculate)->toThrow(MustBeNumberException::class);
 })->with([
     'arithmetic' => [fn () => arithmetic('7')->add(1)],
+    'geometry' => [fn () => geometry('0')->haversine(0, 0, 90)],
     'pythagoras' => [fn () => pythagoras('3')->hypotenuse(4)],
     'round' => [fn () => round('1.236')->decimals(2)],
     'trigonometry' => [fn () => trigonometry('90')->deg2rad()],
