@@ -29,3 +29,18 @@ jobs:
       - run: composer validate --strict
       - run: composer dump-autoload --optimize --strict-psr
       - run: composer test -- --compact
+
+  symbols-without-intl:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          extensions: ':intl'
+          tools: composer:v2
+          coverage: none
+      - run: composer install --no-dev --no-plugins --no-scripts --no-interaction --prefer-dist
+      - run: php tests/fixtures/currency-symbols-without-intl.php

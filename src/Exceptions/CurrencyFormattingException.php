@@ -14,4 +14,9 @@ class CurrencyFormattingException extends BaseInvalidArgumentException
 
         parent::__construct($message, $code, $previous);
     }
+
+    public static function intlRequired(): self
+    {
+        return new self('The intl extension is required for currency amount formatting.');
+    }
 }

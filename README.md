@@ -9,7 +9,7 @@ Chainable numeric values, arithmetic, comparisons, trigonometry, right triangle 
 ## Requirements
 
 - PHP 8.4 or later within PHP 8.x.
-- The PHP `intl` extension.
+- The PHP `intl` extension for full currency amount formatting. Currency symbol lookup has a built-in fallback.
 
 
 ---
@@ -49,6 +49,22 @@ echo currencyFormatter(1234.5)
 Classes and helper functions use the `ReeStyleIt\NumberClass` namespace. Import the helpers with `use function` before calling them by their short names.
 
 All helper accessors work as methods or read-only properties: `arithmetic`, `compare`, `currency`, `pythagoras`, `round`, and `trigonometry`. For example, `number(3)->pythagoras->hypotenuse(4)->get()` returns `5.0`. Each access creates a helper instance containing the number's value.
+
+Each concrete value class also has a factory helper accepting `mixed $value`: `number()`, `compare()`, `currencyFormatter()`, `arithmetic()`, `pythagoras()`, `round()`, and `trigonometry()`.
+
+```php
+use function ReeStyleIt\NumberClass\arithmetic;
+use function ReeStyleIt\NumberClass\pythagoras;
+use function ReeStyleIt\NumberClass\round;
+use function ReeStyleIt\NumberClass\trigonometry;
+
+arithmetic(7)->add(3)->multiply(2)->get(); // 20
+pythagoras(3)->hypotenuse(4)->get(); // 5.0
+round(1.236)->decimals(2)->get(); // 1.24
+trigonometry(90)->deg2rad()->sin()->get(); // 1.0
+```
+
+The imported `round()` helper creates a `Format\Round` instance. PHP's native rounding function remains accessible as `\round()`.
 
 ## Arithmetic
 
@@ -134,6 +150,19 @@ Currencies::CAD->symbol('en_CA'); // $
 
 Currency formatting defaults to EUR and `nl_NL`. Currency codes may be enum cases or three-letter strings. Currency symbols, spacing, decimal places, and separators follow the selected locale and the installed ICU data. Formatting changes the display only; it does not convert amounts between currencies.
 
+`Currencies::symbol()` also works without `intl`, using bundled symbols for all currency cases and locale enum cases. Locale strings accept underscores or hyphens; locales outside the bundled list fall back to their language and then to the `en_US` symbols. Full amount formatting still requires `intl` and throws `CurrencyFormattingException` if it is unavailable.
+
+`Enums\Locales` provides common locale codes, including `Locales::NL_NL`, `Locales::EN_US`, and `Locales::EN_GB`. Both `Currency::locale()` and `Currencies::symbol()` accept an enum case or a locale string:
+
+```php
+use ReeStyleIt\NumberClass\Enums\Locales;
+
+echo currencyFormatter(1234.5)->currency(Currencies::USD)->locale(Locales::EN_US);
+Currencies::CAD->symbol(Locales::EN_CA); // $
+```
+
+German-speaking regional locales include `Locales::DE_DE` (Germany), `Locales::DE_AT` (Austria), and `Locales::DE_CH` (Switzerland). Use EUR for German/Austrian amounts and CHF for Swiss franc amounts.
+
 The currency and locale configuration methods return the same formatter. The stored amount remains readonly. `Currency` is stringable through `__toString()`.
 
 ## Trigonometry and right triangles
@@ -189,7 +218,13 @@ composer dump-autoload --optimize --strict-psr
 composer test
 ```
 
-Pest is a development dependency. Consumers need only PHP and `intl`. GitHub Actions checks PHP 8.4 and 8.5.
+Pest is a development dependency. Consumers need PHP; install `intl` for full currency formatting. GitHub Actions checks PHP 8.4 and 8.5 and includes a separate symbol lookup check without `intl`.
+
+The fallback symbol data is stored in `src/Resources/currency-symbols.php`, which returns an array and is loaded once per process. To regenerate it from the installed ICU data when currency or locale cases change, run this command with `intl` available:
+
+```bash
+composer generate:symbols
+```
 
 See [RELEASING.md](RELEASING.md) for the publication procedure.
 

@@ -3,10 +3,18 @@
 use ReeStyleIt\NumberClass\Exceptions\MustBeNumberException;
 use ReeStyleIt\NumberClass\Enums\Currencies;
 use ReeStyleIt\NumberClass\Format\Currency;
+use ReeStyleIt\NumberClass\Format\Round;
+use ReeStyleIt\NumberClass\Mathematical\Arithmetic;
+use ReeStyleIt\NumberClass\Mathematical\Pythagoras;
+use ReeStyleIt\NumberClass\Mathematical\Trigonometry;
 use ReeStyleIt\NumberClass\Number;
 use ReeStyleIt\NumberClass\Number\Compare;
 
 use function ReeStyleIt\NumberClass\compare;
+use function ReeStyleIt\NumberClass\arithmetic;
+use function ReeStyleIt\NumberClass\pythagoras;
+use function ReeStyleIt\NumberClass\round;
+use function ReeStyleIt\NumberClass\trigonometry;
 use function ReeStyleIt\NumberClass\number;
 use function ReeStyleIt\NumberClass\currencyFormatter;
 
@@ -50,3 +58,44 @@ it('creates a Compare directly through the helper', function () {
 it('validates values from the compare helper when comparing', function () {
     expect(fn () => compare('7')->equals(7))->toThrow(MustBeNumberException::class);
 });
+
+it('creates arithmetic calculations through the helper', function () {
+    $arithmetic = arithmetic(value: 7);
+
+    expect($arithmetic)->toBeInstanceOf(Arithmetic::class)
+        ->and($arithmetic->add(3)->multiply(2)->get())->toBe(20)
+        ->and($arithmetic->get())->toBe(7);
+});
+
+it('creates Pythagoras calculations through the helper', function () {
+    $pythagoras = pythagoras(value: 3);
+
+    expect($pythagoras)->toBeInstanceOf(Pythagoras::class)
+        ->and($pythagoras->hypotenuse(4)->leg(3)->get())->toBe(4.0)
+        ->and($pythagoras->get())->toBe(3);
+});
+
+it('creates trigonometry calculations through the helper', function () {
+    $trigonometry = trigonometry(value: 90);
+
+    expect($trigonometry)->toBeInstanceOf(Trigonometry::class)
+        ->and($trigonometry->deg2rad()->sin()->get())->toBe(1.0)
+        ->and($trigonometry->get())->toBe(90);
+});
+
+it('creates rounding calculations through the helper', function () {
+    $round = round(value: 1.236);
+
+    expect($round)->toBeInstanceOf(Round::class)
+        ->and($round->decimals(2)->get())->toBe(1.24)
+        ->and($round->get())->toBe(1.236);
+});
+
+it('validates values from the new helpers when calculating', function (Closure $calculate) {
+    expect($calculate)->toThrow(MustBeNumberException::class);
+})->with([
+    'arithmetic' => [fn () => arithmetic('7')->add(1)],
+    'pythagoras' => [fn () => pythagoras('3')->hypotenuse(4)],
+    'round' => [fn () => round('1.236')->decimals(2)],
+    'trigonometry' => [fn () => trigonometry('90')->deg2rad()],
+]);

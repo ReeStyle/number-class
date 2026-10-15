@@ -5,6 +5,7 @@ namespace ReeStyleIt\NumberClass\Format;
 use NumberFormatter;
 use ReeStyleIt\NumberClass\Base;
 use ReeStyleIt\NumberClass\Enums\Currencies;
+use ReeStyleIt\NumberClass\Enums\Locales;
 use ReeStyleIt\NumberClass\Exceptions\CurrencyFormattingException;
 use ReeStyleIt\NumberClass\Exceptions\EmptyLocaleException;
 use ReeStyleIt\NumberClass\Exceptions\InvalidCurrencyCodeException;
@@ -28,8 +29,10 @@ class Currency extends Base
         return $this;
     }
 
-    public function locale(string $locale): self
+    public function locale(Locales|string $locale): self
     {
+        $locale = $locale instanceof Locales ? $locale->value : $locale;
+
         if (trim($locale) === '') {
             throw new EmptyLocaleException();
         }
@@ -45,6 +48,10 @@ class Currency extends Base
 
         if (!is_finite($this->value)) {
             throw new MustBeFiniteCurrencyValue();
+        }
+
+        if (!class_exists(NumberFormatter::class)) {
+            throw CurrencyFormattingException::intlRequired();
         }
 
         $formatter = new NumberFormatter($this->locale, NumberFormatter::CURRENCY);

@@ -8,6 +8,7 @@
 /.idea export-ignore
 /.phpunit.cache export-ignore
 /tests export-ignore
+/tools export-ignore
 /vendor export-ignore
 /composer.lock export-ignore
 /phpunit.xml export-ignore
