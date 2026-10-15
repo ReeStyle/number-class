@@ -25,6 +25,8 @@ it('calculates into a new Arithmetic instance without changing the original', fu
         ->and($result->get())->toBe($expected)
         ->and($arithmetic->get())->toBe($value);
 })->with([
+    'add' => [7, 'add', [2.5], 9.5],
+    'subtract' => [7, 'subtract', [], 6],
     'increase' => [7, 'increase', [], 8],
     'decrease' => [7, 'decrease', [2.5], 4.5],
     'multiply' => [7, 'multiply', [2], 14],
@@ -48,6 +50,7 @@ it('validates stored values before calculating', function (string $method, array
     expect(fn () => new Arithmetic('7')->$method(...$arguments))
         ->toThrow(MustBeNumberException::class, 'Value must be an integer or float.');
 })->with([
+    ['add', []], ['subtract', []],
     ['increase', []], ['decrease', []], ['multiply', [2]], ['divide', [2]],
     ['pow', [2]], ['sqrt', []], ['abs', []], ['negate', []],
     ['mod', [2]], ['floor', []], ['ceil', []],

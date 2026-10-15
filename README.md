@@ -70,8 +70,8 @@ number(9)->arithmetic()->pow(2)->get(); // 81
 
 | Method | Operation |
 | --- | --- |
-| `increase($amount = 1)` | Add an amount |
-| `decrease($amount = 1)` | Subtract an amount |
+| `add($amount = 1)` | Add an amount; `increase()` is an alias |
+| `subtract($amount = 1)` | Subtract an amount; `decrease()` is an alias |
 | `multiply($factor)` | Multiply |
 | `divide($divisor)` | Divide |
 | `pow($exponent)` | Raise to a power |

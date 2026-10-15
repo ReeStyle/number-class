@@ -11,38 +11,101 @@ use ReeStyleIt\NumberClass\Number\Compare;
 
 class Number extends Base
 {
-    public Compare $compare {
-        get => $this->compare();
-    }
-
-    public Rounded $round {
-        get => $this->round();
-    }
-
     public Arithmetic $arithmetic {
         get => $this->arithmetic();
     }
 
-    public Trigonometry $trigonometry {
-        get => $this->trigonometry();
-    }
-
-    public Pythagoras $pythagoras {
-        get => $this->pythagoras();
+    public Compare $compare {
+        get => $this->compare();
     }
 
     public Currency $currency {
         get => $this->currency();
     }
 
-    public function isInt(): bool
+    public Pythagoras $pythagoras {
+        get => $this->pythagoras();
+    }
+
+    public Rounded $round {
+        get => $this->round();
+    }
+
+    public Trigonometry $trigonometry {
+        get => $this->trigonometry();
+    }
+
+    public function abs(): self
     {
-        return is_int($this->value);
+        return new self($this->arithmetic()->abs()->get());
+    }
+
+    public function add(int|float $amount = 1): self
+    {
+        return new self($this->arithmetic()->add($amount)->get());
+    }
+
+    public function arithmetic(): Arithmetic
+    {
+        $this->assertNumber();
+
+        return new Arithmetic($this->value);
+    }
+
+    public function ceil(): self
+    {
+        return new self($this->arithmetic()->ceil()->get());
+    }
+
+    public function compare(): Compare
+    {
+        $this->assertNumber();
+
+        return new Compare($this->value);
+    }
+
+    public function currency(): Currency
+    {
+        $this->assertNumber();
+
+        return new Currency($this->value);
+    }
+
+    public function decrease(int|float $amount = 1): self
+    {
+        return $this->subtract($amount);
+    }
+
+    public function divide(int|float $divisor): self
+    {
+        return new self($this->arithmetic()->divide($divisor)->get());
+    }
+
+    public function floor(): self
+    {
+        return new self($this->arithmetic()->floor()->get());
+    }
+
+    public function format(int $decimals = 0, ?string $decimal_separator = '.', ?string $thousands_separator = ','): string
+    {
+        $this->assertNumber();
+
+        return number_format($this->value, $decimals, $decimal_separator, $thousands_separator);
+    }
+
+    public function increase(int|float $amount = 1): self
+    {
+        return $this->add($amount);
     }
 
     public function isFloat(): bool
     {
         return is_float($this->value);
+    }
+
+    public function isInt(): bool
+    {
+        return is_int($this->value);
     }
 
     public function isNumber(): bool
@@ -59,25 +122,24 @@ class Number extends Base
         return $this->isNumber();
     }
 
-    public function compare(): Compare
+    public function mod(int|float $divisor): self
     {
-        $this->assertNumber();
-
-        return new Compare($this->value);
+        return new self($this->arithmetic()->mod($divisor)->get());
     }
 
-    public function arithmetic(): Arithmetic
+    public function multiply(int|float $factor): self
     {
-        $this->assertNumber();
-
-        return new Arithmetic($this->value);
+        return new self($this->arithmetic()->multiply($factor)->get());
     }
 
-    public function trigonometry(): Trigonometry
+    public function negate(): self
     {
-        $this->assertNumber();
+        return new self($this->arithmetic()->negate()->get());
+    }
 
-        return new Trigonometry($this->value);
+    public function pow(int|float $exponent): self
+    {
+        return new self($this->arithmetic()->pow($exponent)->get());
     }
 
     public function pythagoras(): Pythagoras
@@ -87,61 +149,6 @@ class Number extends Base
         return new Pythagoras($this->value);
     }
 
-    public function increase(int|float $amount = 1): self
-    {
-        return new self($this->arithmetic()->increase($amount)->get());
-    }
-
-    public function decrease(int|float $amount = 1): self
-    {
-        return new self($this->arithmetic()->decrease($amount)->get());
-    }
-
-    public function multiply(int|float $factor): self
-    {
-        return new self($this->arithmetic()->multiply($factor)->get());
-    }
-
-    public function divide(int|float $divisor): self
-    {
-        return new self($this->arithmetic()->divide($divisor)->get());
-    }
-
-    public function pow(int|float $exponent): self
-    {
-        return new self($this->arithmetic()->pow($exponent)->get());
-    }
-
-    public function sqrt(int $exponent = 2): self
-    {
-        return new self($this->arithmetic()->sqrt($exponent)->get());
-    }
-
-    public function abs(): self
-    {
-        return new self($this->arithmetic()->abs()->get());
-    }
-
-    public function negate(): self
-    {
-        return new self($this->arithmetic()->negate()->get());
-    }
-
-    public function mod(int|float $divisor): self
-    {
-        return new self($this->arithmetic()->mod($divisor)->get());
-    }
-
-    public function floor(): self
-    {
-        return new self($this->arithmetic()->floor()->get());
-    }
-
-    public function ceil(): self
-    {
-        return new self($this->arithmetic()->ceil()->get());
-    }
-
     public function round(): Rounded
     {
         $this->assertNumber();
@@ -149,17 +156,20 @@ class Number extends Base
         return new Rounded($this->value);
     }
 
-    public function currency(): Currency
+    public function sqrt(int $exponent = 2): self
     {
-        $this->assertNumber();
-
-        return new Currency($this->value);
+        return new self($this->arithmetic()->sqrt($exponent)->get());
     }
 
-    public function format(int $decimals = 0, ?string $decimal_separator = '.', ?string $thousands_separator = ','): string
+    public function subtract(int|float $amount = 1): self
+    {
+        return new self($this->arithmetic()->subtract($amount)->get());
+    }
+
+    public function trigonometry(): Trigonometry
     {
         $this->assertNumber();
 
-        return number_format($this->value, $decimals, $decimal_separator, $thousands_separator);
+        return new Trigonometry($this->value);
     }
 }

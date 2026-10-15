@@ -40,6 +40,10 @@ it('keeps its stored value when the retrieved value is changed', function () {
 });
 
 dataset('arithmetic', [
+    'add by default' => [9, 'add', [], 10],
+    'add a float' => [9, 'add', [2.5], 11.5],
+    'subtract by default' => [9, 'subtract', [], 8],
+    'subtract below zero' => [1, 'subtract', [2.5], -1.5],
     'increase by one' => [9, 'increase', [], 10],
     'increase by a float' => [9, 'increase', [2.5], 11.5],
     'decrease by one' => [9, 'decrease', [], 8],
@@ -86,6 +90,8 @@ it('returns the calculated value in a new instance', function (int|float $value,
 })->with('arithmetic');
 
 dataset('operations', [
+    'add' => ['add', []],
+    'subtract' => ['subtract', []],
     'increase' => ['increase', []],
     'decrease' => ['decrease', []],
     'multiply' => ['multiply', [2]],

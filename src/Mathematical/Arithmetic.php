@@ -8,18 +8,28 @@ use ReeStyleIt\NumberClass\Exceptions\MustBePositiveNumberException;
 
 class Arithmetic extends Base
 {
-    public function increase(int|float $amount = 1): self
+    public function add(int|float $amount = 1): self
     {
         $this->assertNumber();
 
         return new self($this->value + $amount);
     }
 
-    public function decrease(int|float $amount = 1): self
+    public function subtract(int|float $amount = 1): self
     {
         $this->assertNumber();
 
         return new self($this->value - $amount);
+    }
+
+    public function increase(int|float $amount = 1): self
+    {
+        return $this->add($amount);
+    }
+
+    public function decrease(int|float $amount = 1): self
+    {
+        return $this->subtract($amount);
     }
 
     public function multiply(int|float $factor): self
