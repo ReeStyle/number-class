@@ -19,6 +19,22 @@ class Number extends Base
         get => $this->round();
     }
 
+    public Arithmetic $arithmetic {
+        get => $this->arithmetic();
+    }
+
+    public Trigonometry $trigonometry {
+        get => $this->trigonometry();
+    }
+
+    public Pythagoras $pythagoras {
+        get => $this->pythagoras();
+    }
+
+    public Currency $currency {
+        get => $this->currency();
+    }
+
     public function isInt(): bool
     {
         return is_int($this->value);

@@ -1,11 +1,18 @@
-# number-class
+# Number class
+
+---
 
 Chainable numeric values, arithmetic, comparisons, trigonometry, right triangle calculations, rounding, and currency formatting for PHP.
+
+---
 
 ## Requirements
 
 - PHP 8.4 or later within PHP 8.x.
 - The PHP `intl` extension.
+
+
+---
 
 ## Installation
 
@@ -40,6 +47,8 @@ echo currencyFormatter(1234.5)
 ```
 
 Classes and helper functions use the `ReeStyleIt\NumberClass` namespace. Import the helpers with `use function` before calling them by their short names.
+
+All helper accessors work as methods or read-only properties: `arithmetic`, `compare`, `currency`, `pythagoras`, `round`, and `trigonometry`. For example, `number(3)->pythagoras->hypotenuse(4)->get()` returns `5.0`. Each access creates a helper instance containing the number's value.
 
 ## Arithmetic
 
@@ -187,3 +196,7 @@ See [RELEASING.md](RELEASING.md) for the publication procedure.
 ## License
 
 See [license.txt](license.txt) for the supplied license terms.
+
+## Note
+
+This is my first full AI project, although I keep an eye on every written line of code.
