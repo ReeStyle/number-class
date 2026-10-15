@@ -2,7 +2,7 @@
 
 use ReeStyleIt\NumberClass\Exceptions\MustBeNumberException;
 use ReeStyleIt\NumberClass\Format\Currency;
-use ReeStyleIt\NumberClass\Format\Rounded;
+use ReeStyleIt\NumberClass\Format\Round;
 use ReeStyleIt\NumberClass\Mathematical\Arithmetic;
 use ReeStyleIt\NumberClass\Mathematical\Pythagoras;
 use ReeStyleIt\NumberClass\Mathematical\Trigonometry;
@@ -11,7 +11,7 @@ use ReeStyleIt\NumberClass\Number\Compare;
 
 dataset('helper properties', [
     'compare' => ['compare', Compare::class],
-    'round' => ['round', Rounded::class],
+    'round' => ['round', Round::class],
     'arithmetic' => ['arithmetic', Arithmetic::class],
     'trigonometry' => ['trigonometry', Trigonometry::class],
     'pythagoras' => ['pythagoras', Pythagoras::class],
@@ -40,8 +40,8 @@ it('provides comparison access as a property', function () {
 it('provides rounding access as a property', function () {
     $number = new Number(12.54);
 
-    expect($number->round)->toBeInstanceOf(Rounded::class)
-        ->and($number->round->with(1)->nearest(5)->get())->toBe(15.0)
+    expect($number->round)->toBeInstanceOf(Round::class)
+        ->and($number->round->decimals(1)->nearest(5)->get())->toBe(15.0)
         ->and($number->get())->toBe(12.54);
 });
 

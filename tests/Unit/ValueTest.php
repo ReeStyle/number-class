@@ -8,17 +8,17 @@ it('exposes the stored value through its getter', function () {
     expect($value->get())->toBe('example');
 });
 
-it('keeps the stored value protected and exposes it through get', function () {
+it('exposes the stored value as a public readonly property', function () {
     $value = new class(7) extends Base {};
 
-    expect((new ReflectionProperty(Base::class, 'value'))->isProtected())->toBeTrue()
+    expect($value->value)->toBe(7)
         ->and($value->get())->toBe(7);
 });
 
 it('prevents changing an initialized readonly value', function () {
     $value = new class(7) extends Base {};
-    $property = new ReflectionProperty(Base::class, 'value');
-
-    expect(fn () => $property->setValue($value, 8))->toThrow(Error::class)
+    expect(function () use ($value) {
+        $value->value = 8;
+    })->toThrow(Error::class)
         ->and($value->get())->toBe(7);
 });

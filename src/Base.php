@@ -6,7 +6,7 @@ use ReeStyleIt\NumberClass\Exceptions\MustBeNumberException;
 
 abstract class Base
 {
-    protected readonly mixed $value;
+    public readonly mixed $value;
 
     public function __construct(mixed $value)
     {

@@ -107,15 +107,15 @@ Comparisons accept integers, floats, or another `Number`. Results are booleans; 
 ## Rounding and number formatting
 
 ```php
-number(1.236)->round()->with(2)->get(); // 1.24
-number(2.5)->round->with(mode: RoundingMode::HalfEven)->get(); // 2.0
+number(1.236)->round()->decimals(2)->get(); // 1.24
+number(2.5)->round->decimals(mode: RoundingMode::HalfEven)->get(); // 2.0
 number(13)->round->nearest(5)->get(); // 15.0
 
 number(1234.56)->format(); // "1,235"
 number(1234.56)->format(2, ',', '.'); // "1.234,56"
 ```
 
-`round` is available as a method or a read-only property. Its `with()` and `nearest()` methods return new `Format\Rounded` instances. `with()` follows PHP's `round()` precision and mode parameters. `nearest()` requires a positive finite multiple. `Number::format()` returns a string and follows the optional parameters of PHP's `number_format()`.
+`round` is available as a method or a read-only property. Its `decimals()` and `nearest()` methods return new `Format\Round` instances. `with()` is an alias of `decimals()`. `decimals()` follows PHP's `round()` precision and mode parameters. `nearest()` requires a positive finite multiple. `Number::format()` returns a string and follows the optional parameters of PHP's `number_format()`.
 
 ## Currency
 
@@ -152,7 +152,7 @@ For `Mathematical\Pythagoras::hypotenuse($otherLeg)`, the stored value is one pe
 
 ## Value validation
 
-`Number` stores a readonly `mixed` value, accessible with `get()`. `isInt()`, `isFloat()`, `isNumber()`, and its alias `isNumeric()` inspect the value. Calculations accept integer and float values and throw `MustBeNumberException` for other stored types, including numeric strings. Currency formatting also rejects infinite values and `NAN`.
+`Base` exposes a public readonly `mixed` property named `value`, also accessible with `get()`. `Number` inherits it and provides `isInt()`, `isFloat()`, `isNumber()`, and its alias `isNumeric()` to inspect the value. Calculations accept integer and float values and throw `MustBeNumberException` for other stored types, including numeric strings. Currency formatting also rejects infinite values and `NAN`.
 
 These calculations use native PHP integers and floats; they do not provide arbitrary-precision decimal arithmetic.
 

@@ -7,9 +7,9 @@ use ReeStyleIt\NumberClass\Exceptions\MustBePositiveNumberException;
 use ReeStyleIt\NumberClass\Exceptions\RoundingException;
 use RoundingMode;
 
-class Rounded extends Base
+class Round extends Base
 {
-    public function with(int $precision = 0, int|RoundingMode $mode = RoundingMode::HalfAwayFromZero): self
+    public function decimals(int $precision = 0, int|RoundingMode $mode = RoundingMode::HalfAwayFromZero): self
     {
         $this->assertNumber();
 
@@ -29,5 +29,10 @@ class Rounded extends Base
         }
 
         return new self(round($this->value / $multiple) * $multiple);
+    }
+
+    public function with(int $precision = 0, int|RoundingMode $mode = RoundingMode::HalfAwayFromZero): self
+    {
+        return $this->decimals($precision, $mode);
     }
 }

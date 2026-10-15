@@ -3,7 +3,7 @@
 namespace ReeStyleIt\NumberClass;
 
 use ReeStyleIt\NumberClass\Format\Currency;
-use ReeStyleIt\NumberClass\Format\Rounded;
+use ReeStyleIt\NumberClass\Format\Round;
 use ReeStyleIt\NumberClass\Mathematical\Arithmetic;
 use ReeStyleIt\NumberClass\Mathematical\Pythagoras;
 use ReeStyleIt\NumberClass\Mathematical\Trigonometry;
@@ -27,7 +27,7 @@ class Number extends Base
         get => $this->pythagoras();
     }
 
-    public Rounded $round {
+    public Round $round {
         get => $this->round();
     }
 
@@ -149,11 +149,11 @@ class Number extends Base
         return new Pythagoras($this->value);
     }
 
-    public function round(): Rounded
+    public function round(): Round
     {
         $this->assertNumber();
 
-        return new Rounded($this->value);
+        return new Round($this->value);
     }
 
     public function sqrt(int $exponent = 2): self
