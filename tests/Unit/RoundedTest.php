@@ -1,5 +1,8 @@
 <?php
 
+use ReeStyleIt\NumberClass\Exceptions\MustBeNumberException;
+use ReeStyleIt\NumberClass\Exceptions\MustBePositiveNumberException;
+use ReeStyleIt\NumberClass\Exceptions\RoundingException;
 use ReeStyleIt\NumberClass\Base;
 use ReeStyleIt\NumberClass\Format\Rounded;
 use ReeStyleIt\NumberClass\Number;
@@ -17,7 +20,7 @@ it('converts a Number into a Rounded formatter without changing its value', func
 
 it('rejects non-number values when rounding', function (mixed $value) {
     expect(fn () => (new Rounded($value))->with())
-        ->toThrow(UnexpectedValueException::class, 'Value must be an integer or float.');
+        ->toThrow(MustBeNumberException::class, 'Value must be an integer or float.');
 })->with([
     'numeric string' => ['7'],
     'null' => [null],
@@ -52,7 +55,7 @@ it('rounds without changing its original value', function (int|float $value, arr
 
 it('rejects invalid integer rounding modes', function (int $mode) {
     expect(fn () => (new Rounded(2.5))->with(mode: $mode))
-        ->toThrow(ValueError::class, 'Rounding mode must be a valid RoundingMode case or its integer equivalent.');
+        ->toThrow(RoundingException::class, 'Rounding mode must be a valid RoundingMode case or its integer equivalent.');
 })->with([-1, 0, 9, 999]);
 
 it('accepts all supported integer rounding modes', function (int $mode, float $expected) {
@@ -98,12 +101,12 @@ it('rounds to the nearest multiple without changing its value', function (int|fl
 
 it('rejects invalid multiples', function (int|float $multiple) {
     expect(fn () => (new Rounded(12))->nearest($multiple))
-        ->toThrow(InvalidArgumentException::class, 'Multiple must be a positive finite number.');
+        ->toThrow(MustBePositiveNumberException::class, 'Multiple must be a positive finite number.');
 })->with([0, 0.0, -5, INF, -INF, NAN]);
 
 it('rejects non-number values before rounding to a multiple', function () {
     expect(fn () => (new Rounded('12'))->nearest(5))
-        ->toThrow(UnexpectedValueException::class, 'Value must be an integer or float.');
+        ->toThrow(MustBeNumberException::class, 'Value must be an integer or float.');
 });
 
 it('allows chaining rounding methods without changing earlier instances', function () {

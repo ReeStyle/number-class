@@ -1,6 +1,8 @@
 <?php
 
-use ReeStyleIt\NumberClass\Mathmatical\Arithmetic;
+use ReeStyleIt\NumberClass\Exceptions\MustBeNumberException;
+use ReeStyleIt\NumberClass\Exceptions\MustBePositiveNumberException;
+use ReeStyleIt\NumberClass\Mathematical\Arithmetic;
 use ReeStyleIt\NumberClass\Number;
 
 use function ReeStyleIt\NumberClass\number;
@@ -44,7 +46,7 @@ it('chains arithmetic calculations', function () {
 
 it('validates stored values before calculating', function (string $method, array $arguments) {
     expect(fn () => new Arithmetic('7')->$method(...$arguments))
-        ->toThrow(UnexpectedValueException::class, 'Value must be an integer or float.');
+        ->toThrow(MustBeNumberException::class, 'Value must be an integer or float.');
 })->with([
     ['increase', []], ['decrease', []], ['multiply', [2]], ['divide', [2]],
     ['pow', [2]], ['sqrt', []], ['abs', []], ['negate', []],
@@ -57,5 +59,5 @@ it('rejects division and remainder by zero', function (string $method) {
 
 it('rejects non-positive root exponents in arithmetic calculations', function () {
     expect(fn () => new Arithmetic(7)->sqrt(0))
-        ->toThrow(InvalidArgumentException::class, 'Root exponent must be greater than 0.');
+        ->toThrow(MustBePositiveNumberException::class, 'Root exponent must be greater than 0.');
 });

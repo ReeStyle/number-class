@@ -3,8 +3,7 @@
 namespace ReeStyleIt\NumberClass\Enums;
 
 use NumberFormatter;
-use ReeStyleIt\NumberClass\Format\Currency;
-use RuntimeException;
+use ReeStyleIt\NumberClass\Exceptions\CurrencySymbolLookupException;
 
 enum Currencies: string
 {
@@ -38,13 +37,13 @@ enum Currencies: string
         $formatter = new NumberFormatter($locale, NumberFormatter::CURRENCY);
 
         if (!$formatter->setTextAttribute(NumberFormatter::CURRENCY_CODE, $this->value)) {
-            throw new RuntimeException('Currency symbol lookup failed: ' . $formatter->getErrorMessage());
+            throw new CurrencySymbolLookupException($formatter->getErrorMessage());
         }
 
         $symbol = $formatter->getSymbol(NumberFormatter::CURRENCY_SYMBOL);
 
         if ($symbol === false) {
-            throw new RuntimeException('Currency symbol lookup failed: ' . $formatter->getErrorMessage());
+            throw new CurrencySymbolLookupException($formatter->getErrorMessage());
         }
 
         return $symbol;

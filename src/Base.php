@@ -2,7 +2,7 @@
 
 namespace ReeStyleIt\NumberClass;
 
-use UnexpectedValueException;
+use ReeStyleIt\NumberClass\Exceptions\MustBeNumberException;
 
 abstract class Base
 {
@@ -21,7 +21,7 @@ abstract class Base
     protected function assertNumber(): void
     {
         if (!is_int($this->value) && !is_float($this->value)) {
-            throw new UnexpectedValueException('Value must be an integer or float.');
+            throw new MustBeNumberException();
         }
     }
 }

@@ -2,12 +2,13 @@
 
 namespace ReeStyleIt\NumberClass\Format;
 
-use InvalidArgumentException;
 use NumberFormatter;
 use ReeStyleIt\NumberClass\Base;
 use ReeStyleIt\NumberClass\Enums\Currencies;
-use RuntimeException;
-use UnexpectedValueException;
+use ReeStyleIt\NumberClass\Exceptions\CurrencyFormattingException;
+use ReeStyleIt\NumberClass\Exceptions\EmptyLocaleException;
+use ReeStyleIt\NumberClass\Exceptions\InvalidCurrencyCodeException;
+use ReeStyleIt\NumberClass\Exceptions\MustBeFiniteCurrencyValue;
 
 class Currency extends Base
 {
@@ -19,7 +20,7 @@ class Currency extends Base
         $currency = $currency instanceof Currencies ? $currency->value : strtoupper($currency);
 
         if (!preg_match('/^[A-Z]{3}$/D', $currency)) {
-            throw new InvalidArgumentException('Currency must be a three-letter currency code.');
+            throw new InvalidCurrencyCodeException();
         }
 
         $this->currency = $currency;
@@ -30,7 +31,7 @@ class Currency extends Base
     public function locale(string $locale): self
     {
         if (trim($locale) === '') {
-            throw new InvalidArgumentException('Locale must not be empty.');
+            throw new EmptyLocaleException();
         }
 
         $this->locale = $locale;
@@ -43,14 +44,14 @@ class Currency extends Base
         $this->assertNumber();
 
         if (!is_finite($this->value)) {
-            throw new UnexpectedValueException('Currency value must be finite.');
+            throw new MustBeFiniteCurrencyValue();
         }
 
         $formatter = new NumberFormatter($this->locale, NumberFormatter::CURRENCY);
         $result = $formatter->formatCurrency($this->value, $this->currency);
 
         if ($result === false) {
-            throw new RuntimeException('Currency formatting failed: ' . $formatter->getErrorMessage());
+            throw new CurrencyFormattingException($formatter->getErrorMessage());
         }
 
         return $result;

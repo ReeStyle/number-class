@@ -1,7 +1,12 @@
 <?php
 
+use ReeStyleIt\NumberClass\Exceptions\MustBeNumberException;
 use ReeStyleIt\NumberClass\Base;
 use ReeStyleIt\NumberClass\Enums\Currencies;
+use ReeStyleIt\NumberClass\Exceptions\CurrencyFormattingException;
+use ReeStyleIt\NumberClass\Exceptions\EmptyLocaleException;
+use ReeStyleIt\NumberClass\Exceptions\InvalidCurrencyCodeException;
+use ReeStyleIt\NumberClass\Exceptions\MustBeFiniteCurrencyValue;
 use ReeStyleIt\NumberClass\Format\Currency;
 use ReeStyleIt\NumberClass\Number;
 
@@ -41,17 +46,27 @@ it('accepts a currency enum when formatting a Number', function () {
 });
 
 it('rejects malformed currency codes', function (string $currency) {
-    expect(fn () => (new Currency(7))->currency($currency))->toThrow(InvalidArgumentException::class);
+    expect(fn () => (new Currency(7))->currency($currency))
+        ->toThrow(InvalidCurrencyCodeException::class, 'Currency must be a three-letter currency code.');
 })->with(['', 'EU', 'EURO', '123', '€']);
 
-it('rejects an empty locale', function () {
-    expect(fn () => (new Currency(7))->locale(''))->toThrow(InvalidArgumentException::class);
-});
+it('rejects an empty locale', function (string $locale) {
+    expect(fn () => (new Currency(7))->locale($locale))
+        ->toThrow(EmptyLocaleException::class, 'Locale must not be empty.');
+})->with(['', ' ', "\t\n"]);
 
 it('rejects non-finite currency values', function (float $value) {
     expect(fn () => (string) new Currency($value))
-        ->toThrow(UnexpectedValueException::class);
+        ->toThrow(MustBeFiniteCurrencyValue::class, 'Currency value must be finite.');
 })->with([INF, -INF, NAN]);
+
+it('throws a named exception when the formatter cannot produce a string', function () {
+    $format = new Currency(7);
+    $format->currency = "\xFF";
+
+    expect(fn () => (string) $format)
+        ->toThrow(CurrencyFormattingException::class, 'Currency formatting failed:');
+});
 
 it('formats a Number without changing its value', function () {
     $number = new Number(1234.5);
@@ -72,7 +87,7 @@ it('uses the default currency format', function () {
 
 it('validates the Number before formatting currency', function (mixed $value) {
     expect(fn () => new Number($value)->currency())
-        ->toThrow(UnexpectedValueException::class, 'Value must be an integer or float.');
+        ->toThrow(MustBeNumberException::class, 'Value must be an integer or float.');
 })->with([
     'numeric string' => ['7'],
     'null' => [null],
@@ -95,7 +110,7 @@ it('returns the same formatter from configuration methods and keeps its amount',
 
 it('rejects invalid stored values when formatting directly', function (mixed $value) {
     expect(fn () => (string) new Currency($value))
-        ->toThrow(UnexpectedValueException::class, 'Value must be an integer or float.');
+        ->toThrow(MustBeNumberException::class, 'Value must be an integer or float.');
 })->with([
     'numeric string' => ['7'],
     'null' => [null],

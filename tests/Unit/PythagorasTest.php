@@ -1,6 +1,8 @@
 <?php
 
-use ReeStyleIt\NumberClass\Mathmatical\Pythagoras;
+use ReeStyleIt\NumberClass\Exceptions\MustBeNumberException;
+use ReeStyleIt\NumberClass\Exceptions\PythagorasException;
+use ReeStyleIt\NumberClass\Mathematical\Pythagoras;
 use ReeStyleIt\NumberClass\Number;
 
 use function ReeStyleIt\NumberClass\number;
@@ -46,21 +48,21 @@ it('handles large and small lengths without squaring overflow or underflow', fun
 
 it('rejects a leg longer than the hypotenuse', function () {
     expect(fn () => new Pythagoras(3)->leg(4))
-        ->toThrow(InvalidArgumentException::class, 'A leg cannot be longer than the hypotenuse.');
+        ->toThrow(PythagorasException::class, 'A leg cannot be longer than the hypotenuse.');
 });
 
 it('rejects invalid lengths on either side', function (string $method, int|float $length) {
     expect(fn () => new Pythagoras($length)->$method(3))
-        ->toThrow(InvalidArgumentException::class, 'Length must be a non-negative finite number.')
+        ->toThrow(PythagorasException::class, 'Length must be a non-negative finite number.')
         ->and(fn () => new Pythagoras(5)->$method($length))
-        ->toThrow(InvalidArgumentException::class, 'Length must be a non-negative finite number.');
+        ->toThrow(PythagorasException::class, 'Length must be a non-negative finite number.');
 })->with(['hypotenuse', 'leg'])->with([-1, INF, -INF, NAN]);
 
 it('validates stored values before calculating lengths', function (string $method) {
     expect(fn () => new Pythagoras('3')->$method(4))
-        ->toThrow(UnexpectedValueException::class);
+        ->toThrow(MustBeNumberException::class);
 })->with(['hypotenuse', 'leg']);
 
 it('validates a Number before creating a Pythagoras object', function () {
-    expect(fn () => number('3')->pythagoras())->toThrow(UnexpectedValueException::class);
+    expect(fn () => number('3')->pythagoras())->toThrow(MustBeNumberException::class);
 });

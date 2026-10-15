@@ -2,10 +2,10 @@
 
 namespace ReeStyleIt\NumberClass\Format;
 
-use InvalidArgumentException;
 use ReeStyleIt\NumberClass\Base;
+use ReeStyleIt\NumberClass\Exceptions\MustBePositiveNumberException;
+use ReeStyleIt\NumberClass\Exceptions\RoundingException;
 use RoundingMode;
-use ValueError;
 
 class Rounded extends Base
 {
@@ -14,7 +14,7 @@ class Rounded extends Base
         $this->assertNumber();
 
         if (is_int($mode) && ($mode < 1 || $mode > count(RoundingMode::cases()))) {
-            throw new ValueError('Rounding mode must be a valid RoundingMode case or its integer equivalent.');
+            throw new RoundingException();
         }
 
         return new self(round($this->value, $precision, $mode));
@@ -25,7 +25,7 @@ class Rounded extends Base
         $this->assertNumber();
 
         if (!is_finite($multiple) || $multiple <= 0) {
-            throw new InvalidArgumentException('Multiple must be a positive finite number.');
+            throw MustBePositiveNumberException::multiple();
         }
 
         return new self(round($this->value / $multiple) * $multiple);

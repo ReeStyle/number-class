@@ -1,5 +1,7 @@
 <?php
 
+use ReeStyleIt\NumberClass\Exceptions\MustBeNumberException;
+use ReeStyleIt\NumberClass\Exceptions\MustBePositiveNumberException;
 use ReeStyleIt\NumberClass\Base;
 use ReeStyleIt\NumberClass\Number;
 
@@ -100,7 +102,7 @@ dataset('operations', [
 
 it('rejects non-number values before arithmetic', function (string $method, array $arguments, mixed $value) {
     expect(fn () => new Number($value)->$method(...$arguments))
-        ->toThrow(UnexpectedValueException::class, 'Value must be an integer or float.');
+        ->toThrow(MustBeNumberException::class, 'Value must be an integer or float.');
 })->with('operations')->with([
     'numeric string' => ['7'],
     'string' => ['text'],
@@ -117,7 +119,7 @@ it('rejects zero divisors', function (string $method, int|float $value, int|floa
 
 it('validates the value before checking a zero divisor', function (string $method) {
     expect(fn () => new Number('0')->$method(0))
-        ->toThrow(UnexpectedValueException::class);
+        ->toThrow(MustBeNumberException::class);
 })->with(['divide', 'mod']);
 
 it('returns NaN for the square root of a negative number', function () {
@@ -145,7 +147,7 @@ it('calculates a root with the given exponent in a new instance', function (int|
 
 it('rejects non-positive root exponents', function (int $exponent) {
     expect(fn () => new Number(9)->sqrt($exponent))
-        ->toThrow(InvalidArgumentException::class, 'Root exponent must be greater than 0.');
+        ->toThrow(MustBePositiveNumberException::class, 'Root exponent must be greater than 0.');
 })->with([0, -1, -2]);
 
 it('returns NaN for an even root of a negative number', function () {

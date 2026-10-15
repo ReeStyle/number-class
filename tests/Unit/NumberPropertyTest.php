@@ -1,5 +1,6 @@
 <?php
 
+use ReeStyleIt\NumberClass\Exceptions\MustBeNumberException;
 use ReeStyleIt\NumberClass\Base;
 use ReeStyleIt\NumberClass\Format\Rounded;
 use ReeStyleIt\NumberClass\Number;
@@ -24,7 +25,7 @@ it('provides rounding access as a property', function () {
 
 it('validates values before accessing helper properties', function (string $property) {
     expect(fn () => new Number('7')->$property)
-        ->toThrow(UnexpectedValueException::class, 'Value must be an integer or float.');
+        ->toThrow(MustBeNumberException::class, 'Value must be an integer or float.');
 })->with(['compare', 'round']);
 
 it('prevents assigning helper properties', function (string $property, Base $replacement) {

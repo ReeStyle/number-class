@@ -1,6 +1,7 @@
 <?php
 
-use ReeStyleIt\NumberClass\Mathmatical\Trigonometry;
+use ReeStyleIt\NumberClass\Exceptions\MustBeNumberException;
+use ReeStyleIt\NumberClass\Mathematical\Trigonometry;
 use ReeStyleIt\NumberClass\Number;
 
 use function ReeStyleIt\NumberClass\number;
@@ -43,7 +44,7 @@ it('creates trigonometry calculations from a Number and chains them', function (
 
 it('validates values before trigonometry calculations', function (string $method, array $arguments) {
     expect(fn () => new Trigonometry('1')->$method(...$arguments))
-        ->toThrow(UnexpectedValueException::class, 'Value must be an integer or float.');
+        ->toThrow(MustBeNumberException::class, 'Value must be an integer or float.');
 })->with([
     ['sin', []], ['cos', []], ['tan', []],
     ['asin', []], ['acos', []], ['atan', []],
@@ -51,7 +52,7 @@ it('validates values before trigonometry calculations', function (string $method
 ]);
 
 it('validates a Number before creating trigonometry calculations', function () {
-    expect(fn () => new Number('1')->trigonometry())->toThrow(UnexpectedValueException::class);
+    expect(fn () => new Number('1')->trigonometry())->toThrow(MustBeNumberException::class);
 });
 
 it('returns NaN for inverse functions outside their real domain', function (string $method, int $value) {

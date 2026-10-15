@@ -84,6 +84,15 @@ number(7)->compare->higherThanOrEqual(7); // true
 number(7)->compare->lowerThanOrEqual(7);  // true
 ```
 
+The `compare()` helper creates the comparison object directly:
+
+```php
+use function ReeStyleIt\NumberClass\compare;
+
+compare(7)->equals(7.0); // true
+compare(7)->higherThan(6); // true
+```
+
 Comparisons accept integers, floats, or another `Number`. Results are booleans; equality compares numeric values rather than their integer/float types. `compare` is available as a method or a read-only property.
 
 ## Rounding and number formatting
@@ -128,15 +137,39 @@ number(3)->pythagoras()->hypotenuse(4)->get(); // 5.0
 number(5)->pythagoras()->leg(3)->get();        // 4.0
 ```
 
-`Mathmatical\Trigonometry` provides `sin()`, `cos()`, `tan()`, `asin()`, `acos()`, `atan()`, `atan2($x)`, `deg2rad()`, and `rad2deg()`. Angles use radians unless explicitly converted. In `atan2($x)`, the stored value is the y coordinate.
+`Mathematical\Trigonometry` provides `sin()`, `cos()`, `tan()`, `asin()`, `acos()`, `atan()`, `atan2($x)`, `deg2rad()`, and `rad2deg()`. Angles use radians unless explicitly converted. In `atan2($x)`, the stored value is the y coordinate.
 
-For `Mathmatical\Pythagoras::hypotenuse($otherLeg)`, the stored value is one perpendicular side. For `leg($otherLeg)`, the stored value is the hypotenuse. Lengths must be non-negative and finite, and a leg cannot exceed the hypotenuse. Both methods return new instances.
+For `Mathematical\Pythagoras::hypotenuse($otherLeg)`, the stored value is one perpendicular side. For `leg($otherLeg)`, the stored value is the hypotenuse. Lengths must be non-negative and finite, and a leg cannot exceed the hypotenuse. Both methods return new instances.
 
 ## Value validation
 
-`Number` stores a readonly `mixed` value, accessible with `get()`. `isInt()`, `isFloat()`, `isNumber()`, and its alias `isNumeric()` inspect the value. Calculations accept integer and float values and throw `UnexpectedValueException` for other stored types, including numeric strings. Currency formatting also rejects infinite values and `NAN`.
+`Number` stores a readonly `mixed` value, accessible with `get()`. `isInt()`, `isFloat()`, `isNumber()`, and its alias `isNumeric()` inspect the value. Calculations accept integer and float values and throw `MustBeNumberException` for other stored types, including numeric strings. Currency formatting also rejects infinite values and `NAN`.
 
 These calculations use native PHP integers and floats; they do not provide arbitrary-precision decimal arithmetic.
+
+### Exceptions
+
+The following exceptions are available under `ReeStyleIt\NumberClass\Exceptions`:
+
+- `MustBeNumberException`: the stored value is not an integer or float.
+- `RoundingException`: an integer rounding mode is outside the supported cases.
+- `MustBePositiveNumberException`: a root exponent is not greater than zero, or a nearest-rounding multiple is not positive and finite.
+- `PythagorasException`: a triangle length is negative or non-finite, or a leg exceeds the hypotenuse.
+
+Currency formatting provides these additional named exceptions:
+
+- `InvalidCurrencyCodeException`: the code is not three letters.
+- `EmptyLocaleException`: the locale is empty or whitespace.
+- `MustBeFiniteCurrencyValue`: the amount is infinite or `NAN`.
+- `CurrencyFormattingException`: the formatter fails to produce a string.
+
+The exceptions listed above extend `BaseInvalidArgumentException`, which extends PHP's `InvalidArgumentException`.
+
+`Currencies::symbol()` throws `CurrencySymbolLookupException` for failures configuring or retrieving a currency symbol. This exception extends `BaseRuntimeException`, which extends PHP's `RuntimeException`, and preserves the formatter's error details.
+
+Catch either package base class to handle its exception family together. Exception messages are defined inside the exception classes.
+
+Division by zero continues to throw PHP's `DivisionByZeroError`.
 
 ## Development
 

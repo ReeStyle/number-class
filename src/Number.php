@@ -4,9 +4,9 @@ namespace ReeStyleIt\NumberClass;
 
 use ReeStyleIt\NumberClass\Format\Currency;
 use ReeStyleIt\NumberClass\Format\Rounded;
-use ReeStyleIt\NumberClass\Mathmatical\Arithmetic;
-use ReeStyleIt\NumberClass\Mathmatical\Pythagoras;
-use ReeStyleIt\NumberClass\Mathmatical\Trigonometry;
+use ReeStyleIt\NumberClass\Mathematical\Arithmetic;
+use ReeStyleIt\NumberClass\Mathematical\Pythagoras;
+use ReeStyleIt\NumberClass\Mathematical\Trigonometry;
 use ReeStyleIt\NumberClass\Number\Compare;
 
 class Number extends Base
