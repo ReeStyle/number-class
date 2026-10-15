@@ -1,5 +1,8 @@
 <?php
 
+namespace Tests\Unit;
+
+use Error;
 use ReeStyleIt\NumberClass\Base;
 
 it('exposes the stored value through its getter', function () {
@@ -18,7 +21,7 @@ it('exposes the stored value as a public readonly property', function () {
 it('prevents changing an initialized readonly value', function () {
     $value = new class(7) extends Base {};
     expect(function () use ($value) {
-        $value->value = 8;
+        $value->value = 8; // This is an attempt to modify a readonly property, should throw an error
     })->toThrow(Error::class)
         ->and($value->get())->toBe(7);
 });

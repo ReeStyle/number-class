@@ -1,5 +1,10 @@
 <?php
 
+namespace Tests\Unit\Exceptions;
+
+use InvalidArgumentException;
+use RoundingMode;
+use RuntimeException;
 use ReeStyleIt\NumberClass\Exceptions\BaseInvalidArgumentException;
 use ReeStyleIt\NumberClass\Exceptions\BaseRuntimeException;
 use ReeStyleIt\NumberClass\Exceptions\CurrencyFormattingException;

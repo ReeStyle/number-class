@@ -1,5 +1,8 @@
 <?php
 
+namespace Tests\Unit;
+
+use Error;
 use ReeStyleIt\NumberClass\Exceptions\MustBeNumberException;
 use ReeStyleIt\NumberClass\Format\Currency;
 use ReeStyleIt\NumberClass\Format\Round;

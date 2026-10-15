@@ -57,21 +57,16 @@ enum Currencies: string
 
     private function fallbackSymbol(string $locale): string
     {
-        static $data = null;
+        $locale = str_replace('-', '_', preg_split('/[.@]/', $locale)[0]);
+        $resolved = Locales::EN_US;
 
-        $data ??= require __DIR__ . '/../Resources/currency-symbols.php';
-
-        $locale = strtolower(str_replace('-', '_', preg_split('/[.@]/', $locale)[0]));
-        $language = explode('_', $locale)[0];
-
-        foreach ([$locale, $language] as $candidate) {
-            $candidate = $data['aliases'][$candidate] ?? $candidate;
-
-            if (isset($data['locales'][$candidate])) {
-                return $data['locales'][$candidate][$this->value] ?? $data['default'][$this->value];
+        foreach (Locales::cases() as $candidate) {
+            if (strcasecmp($candidate->value, $locale) === 0) {
+                $resolved = $candidate;
+                break;
             }
         }
 
-        return $data['default'][$this->value];
+        return $resolved->currency() === $this ? $resolved->symbol() : $this->value;
     }
 }

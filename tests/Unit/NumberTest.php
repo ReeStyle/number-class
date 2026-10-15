@@ -1,5 +1,9 @@
 <?php
 
+namespace Tests\Unit;
+
+use DivisionByZeroError;
+use stdClass;
 use ReeStyleIt\NumberClass\Exceptions\MustBeNumberException;
 use ReeStyleIt\NumberClass\Exceptions\MustBePositiveNumberException;
 use ReeStyleIt\NumberClass\Base;

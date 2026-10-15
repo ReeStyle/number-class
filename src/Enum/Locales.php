@@ -40,4 +40,28 @@ enum Locales: string
     case TR_TR = 'tr_TR';
     case ZH_CN = 'zh_CN';
     case ZH_HK = 'zh_HK';
+
+    public function currency(): Currencies
+    {
+        return Currencies::from($this->currencyFormat()['currency']);
+    }
+
+    public function symbol(): string
+    {
+        return $this->currencyFormat()['symbol'];
+    }
+
+    public function symbolPosition(): string
+    {
+        return $this->currencyFormat()['position'];
+    }
+
+    private function currencyFormat(): array
+    {
+        static $data = null;
+
+        $data ??= require __DIR__ . '/../Resources/currency-symbols.php';
+
+        return $data[$this->value];
+    }
 }

@@ -1,5 +1,8 @@
 <?php
 
+namespace Tests\Unit\Mathematical;
+
+use DivisionByZeroError;
 use ReeStyleIt\NumberClass\Exceptions\MustBeNumberException;
 use ReeStyleIt\NumberClass\Exceptions\MustBePositiveNumberException;
 use ReeStyleIt\NumberClass\Mathematical\Arithmetic;

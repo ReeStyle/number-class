@@ -1,5 +1,8 @@
 <?php
 
+namespace Tests\Unit\Format;
+
+use stdClass;
 use ReeStyleIt\NumberClass\Exceptions\MustBeNumberException;
 use ReeStyleIt\NumberClass\Base;
 use ReeStyleIt\NumberClass\Enums\Currencies;

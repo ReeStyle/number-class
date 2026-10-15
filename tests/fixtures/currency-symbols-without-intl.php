@@ -24,16 +24,16 @@ $expected = [
     [Currencies::EUR, Locales::DE_AT, '€'],
     [Currencies::CHF, Locales::DE_CH, 'CHF'],
     [Currencies::USD, Locales::EN_US, '$'],
-    [Currencies::CAD, Locales::EN_US, 'CA$'],
+    [Currencies::CAD, Locales::EN_US, 'CAD'],
     [Currencies::CAD, Locales::EN_CA, '$'],
-    [Currencies::USD, Locales::EN_CA, 'US$'],
+    [Currencies::USD, Locales::EN_CA, 'USD'],
     [Currencies::GBP, Locales::EN_GB, '£'],
-    [Currencies::JPY, Locales::EN_US, '¥'],
-    [Currencies::INR, Locales::EN_US, '₹'],
+    [Currencies::JPY, Locales::JA_JP, '￥'],
+    [Currencies::INR, Locales::EN_IN, '₹'],
     [Currencies::CAD, 'en-CA', '$'],
-    [Currencies::USD, 'en_CA.UTF-8', 'US$'],
+    [Currencies::CAD, 'en_CA.UTF-8', '$'],
     [Currencies::CAD, 'en_CA@currency=CAD', '$'],
-    [Currencies::CAD, 'not_a_locale', 'CA$'],
+    [Currencies::CAD, 'not_a_locale', 'CAD'],
 ];
 
 foreach ($expected as [$currency, $locale, $symbol]) {
@@ -47,6 +47,16 @@ foreach (Currencies::cases() as $currency) {
         if ($currency->symbol($locale) === '') {
             throw new RuntimeException('Empty fallback symbol for ' . $currency->value);
         }
+    }
+}
+
+foreach (Locales::cases() as $locale) {
+    if ($locale->currency()->symbol($locale) !== $locale->symbol()) {
+        throw new RuntimeException('Default symbol does not match the locale: ' . $locale->value);
+    }
+
+    if (!in_array($locale->symbolPosition(), ['prefix', 'suffix'], true)) {
+        throw new RuntimeException('Invalid symbol position for ' . $locale->value);
     }
 }
 

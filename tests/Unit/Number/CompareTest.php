@@ -1,5 +1,7 @@
 <?php
 
+namespace Tests\Unit\Number;
+
 use ReeStyleIt\NumberClass\Exceptions\MustBeNumberException;
 use ReeStyleIt\NumberClass\Number;
 use ReeStyleIt\NumberClass\Number\Compare;

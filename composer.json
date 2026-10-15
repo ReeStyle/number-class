@@ -9,7 +9,7 @@
         ],
         "psr-4": {
             "ReeStyleIt\\NumberClass\\": "src/",
-            "ReeStyleIt\\NumberClass\\Enums\\": "src/enum/"
+            "ReeStyleIt\\NumberClass\\Enums\\": "src/Enum/"
         }
     },
     "autoload-dev": {

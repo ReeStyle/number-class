@@ -150,7 +150,7 @@ Currencies::CAD->symbol('en_CA'); // $
 
 Currency formatting defaults to EUR and `nl_NL`. Currency codes may be enum cases or three-letter strings. Currency symbols, spacing, decimal places, and separators follow the selected locale and the installed ICU data. Formatting changes the display only; it does not convert amounts between currencies.
 
-`Currencies::symbol()` also works without `intl`, using bundled symbols for all currency cases and locale enum cases. Locale strings accept underscores or hyphens; locales outside the bundled list fall back to their language and then to the `en_US` symbols. Full amount formatting still requires `intl` and throws `CurrencyFormattingException` if it is unavailable.
+`Currencies::symbol()` also works without `intl`, using one default currency symbol per supported locale. Locale strings accept underscores or hyphens; unknown locales fall back to `en_US`. When the requested currency differs from the locale's default currency, the fallback returns its currency code instead of using the wrong symbol. Full amount formatting still requires `intl` and throws `CurrencyFormattingException` if it is unavailable.
 
 `Enums\Locales` provides common locale codes, including `Locales::NL_NL`, `Locales::EN_US`, and `Locales::EN_GB`. Both `Currency::locale()` and `Currencies::symbol()` accept an enum case or a locale string:
 
@@ -162,6 +162,16 @@ Currencies::CAD->symbol(Locales::EN_CA); // $
 ```
 
 German-speaking regional locales include `Locales::DE_DE` (Germany), `Locales::DE_AT` (Austria), and `Locales::DE_CH` (Switzerland). Use EUR for German/Austrian amounts and CHF for Swiss franc amounts.
+
+Each locale exposes its default currency, its single symbol, and the symbol's position in a positive currency string:
+
+```php
+Locales::DE_DE->currency();       // Currencies::EUR
+Locales::DE_DE->symbol();         // €
+Locales::DE_DE->symbolPosition(); // suffix
+Locales::DE_CH->symbol();         // CHF
+Locales::DE_CH->symbolPosition(); // prefix
+```
 
 The currency and locale configuration methods return the same formatter. The stored amount remains readonly. `Currency` is stringable through `__toString()`.
 
@@ -211,6 +221,8 @@ Division by zero continues to throw PHP's `DivisionByZeroError`.
 
 ## Development
 
+Unit tests mirror the source namespaces under `tests/Unit`, with `Enums`, `Exceptions`, `Format`, `Mathematical`, and `Number` subfolders. Tests for root classes and helper functions stay directly under `tests/Unit`.
+
 ```bash
 composer install
 composer validate --strict
@@ -220,7 +232,7 @@ composer test
 
 Pest is a development dependency. Consumers need PHP; install `intl` for full currency formatting. GitHub Actions checks PHP 8.4 and 8.5 and includes a separate symbol lookup check without `intl`.
 
-The fallback symbol data is stored in `src/Resources/currency-symbols.php`, which returns an array and is loaded once per process. To regenerate it from the installed ICU data when currency or locale cases change, run this command with `intl` available:
+The fallback symbol data is stored in `src/Resources/currency-symbols.php`, which returns a flat array keyed by locale. Each entry has `currency`, `symbol`, and `position` (`prefix` or `suffix`). The array is loaded once per process. To regenerate it from the installed ICU data when locale cases change, run this command with `intl` available:
 
 ```bash
 composer generate:symbols

@@ -1,5 +1,7 @@
 <?php
 
+namespace Tests\Unit\Enums;
+
 use ReeStyleIt\NumberClass\Enums\Currencies;
 use Symfony\Component\Process\Process;
 
@@ -29,7 +31,7 @@ it('provides fallback symbols when NumberFormatter is unavailable', function () 
     $process = new Process([
         PHP_BINARY,
         '-n',
-        dirname(__DIR__) . '/fixtures/currency-symbols-without-intl.php',
+        dirname(__DIR__, 2) . '/fixtures/currency-symbols-without-intl.php',
         '--simulate-no-intl',
     ]);
 

@@ -1,5 +1,7 @@
 <?php
 
+namespace Tests\Unit\Mathematical;
+
 use ReeStyleIt\NumberClass\Exceptions\MustBeNumberException;
 use ReeStyleIt\NumberClass\Exceptions\PythagorasException;
 use ReeStyleIt\NumberClass\Mathematical\Pythagoras;
