@@ -32,8 +32,8 @@ it('calculates right triangle lengths in a new instance', function (int|float $v
 it('calculates lengths from Number and helper functions', function () {
     $number = number(3);
 
-    expect($number->pythagoras()->hypotenuse(4)->get())->toBe(5.0)
-        ->and(number(5)->pythagoras()->leg(3)->get())->toBe(4.0)
+    expect($number->pythagoras->hypotenuse(4)->get())->toBe(5.0)
+        ->and(number(5)->pythagoras->leg(3)->get())->toBe(4.0)
         ->and($number->get())->toBe(3);
 });
 
@@ -66,5 +66,5 @@ it('validates stored values before calculating lengths', function (string $metho
 })->with(['hypotenuse', 'leg']);
 
 it('validates a Number before creating a Pythagoras object', function () {
-    expect(fn () => number('3')->pythagoras())->toThrow(MustBeNumberException::class);
+    expect(fn () => number('3')->pythagoras)->toThrow(MustBeNumberException::class);
 });

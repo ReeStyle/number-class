@@ -72,7 +72,7 @@ $circumference = $ellipse->ellipseCircumference(2)->get(); // approximately 15.8
 $same = geometry(2)->ellipseSurface(3)->get();             // same surface
 
 $viaProperty = number(3)->geometry->circleSurface()->get();
-$viaMethod = number(3)->geometry()->ellipseSurface(2)->get();
+$converted = number(3)->geometry->ellipseSurface(2)->get();
 ```
 
 Use the same length units for every dimension. Circumference, radius, and diameter use those
@@ -168,7 +168,7 @@ $viaMethod = number(-0.1278)->geometry(latitude: 51.5074, elevation: 10)
     ->haversine(2.3522, 48.8566, 35)->get();
 // Both return approximately 343556.061251 metres.
 
-$display = number($distance)->divide(1000)->format(2); // '343.56'
+$display = number($distance)->divide(1000)->number->format(2); // '343.56'
 ```
 
 The `geometry` property accessor still supports shape calculations. For points, use the
@@ -187,3 +187,23 @@ A stored value other than an integer or float throws
 [MustBeNumberException](../Exceptions/MustBeNumberException.md) before coordinate validation.
 Constructors and the helper store the value without validation; `haversine()` validates it.
 Longitude values outside the accepted range are rejected rather than normalized.
+
+## Continue with a Number
+
+Both `number(): Number` and the read-only `number` property return a fresh
+`ReeStyleIt\NumberClass\Number` containing the raw stored value. Each access validates that
+the value is an integer or float; otherwise it throws `MustBeNumberException`.
+The source instance remains unchanged.
+
+```php
+use ReeStyleIt\NumberClass\Mathematical\Geometry;
+
+$value = new Geometry(3)->circleSurface();
+$converted = $value->number->format(2); // '28.27'
+$viaProperty = $value->number->divide(M_PI)->sqrt()->get(); // approximately 3.0
+```
+
+Convert a completed calculation to work with its distance or measurement. On a geographic
+point itself, conversion wraps its stored longitude; latitude and elevation are not copied.
+
+See [the shared base API](../Base.md) for numeric validation and storage.

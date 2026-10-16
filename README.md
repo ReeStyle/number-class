@@ -1,264 +1,248 @@
-# Number class
+# NumberClass
 
----
+[![Tests](https://github.com/ReeStyle/number-class/actions/workflows/tests.yml/badge.svg)](https://github.com/ReeStyle/number-class/actions/workflows/tests.yml)
+[![PHP 8.4+](https://img.shields.io/badge/PHP-8.4%2B-777BB4?logo=php&logoColor=white)](composer.json)
 
-Chainable numeric values, arithmetic, comparisons, trigonometry, right triangle calculations, rounding, and currency formatting for PHP.
+Chainable numbers, geometry, trigonometry, comparisons, rounding, and currency formatting for PHP.
+Start with a value, calculate, then read or format the result.
 
----
+[Installation](#installation) · [Quick start](#quick-start) · [Examples](#examples) ·
+[Documentation](#documentation) · [Development](#development) · [License](#license)
 
-## Requirements
+```php
+use function ReeStyleIt\NumberClass\geometry;
+use function ReeStyleIt\NumberClass\number;
 
-- PHP 8.4 or later within PHP 8.x.
-- The PHP `intl` extension for full currency amount formatting. Currency symbol lookup has a built-in fallback.
+number(12)->add(3)->multiply(2)->get();              // 30
+geometry(3)->circleSurface()->number->format(2);   // '28.27'
+```
 
-
----
+The examples assume Composer's autoloader is loaded; the quick start shows a complete setup.
 
 ## Installation
 
-After the package is published on Packagist:
+Requires **PHP 8.4 or later within PHP 8.x**. Install the PHP `intl` extension for full
+currency amount formatting. Other calculations and bundled currency symbol lookup work without it.
+
+For a published Packagist release:
 
 ```bash
 composer require reestyle-it/number-class
 ```
 
-## Getting started
+To work from a checkout of this repository, run `composer install` in the project directory.
+Classes and helper functions use the `ReeStyleIt\NumberClass` namespace; Composer loads the
+helpers automatically.
 
-See the [complete usage documentation](docs/README.md) for every class, enum, helper function, and exception.
+## Quick start
 
 ```php
 <?php
 
+use ReeStyleIt\NumberClass\Number;
+use function ReeStyleIt\NumberClass\number;
+
 require 'vendor/autoload.php';
 
-use ReeStyleIt\NumberClass\Number;
-use ReeStyleIt\NumberClass\Enums\Currencies;
-use function ReeStyleIt\NumberClass\number;
-use function ReeStyleIt\NumberClass\currencyFormatter;
+$original = number(12);
+$result = $original->add(3)->multiply(2);
 
-$value = number(12)->increase(3)->multiply(2);
-echo $value->get(); // 30
+echo $result->get();   // 30
+// Calculations return new instances.
+echo $original->get(); // 12
 
-// Constructors are also available.
-$number = new Number(1234.56);
-echo $number->format(2, ',', '.'); // 1.234,56
-
-echo currencyFormatter(1234.5)
-    ->currency(Currencies::USD)
-    ->locale('en_US'); // $1,234.50
+// Constructors and helpers provide the same API.
+echo new Number(1234.567)->format(2, ',', '.'); // 1.234,57
 ```
 
-Classes and helper functions use the `ReeStyleIt\NumberClass` namespace. Import the helpers with `use function` before calling them by their short names.
+Every value class exposes its raw value through `get()` and the public readonly `value`
+property. Its `number()` method and read-only `number` property create a fresh `Number`,
+allowing you to continue calculations or format a result from another class.
 
-All helper accessors work as methods or read-only properties: `arithmetic`, `compare`, `currency`, `geometry`, `pythagoras`, `round`, and `trigonometry`. For example, `number(3)->pythagoras->hypotenuse(4)->get()` returns `5.0`. Each access creates a helper instance containing the number's value.
-
-Each concrete value class also has a factory helper accepting `mixed $value`: `number()`, `compare()`, `currencyFormatter()`, `arithmetic()`, `geometry()`, `pythagoras()`, `round()`, and `trigonometry()`.
+Arithmetic methods on `Number` return `Arithmetic` instances. Continue calculating directly,
+or use `number()` / `number` to access `Number`-specific formatting and type checks.
 
 ```php
-use function ReeStyleIt\NumberClass\arithmetic;
 use function ReeStyleIt\NumberClass\pythagoras;
-use function ReeStyleIt\NumberClass\round;
-use function ReeStyleIt\NumberClass\trigonometry;
 
-arithmetic(7)->add(3)->multiply(2)->get(); // 20
-pythagoras(3)->hypotenuse(4)->get(); // 5.0
-round(1.236)->decimals(2)->get(); // 1.24
-trigonometry(90)->deg2rad()->sin()->get(); // 1.0
+$result = pythagoras(3)->hypotenuse(4);
+echo $result->number->add(1)->get(); // 6
+echo $result->number->format(2);      // 5.00
 ```
 
-The imported `round()` helper creates a `Format\Round` instance. PHP's native rounding function remains accessible as `\round()`.
+Every value class also inherits `compare()` and the read-only `compare` property from `Base`.
+For example, `pythagoras(3)->hypotenuse(4)->compare->equals(5)` returns `true`.
 
-## Arithmetic
+On every value class, specialized classes are available through methods and read-only properties:
+`arithmetic`, `currency`, `geometry`, `pythagoras`, `round`, `time`, and `trigonometry`.
+These accessors are inherited from `Base`. Each access creates a fresh instance.
+Examples prefer the property form; use methods when passing configuration arguments.
+For geographic points, pass starting latitude and
+optional elevation to `geometry()`; the stored number supplies longitude.
 
-```php
-use function ReeStyleIt\NumberClass\number;
+## Examples
 
-$original = number(9);
-$result = $original->increase(3)->multiply(2)->divide(4);
-
-$result->get();   // 6
-$original->get(); // 9
-
-number(27)->sqrt(3)->get(); // 3.0 (cube root)
-number(-27)->sqrt(3)->get(); // -3.0
-
-// Access the dedicated calculation class.
-number(9)->arithmetic()->pow(2)->get(); // 81
-```
-
-| Method | Operation |
-| --- | --- |
-| `add($amount = 1)` | Add an amount; `increase()` is an alias |
-| `subtract($amount = 1)` | Subtract an amount; `decrease()` is an alias |
-| `multiply($factor)` | Multiply |
-| `divide($divisor)` | Divide |
-| `pow($exponent)` | Raise to a power |
-| `sqrt($exponent = 2)` | Calculate a root |
-| `abs()` | Absolute value |
-| `negate()` | Reverse the sign |
-| `mod($divisor)` | Integer or floating-point remainder |
-| `floor()` / `ceil()` | Round down / up |
-
-Arithmetic methods return new instances. Division and remainder by zero throw `DivisionByZeroError`. Root exponents must be greater than zero; even roots of negative values return `NAN`.
-
-## Comparisons
-
-```php
-number(7)->compare()->equals(7.0); // true
-number(7)->compare->higherThan(6); // true
-number(7)->compare->lowerThan(8);  // true
-number(7)->compare->higherThanOrEqual(7); // true
-number(7)->compare->lowerThanOrEqual(7);  // true
-```
-
-The `compare()` helper creates the comparison object directly:
+### Arithmetic, comparisons, and rounding
 
 ```php
 use function ReeStyleIt\NumberClass\compare;
+use function ReeStyleIt\NumberClass\number;
+use function ReeStyleIt\NumberClass\round;
 
-compare(7)->equals(7.0); // true
-compare(7)->higherThan(6); // true
+number(10)->subtract(2)->divide(4)->get();     // 2
+number(7)->intdiv(2)->get();                  // 3; integer division truncates toward zero
+number(27)->sqrt(3)->get();                  // approximately 3.0
+number(-27)->sqrt(3)->get();                 // approximately -3.0
+number(5.5)->mod(2)->get();                  // 1.5
+
+compare(7)->equals(7.0);                     // true
+number(7)->compare->higherThanOrEqual(6);    // true
+
+round(12.345)->decimals(2)->get();           // 12.35
+number(2.5)->round->decimals(mode: RoundingMode::HalfEven)->get(); // 2.0
+number(13)->round->nearest(5)->get();        // 15.0
+number(1234.56)->format(2, ',', '.');       // '1.234,56'
 ```
 
-Comparisons accept integers, floats, or another `Number`. Results are booleans; equality compares numeric values rather than their integer/float types. `compare` is available as a method or a read-only property.
+`increase()` and `decrease()` remain aliases of `add()` and `subtract()`.
+`Round::with()` aliases `decimals()`. The imported `round()` helper returns a `Round` object;
+use `\round()` to call PHP's native rounding function from the same scope.
 
-## Rounding and number formatting
+[Arithmetic reference](docs/Mathematical/Arithmetic.md) ·
+[Comparison reference](docs/Number/Compare.md) · [Rounding reference](docs/Format/Round.md)
+
+### Circles, ellipses, and geographic distances
 
 ```php
-number(1.236)->round()->decimals(2)->get(); // 1.24
-number(2.5)->round->decimals(mode: RoundingMode::HalfEven)->get(); // 2.0
-number(13)->round->nearest(5)->get(); // 15.0
+use function ReeStyleIt\NumberClass\geometry;
 
-number(1234.56)->format(); // "1,235"
-number(1234.56)->format(2, ',', '.'); // "1.234,56"
+// Circle input is radius, except circleRadius(), which takes a stored diameter.
+geometry(3)->circleSurface()->get();         // approximately 28.2743
+geometry(3)->circleCircumference()->get();   // approximately 18.8496
+geometry(3)->circleDiameter()->get();        // 6
+geometry(6)->circleRadius()->get();          // 3
+
+// Ellipse inputs are semi-axis lengths: half the full width and height.
+geometry(3)->ellipseSurface(2)->get();       // approximately 18.8496
+geometry(3)->ellipseCircumference(2)->get(); // approximately 15.8654
+
+// Both points use longitude, latitude, elevation order.
+$distance = geometry(-0.1278, 51.5074, 10)
+    ->haversine(2.3522, 48.8566, 35)
+    ->number;
+
+echo $distance->divide(1000)->number->format(2); // 343.56 kilometres, London to Paris
 ```
 
-`round` is available as a method or a read-only property. Its `decimals()` and `nearest()` methods return new `Format\Round` instances. `with()` is an alias of `decimals()`. `decimals()` follows PHP's `round()` precision and mode parameters. `nearest()` requires a positive finite multiple. `Number::format()` returns a string and follows the optional parameters of PHP's `number_format()`.
+Ellipse circumference uses Ramanujan's second approximation. Geographic coordinates use
+degrees; elevation and distance use metres with the default radius. Haversine surface distance
+is combined with elevation difference as a short-distance approximation. A custom radius
+and both elevations must use the same length unit.
 
-## Currency
+[Geometry reference and distance model](docs/Mathematical/Geometry.md)
+
+### Trigonometry and right triangles
+
+```php
+use function ReeStyleIt\NumberClass\pythagoras;
+use function ReeStyleIt\NumberClass\trigonometry;
+
+trigonometry(90)->deg2rad()->sin()->get();              // 1.0
+trigonometry(3)->atan2(4)->rad2deg()->get();             // approximately 36.87 degrees
+pythagoras(3)->hypotenuse(4)->get();                    // 5.0
+pythagoras(5)->leg(3)->get();                           // 4.0
+```
+
+Trigonometric functions use radians. `atan2($x)` treats the stored value as y.
+For `hypotenuse($otherLeg)`, the stored value is one perpendicular side;
+for `leg($otherLeg)`, it is the hypotenuse.
+
+[Trigonometry reference](docs/Mathematical/Trigonometry.md) ·
+[Pythagoras reference](docs/Mathematical/Pythagoras.md)
+
+### Time starting points
+
+```php
+use function ReeStyleIt\NumberClass\time;
+
+$start = time()->from('2024-10-17T14:00:00+02:00');
+$timestamp = $start->from->getTimestamp(); // 1729166400
+$epoch = time()->from(0);
+$fromDate = time()->from(new DateTimeImmutable('2024-10-17T12:00:00Z'));
+```
+
+`from()` accepts Unix timestamps, date objects, and parseable date strings. It returns
+a new `Time\Diff` instance, which stores a Carbon date in its public `from` property.
+The `Time` property accessor uses the stored value: `time(60)->from->diff(90)->s`
+returns `30`. Each method call or property read creates a fresh difference object.
+Supply an endpoint to calculate immediately: `time()->from(60, 90)` returns a native
+`DateInterval`. An explicit `null` endpoint uses now.
+Invalid dates throw `TimeException`. Import the namespaced helper with `use function`;
+PHP's native timestamp function remains available as `\time()`.
+
+[Time reference](docs/Conversion/Time.md)
+
+### Currency and locale formatting
+
+Requires the PHP `intl` extension:
 
 ```php
 use ReeStyleIt\NumberClass\Enums\Currencies;
-use ReeStyleIt\NumberClass\Format\Currency;
+use ReeStyleIt\NumberClass\Enums\Locales;
 use function ReeStyleIt\NumberClass\currencyFormatter;
 
-echo number(1234.5)->currency(); // € 1.234,50
-echo new Currency(1234.5)->currency('USD')->locale('en_US'); // $1,234.50
-echo currencyFormatter(1234.5)->currency(Currencies::USD)->locale('en_US');
+$formatter = currencyFormatter(1234.5)
+    ->currency(Currencies::USD)
+    ->locale(Locales::EN_US);
 
-Currencies::EUR->symbol();        // €
-Currencies::CAD->symbol('en_CA'); // $
+echo $formatter;                          // $1,234.50
+$amount = $formatter->number->get();       // 1234.5
+$symbol = Currencies::EUR->symbol(Locales::NL_NL); // '€'
+$position = Locales::DE_DE->symbolPosition();     // 'suffix'
 ```
 
-Currency formatting defaults to EUR and `nl_NL`. Currency codes may be enum cases or three-letter strings. Currency symbols, spacing, decimal places, and separators follow the selected locale and the installed ICU data. Formatting changes the display only; it does not convert amounts between currencies.
+Currency defaults to EUR and `nl_NL`. Currency and locale setters configure the same formatter;
+formatting happens through `__toString()`. Locale does not automatically select a currency.
+The configured code is available through `currencyCode`; the `currency` property and
+`currency()` with no argument create fresh formatters, as they do on other value classes.
+Formatting changes the display, not the amount or exchange rate. Exact symbols and spacing
+follow the installed ICU data.
 
-`Currencies::symbol()` also works without `intl`, using one default currency symbol per supported locale. Locale strings accept underscores or hyphens; unknown locales fall back to `en_US`. When the requested currency differs from the locale's default currency, the fallback returns its currency code instead of using the wrong symbol. Full amount formatting still requires `intl` and throws `CurrencyFormattingException` if it is unavailable.
+Without `intl`, currency symbols fall back to bundled locale data. A locale's native currency
+returns its stored symbol; another currency returns its code. Full amount formatting still
+requires `intl`.
 
-`Enums\Locales` provides common locale codes, including `Locales::NL_NL`, `Locales::EN_US`, and `Locales::EN_GB`. Both `Currency::locale()` and `Currencies::symbol()` accept an enum case or a locale string:
+[Currency reference](docs/Format/Currency.md) ·
+[Currency enum](docs/Enums/Currencies.md) · [Locale enum](docs/Enums/Locales.md)
 
-```php
-use ReeStyleIt\NumberClass\Enums\Locales;
+## Documentation
 
-echo currencyFormatter(1234.5)->currency(Currencies::USD)->locale(Locales::EN_US);
-Currencies::CAD->symbol(Locales::EN_CA); // $
-```
+Start with the **[complete usage index](docs/README.md)** for every class, enum, and exception.
+Each value class page includes constructor, method, property, and helper examples.
 
-German-speaking regional locales include `Locales::DE_DE` (Germany), `Locales::DE_AT` (Austria), and `Locales::DE_CH` (Switzerland). Use EUR for German/Austrian amounts and CHF for Swiss franc amounts.
+| Class or guide | What it covers |
+| --- | --- |
+| [Number](docs/Number.md) | Main numeric API, type checks, arithmetic, formatting, and helper accessors |
+| [Time](docs/Conversion/Time.md) | Starting points normalized to Carbon dates with Unix timestamps |
+| [Base](docs/Base.md) | Shared storage, validation, `number()` / `number`, and `compare()` / `compare` |
+| [Arithmetic](docs/Mathematical/Arithmetic.md) | Operators, powers, roots, and remainders |
+| [Compare](docs/Number/Compare.md) | Equality and ordered comparisons |
+| [Geometry](docs/Mathematical/Geometry.md) | Circle and ellipse measurements, coordinates, and haversine distance |
+| [Pythagoras](docs/Mathematical/Pythagoras.md) | Right triangle lengths |
+| [Trigonometry](docs/Mathematical/Trigonometry.md) | Angles, ratios, and conversions |
+| [Round](docs/Format/Round.md) | Decimal precision, rounding modes, and nearest multiples |
+| [Currency](docs/Format/Currency.md) | Currency amount formatting |
+| [Currencies](docs/Enums/Currencies.md) / [Locales](docs/Enums/Locales.md) | Codes, symbols, and locale metadata |
+| [Helpers](docs/helpers.md) | All namespaced factory functions |
+| [Exceptions](docs/README.md#exceptions) | Named errors and their shared base classes |
 
-Each locale exposes its default currency, its single symbol, and the symbol's position in a positive currency string:
-
-```php
-Locales::DE_DE->currency();       // Currencies::EUR
-Locales::DE_DE->symbol();         // €
-Locales::DE_DE->symbolPosition(); // suffix
-Locales::DE_CH->symbol();         // CHF
-Locales::DE_CH->symbolPosition(); // prefix
-```
-
-The currency and locale configuration methods return the same formatter. The stored amount remains readonly. `Currency` is stringable through `__toString()`.
-
-## Geometry: circles, ellipses, and haversine distance
-
-`Mathematical\Geometry` calculates circle and ellipse surfaces and circumferences,
-and converts between circle radius and diameter. All methods return a new `Geometry`.
-
-```php
-use function ReeStyleIt\NumberClass\geometry;
-
-geometry(3)->circleSurface()->get();         // approximately 28.2743; stored value is radius
-geometry(3)->circleCircumference()->get();   // approximately 18.8496; stored value is radius
-geometry(3)->circleDiameter()->get();        // 6; stored value is radius
-geometry(6)->circleRadius()->get();          // 3; stored value is diameter
-geometry(3)->ellipseSurface(2)->get();       // approximately 18.8496; inputs are semi-axis lengths
-geometry(3)->ellipseCircumference(2)->get(); // approximately 15.8654; Ramanujan approximation
-```
-
-`Mathematical\Geometry` calculates the great-circle distance between two latitude/longitude pairs.
-Construct the starting point with longitude, latitude, and elevation, then supply those same
-three coordinates for the destination. Longitude and latitude use degrees; elevations and
-returned distances use metres with the default sphere radius.
-
-```php
-use function ReeStyleIt\NumberClass\geometry;
-
-// London to Paris, with elevations in metres and a sphere radius of 6,371,000 metres.
-$distance = geometry(-0.1278, 51.5074, 10)->haversine(2.3522, 48.8566, 35)->get();
-// Approximately 343556.061251 metres.
-```
-
-The result combines haversine surface distance and elevation difference using `hypot()`;
-the elevation correction is a short-distance approximation. Use the optional `radius`
-argument to choose another sphere or distance unit, keeping elevations in the same unit.
-See [Geometry usage](docs/Mathematical/Geometry.md) for examples, validation, and `Number` access.
-
-## Trigonometry and right triangles
-
-```php
-number(90)->trigonometry()->deg2rad()->sin()->get(); // 1.0
-number(3)->trigonometry()->atan2(4)->rad2deg()->get(); // approximately 36.87
-
-number(3)->pythagoras()->hypotenuse(4)->get(); // 5.0
-number(5)->pythagoras()->leg(3)->get();        // 4.0
-```
-
-`Mathematical\Trigonometry` provides `sin()`, `cos()`, `tan()`, `asin()`, `acos()`, `atan()`, `atan2($x)`, `deg2rad()`, and `rad2deg()`. Angles use radians unless explicitly converted. In `atan2($x)`, the stored value is the y coordinate.
-
-For `Mathematical\Pythagoras::hypotenuse($otherLeg)`, the stored value is one perpendicular side. For `leg($otherLeg)`, the stored value is the hypotenuse. Lengths must be non-negative and finite, and a leg cannot exceed the hypotenuse. Both methods return new instances.
-
-## Value validation
-
-`Base` exposes a public readonly `mixed` property named `value`, also accessible with `get()`. `Number` inherits it and provides `isInt()`, `isFloat()`, `isNumber()`, and its alias `isNumeric()` to inspect the value. Calculations accept integer and float values and throw `MustBeNumberException` for other stored types, including numeric strings. Currency formatting also rejects infinite values and `NAN`.
-
-These calculations use native PHP integers and floats; they do not provide arbitrary-precision decimal arithmetic.
-
-### Exceptions
-
-The following exceptions are available under `ReeStyleIt\NumberClass\Exceptions`:
-
-- `MustBeNumberException`: the stored value is not an integer or float.
-- `RoundingException`: an integer rounding mode is outside the supported cases.
-- `MustBePositiveNumberException`: a root exponent is not greater than zero, or a nearest-rounding multiple is not positive and finite.
-- `PythagorasException`: a triangle length is negative or non-finite, or a leg exceeds the hypotenuse.
-- `GeometryException`: a shape length is invalid, starting latitude is missing, coordinates or elevations are invalid, or a sphere radius is not positive and finite.
-
-Currency formatting provides these additional named exceptions:
-
-- `InvalidCurrencyCodeException`: the code is not three letters.
-- `EmptyLocaleException`: the locale is empty or whitespace.
-- `MustBeFiniteCurrencyValue`: the amount is infinite or `NAN`.
-- `CurrencyFormattingException`: the formatter fails to produce a string.
-
-The exceptions listed above extend `BaseInvalidArgumentException`, which extends PHP's `InvalidArgumentException`.
-
-`Currencies::symbol()` throws `CurrencySymbolLookupException` for failures configuring or retrieving a currency symbol. This exception extends `BaseRuntimeException`, which extends PHP's `RuntimeException`, and preserves the formatter's error details.
-
-Catch either package base class to handle its exception family together. Exception messages are defined inside the exception classes.
-
-Division by zero continues to throw PHP's `DivisionByZeroError`.
+Constructors accept mixed values. Numeric operations and conversion to `Number` require
+an actual integer or float; numeric strings are rejected with `MustBeNumberException`.
+Comparisons return booleans, display formatting returns strings, and calculations return value
+objects. Division and remainder by zero throw PHP's `DivisionByZeroError`.
+Calculations use native PHP integers and floats, including their precision and range limits.
 
 ## Development
-
-Unit tests mirror the source namespaces under `tests/Unit`, with `Enums`, `Exceptions`, `Format`, `Mathematical`, and `Number` subfolders. Tests for root classes and helper functions stay directly under `tests/Unit`.
 
 ```bash
 composer install
@@ -267,15 +251,16 @@ composer dump-autoload --optimize --strict-psr
 composer test
 ```
 
-Pest is a development dependency. Consumers need PHP; install `intl` for full currency formatting. GitHub Actions checks PHP 8.4 and 8.5 and includes a separate symbol lookup check without `intl`.
+Pest tests mirror the source namespaces under `tests/Unit`. GitHub Actions runs tests on
+PHP 8.4 and 8.5 and checks currency symbol fallback without `intl`.
 
-The fallback symbol data is stored in `src/Resources/currency-symbols.php`, which returns a flat array keyed by locale. Each entry has `currency`, `symbol`, and `position` (`prefix` or `suffix`). The array is loaded once per process. To regenerate it from the installed ICU data when locale cases change, run this command with `intl` available:
+When locale cases change, regenerate the bundled currency metadata with `intl` available:
 
 ```bash
 composer generate:symbols
 ```
 
-See [RELEASING.md](RELEASING.md) for the publication procedure.
+[Changelog](CHANGELOG.md) · [Release preparation](RELEASING.md)
 
 ## License
 
@@ -283,4 +268,4 @@ See [license.txt](license.txt) for the supplied license terms.
 
 ## Note
 
-This is my first full AI project, although I keep an eye on every written line of code.
+This is my first AI-first project, although I keep an eye on every written line of code.

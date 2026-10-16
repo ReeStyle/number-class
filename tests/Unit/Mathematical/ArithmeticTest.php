@@ -3,6 +3,8 @@
 namespace Tests\Unit\Mathematical;
 
 use DivisionByZeroError;
+use ArithmeticError;
+use ReeStyleIt\NumberClass\Exceptions\MustBeIntegerException;
 use ReeStyleIt\NumberClass\Exceptions\MustBeNumberException;
 use ReeStyleIt\NumberClass\Exceptions\MustBePositiveNumberException;
 use ReeStyleIt\NumberClass\Mathematical\Arithmetic;
@@ -12,7 +14,7 @@ use function ReeStyleIt\NumberClass\number;
 
 it('creates arithmetic calculations from a Number', function () {
     $number = number(7);
-    $arithmetic = $number->arithmetic();
+    $arithmetic = $number->arithmetic;
 
     expect($arithmetic)->toBeInstanceOf(Arithmetic::class)
         ->and($arithmetic->multiply(2)->increase(1)->get())->toBe(15)
@@ -34,6 +36,11 @@ it('calculates into a new Arithmetic instance without changing the original', fu
     'decrease' => [7, 'decrease', [2.5], 4.5],
     'multiply' => [7, 'multiply', [2], 14],
     'divide' => [7, 'divide', [0.5], 14.0],
+    'integer quotient' => [7, 'intdiv', [2], 3],
+    'negative integer quotient' => [-7, 'intdiv', [2], -3],
+    'negative divisor' => [7, 'intdiv', [-2], -3],
+    'minimum integer' => [PHP_INT_MIN, 'intdiv', [1], PHP_INT_MIN],
+    'maximum integer' => [PHP_INT_MAX, 'intdiv', [1], PHP_INT_MAX],
     'power' => [7, 'pow', [2], 49],
     'square root' => [9, 'sqrt', [], 3.0],
     'negative cube root' => [-8, 'sqrt', [3], -2.0],
@@ -56,12 +63,23 @@ it('validates stored values before calculating', function (string $method, array
     ['add', []], ['subtract', []],
     ['increase', []], ['decrease', []], ['multiply', [2]], ['divide', [2]],
     ['pow', [2]], ['sqrt', []], ['abs', []], ['negate', []],
-    ['mod', [2]], ['floor', []], ['ceil', []],
+    ['mod', [2]], ['intdiv', [2]], ['floor', []], ['ceil', []],
 ]);
 
 it('rejects division and remainder by zero', function (string $method) {
     expect(fn () => new Arithmetic(7)->$method(0))->toThrow(DivisionByZeroError::class);
-})->with(['divide', 'mod']);
+})->with(['divide', 'mod', 'intdiv']);
+
+it('requires an integer stored value for integer division', function (float $value) {
+    expect(fn () => new Arithmetic($value)->intdiv(2))
+        ->toThrow(MustBeIntegerException::class, 'Value must be an integer.')
+        ->and(fn () => number($value)->intdiv(2))->toThrow(MustBeIntegerException::class);
+})->with([7.0, 7.5, INF, NAN]);
+
+it('preserves the native integer division overflow error', function () {
+    expect(fn () => new Arithmetic(PHP_INT_MIN)->intdiv(-1))->toThrow(ArithmeticError::class)
+        ->and(fn () => number(PHP_INT_MIN)->intdiv(-1))->toThrow(ArithmeticError::class);
+});
 
 it('rejects non-positive root exponents in arithmetic calculations', function () {
     expect(fn () => new Arithmetic(7)->sqrt(0))

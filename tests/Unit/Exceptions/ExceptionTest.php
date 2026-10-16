@@ -14,9 +14,11 @@ use ReeStyleIt\NumberClass\Exceptions\GeometryException;
 use ReeStyleIt\NumberClass\Exceptions\InvalidCurrencyCodeException;
 use ReeStyleIt\NumberClass\Exceptions\MustBeFiniteCurrencyValue;
 use ReeStyleIt\NumberClass\Exceptions\MustBeNumberException;
+use ReeStyleIt\NumberClass\Exceptions\MustBeIntegerException;
 use ReeStyleIt\NumberClass\Exceptions\MustBePositiveNumberException;
 use ReeStyleIt\NumberClass\Exceptions\PythagorasException;
 use ReeStyleIt\NumberClass\Exceptions\RoundingException;
+use ReeStyleIt\NumberClass\Exceptions\TimeException;
 
 it('provides default messages and allows catching named exceptions through their shared base', function (string $exception, string $message) {
     $error = new $exception();
@@ -32,9 +34,11 @@ it('provides default messages and allows catching named exceptions through their
     [InvalidCurrencyCodeException::class, 'Currency must be a three-letter currency code.'],
     [MustBeFiniteCurrencyValue::class, 'Currency value must be finite.'],
     [MustBeNumberException::class, 'Value must be an integer or float.'],
+    [MustBeIntegerException::class, 'Value must be an integer.'],
     [MustBePositiveNumberException::class, 'Number must be greater than 0.'],
     [PythagorasException::class, 'Invalid right triangle dimensions.'],
     [RoundingException::class, 'Rounding mode must be a valid RoundingMode case or its integer equivalent.'],
+    [TimeException::class, 'Time must be a non-negative finite number of seconds.'],
 ]);
 
 it('preserves formatter details and the original exception', function () {

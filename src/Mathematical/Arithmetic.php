@@ -4,6 +4,7 @@ namespace ReeStyleIt\NumberClass\Mathematical;
 
 use DivisionByZeroError;
 use ReeStyleIt\NumberClass\Base;
+use ReeStyleIt\NumberClass\Exceptions\MustBeIntegerException;
 use ReeStyleIt\NumberClass\Exceptions\MustBePositiveNumberException;
 
 class Arithmetic extends Base
@@ -30,6 +31,17 @@ class Arithmetic extends Base
     public function decrease(int|float $amount = 1): self
     {
         return $this->subtract($amount);
+    }
+
+    public function intdiv(int $divisor): self
+    {
+        $this->assertNumber();
+
+        if (!is_int($this->value)) {
+            throw new MustBeIntegerException();
+        }
+
+        return new self(\intdiv($this->value, $divisor));
     }
 
     public function multiply(int|float $factor): self

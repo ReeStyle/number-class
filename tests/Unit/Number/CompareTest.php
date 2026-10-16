@@ -8,7 +8,7 @@ use ReeStyleIt\NumberClass\Number\Compare;
 
 it('creates a comparison object with the original number value', function () {
     $number = new Number(7);
-    $comparison = $number->compare();
+    $comparison = $number->compare;
 
     expect($comparison)->toBeInstanceOf(Compare::class)
         ->and($comparison->get())->toBe(7)
@@ -26,8 +26,8 @@ it('compares numeric values and Number instances without changing them', functio
     $otherNumber = new Number($other);
 
     foreach ($expected as $method => $result) {
-        expect($number->compare()->$method($other))->toBe($result)
-            ->and($number->compare()->$method($otherNumber))->toBe($result);
+        expect($number->compare->$method($other))->toBe($result)
+            ->and($number->compare->$method($otherNumber))->toBe($result);
     }
 
     if (!is_nan($value) && !is_nan($other)) {
@@ -47,8 +47,8 @@ it('compares numeric values and Number instances without changing them', functio
 ]);
 
 it('rejects non-numeric stored values on either side of a comparison', function (string $method) {
-    expect(fn () => new Number('7')->compare()->$method(7))
+    expect(fn () => new Number('7')->compare->$method(7))
         ->toThrow(MustBeNumberException::class, 'Value must be an integer or float.')
-        ->and(fn () => new Number(7)->compare()->$method(new Number('7')))
+        ->and(fn () => new Number(7)->compare->$method(new Number('7')))
         ->toThrow(MustBeNumberException::class, 'Value must be an integer or float.');
 })->with(['equals', 'higherThan', 'lowerThan', 'higherThanOrEqual', 'lowerThanOrEqual']);

@@ -86,7 +86,7 @@ use function ReeStyleIt\NumberClass\round;
 
 $rounded = round(12.345)->decimals(2)->get();          // 12.35
 $viaProperty = number(13)->round->nearest(5)->get();   // 15.0
-$viaMethod = number(12.345)->round()->with(2)->get();  // 12.35
+$converted = number(12.345)->round->with(2)->get();  // 12.35
 $native = \round(12.345, 2); // 12.35; PHP's native function returns a float
 ```
 
@@ -99,3 +99,20 @@ Non-numeric stored values throw [MustBeNumberException](../Exceptions/MustBeNumb
 Invalid integer modes throw [RoundingException](../Exceptions/RoundingException.md).
 Zero, negative, infinite, and NaN multiples throw
 [MustBePositiveNumberException](../Exceptions/MustBePositiveNumberException.md).
+
+## Continue with a Number
+
+Both `number(): Number` and the read-only `number` property return a fresh
+`ReeStyleIt\NumberClass\Number` containing the raw stored value. Each access validates that
+the value is an integer or float; otherwise it throws `MustBeNumberException`.
+The source instance remains unchanged.
+
+```php
+use ReeStyleIt\NumberClass\Format\Round;
+
+$value = new Round(12.345)->decimals(2);
+$converted = $value->number->format(2); // '12.35'
+$viaProperty = $value->number->add(1)->get(); // 13.35
+```
+
+See [the shared base API](../Base.md) for numeric validation and storage.

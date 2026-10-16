@@ -61,7 +61,7 @@ use function ReeStyleIt\NumberClass\trigonometry;
 $sine = trigonometry(30)->deg2rad()->sin()->get(); // approximately 0.5
 $oppositeLeg = number(10)->multiply($sine)->get(); // approximately 5.0
 $viaProperty = number(90)->trigonometry->deg2rad()->sin()->get(); // 1.0
-$viaMethod = number(0)->trigonometry()->cos()->get(); // 1.0
+$converted = number(0)->trigonometry->cos()->get(); // 1.0
 ```
 
 Use [Pythagoras](Pythagoras.md) when calculating a third side from two known sides.
@@ -73,3 +73,20 @@ if the stored value is not an `int` or `float`. `asin()` and `acos()` outside `[
 return `NAN` following PHP's native behavior. Results use floating point precision;
 compare approximate results with a tolerance rather than expecting exact equality.
 The tangent near odd multiples of π/2 can be extremely large because the angle is approximate.
+
+## Continue with a Number
+
+Both `number(): Number` and the read-only `number` property return a fresh
+`ReeStyleIt\NumberClass\Number` containing the raw stored value. Each access validates that
+the value is an integer or float; otherwise it throws `MustBeNumberException`.
+The source instance remains unchanged.
+
+```php
+use ReeStyleIt\NumberClass\Mathematical\Trigonometry;
+
+$value = new Trigonometry(30)->deg2rad()->sin();
+$converted = $value->number->multiply(10)->get(); // approximately 5.0
+$viaProperty = $value->number->format(2); // '0.50'
+```
+
+See [the shared base API](../Base.md) for numeric validation and storage.

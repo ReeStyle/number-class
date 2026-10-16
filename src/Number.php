@@ -2,93 +2,38 @@
 
 namespace ReeStyleIt\NumberClass;
 
-use ReeStyleIt\NumberClass\Format\Currency;
-use ReeStyleIt\NumberClass\Format\Round;
 use ReeStyleIt\NumberClass\Mathematical\Arithmetic;
-use ReeStyleIt\NumberClass\Mathematical\Geometry;
-use ReeStyleIt\NumberClass\Mathematical\Pythagoras;
-use ReeStyleIt\NumberClass\Mathematical\Trigonometry;
-use ReeStyleIt\NumberClass\Number\Compare;
 
 class Number extends Base
 {
-    public Arithmetic $arithmetic {
-        get => $this->arithmetic();
-    }
-
-    public Compare $compare {
-        get => $this->compare();
-    }
-
-    public Currency $currency {
-        get => $this->currency();
-    }
-
-    public Geometry $geometry {
-        get => $this->geometry();
-    }
-
-    public Pythagoras $pythagoras {
-        get => $this->pythagoras();
-    }
-
-    public Round $round {
-        get => $this->round();
-    }
-
-    public Trigonometry $trigonometry {
-        get => $this->trigonometry();
-    }
-
-    public function abs(): self
+    public function abs(): Arithmetic
     {
-        return new self($this->arithmetic()->abs()->get());
+        return $this->arithmetic->abs();
     }
 
-    public function add(int|float $amount = 1): self
+    public function add(int|float $amount = 1): Arithmetic
     {
-        return new self($this->arithmetic()->add($amount)->get());
+        return $this->arithmetic->add($amount);
     }
 
-    public function arithmetic(): Arithmetic
+    public function ceil(): Arithmetic
     {
-        $this->assertNumber();
-
-        return new Arithmetic($this->value);
+        return $this->arithmetic->ceil();
     }
 
-    public function ceil(): self
-    {
-        return new self($this->arithmetic()->ceil()->get());
-    }
-
-    public function compare(): Compare
-    {
-        $this->assertNumber();
-
-        return new Compare($this->value);
-    }
-
-    public function currency(): Currency
-    {
-        $this->assertNumber();
-
-        return new Currency($this->value);
-    }
-
-    public function decrease(int|float $amount = 1): self
+    public function decrease(int|float $amount = 1): Arithmetic
     {
         return $this->subtract($amount);
     }
 
-    public function divide(int|float $divisor): self
+    public function divide(int|float $divisor): Arithmetic
     {
-        return new self($this->arithmetic()->divide($divisor)->get());
+        return $this->arithmetic->divide($divisor);
     }
 
-    public function floor(): self
+    public function floor(): Arithmetic
     {
-        return new self($this->arithmetic()->floor()->get());
+        return $this->arithmetic->floor();
     }
 
     public function format(int $decimals = 0, ?string $decimal_separator = '.', ?string $thousands_separator = ','): string
@@ -98,16 +43,14 @@ class Number extends Base
         return number_format($this->value, $decimals, $decimal_separator, $thousands_separator);
     }
 
-    public function geometry(int|float|null $latitude = null, int|float $elevation = 0): Geometry
-    {
-        $this->assertNumber();
-
-        return new Geometry($this->value, $latitude, $elevation);
-    }
-
-    public function increase(int|float $amount = 1): self
+    public function increase(int|float $amount = 1): Arithmetic
     {
         return $this->add($amount);
+    }
+
+    public function intdiv(int $divisor): Arithmetic
+    {
+        return $this->arithmetic->intdiv($divisor);
     }
 
     public function isFloat(): bool
@@ -134,54 +77,33 @@ class Number extends Base
         return $this->isNumber();
     }
 
-    public function mod(int|float $divisor): self
+    public function mod(int|float $divisor): Arithmetic
     {
-        return new self($this->arithmetic()->mod($divisor)->get());
+        return $this->arithmetic->mod($divisor);
     }
 
-    public function multiply(int|float $factor): self
+    public function multiply(int|float $factor): Arithmetic
     {
-        return new self($this->arithmetic()->multiply($factor)->get());
+        return $this->arithmetic->multiply($factor);
     }
 
-    public function negate(): self
+    public function negate(): Arithmetic
     {
-        return new self($this->arithmetic()->negate()->get());
+        return $this->arithmetic->negate();
     }
 
-    public function pow(int|float $exponent): self
+    public function pow(int|float $exponent): Arithmetic
     {
-        return new self($this->arithmetic()->pow($exponent)->get());
+        return $this->arithmetic->pow($exponent);
     }
 
-    public function pythagoras(): Pythagoras
+    public function sqrt(int $exponent = 2): Arithmetic
     {
-        $this->assertNumber();
-
-        return new Pythagoras($this->value);
+        return $this->arithmetic->sqrt($exponent);
     }
 
-    public function round(): Round
+    public function subtract(int|float $amount = 1): Arithmetic
     {
-        $this->assertNumber();
-
-        return new Round($this->value);
-    }
-
-    public function sqrt(int $exponent = 2): self
-    {
-        return new self($this->arithmetic()->sqrt($exponent)->get());
-    }
-
-    public function subtract(int|float $amount = 1): self
-    {
-        return new self($this->arithmetic()->subtract($amount)->get());
-    }
-
-    public function trigonometry(): Trigonometry
-    {
-        $this->assertNumber();
-
-        return new Trigonometry($this->value);
+        return $this->arithmetic->subtract($amount);
     }
 }

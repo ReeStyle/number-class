@@ -13,7 +13,47 @@ It supplies storage and shared numeric validation; instantiate a concrete class 
 | `__construct(mixed $value)` | Stores the required value without converting or validating it |
 | `public readonly mixed $value` | Reads the originally stored value; it cannot be reassigned |
 | `get(): mixed` | Returns the stored value without formatting or conversion |
+| `compare(): Compare` | Validates the value and returns a new `Number\Compare` containing it |
+| `public Compare $compare` | Read-only property accessor for `compare()` |
+| `number(): Number` | Validates the value and returns a new `Number` containing it |
+| `public Number $number` | Read-only property accessor for `number()` |
 | `protected assertNumber(): void` | Throws `MustBeNumberException` unless the value is an `int` or `float` |
+
+## Shared helper accessors
+
+Every value class inherits the following methods and read-only properties. Each access
+validates the stored value and creates a fresh instance of the requested class.
+Prefer property access for default behavior; use methods when supplying arguments,
+such as `geometry(latitude: 52, elevation: 10)` or `currency('USD')`.
+
+| Method | Property | Result |
+| --- | --- | --- |
+| `arithmetic(): Arithmetic` | `arithmetic` | [Arithmetic](Mathematical/Arithmetic.md) |
+| `compare(): Compare` | `compare` | [Compare](Number/Compare.md) |
+| `currency(): Currency` | `currency` | [Currency](Format/Currency.md) |
+| `geometry(int|float|null $latitude = null, int|float $elevation = 0): Geometry` | `geometry` | [Geometry](Mathematical/Geometry.md) |
+| `number(): Number` | `number` | [Number](Number.md) |
+| `pythagoras(): Pythagoras` | `pythagoras` | [Pythagoras](Mathematical/Pythagoras.md) |
+| `round(): Round` | `round` | [Round](Format/Round.md) |
+| `time(): Time` | `time` | [Time](Conversion/Time.md), retaining the stored value and supporting a date starting point |
+| `trigonometry(): Trigonometry` | `trigonometry` | [Trigonometry](Mathematical/Trigonometry.md) |
+
+```php
+use function ReeStyleIt\NumberClass\arithmetic;
+use function ReeStyleIt\NumberClass\geometry;
+use function ReeStyleIt\NumberClass\pythagoras;
+
+$rounded = geometry(3)->circleDiameter()->arithmetic->add(1)->round->nearest(5)->get(); // 5.0
+$diameter = pythagoras(3)->hypotenuse(4)->geometry->circleDiameter()->get(); // 10.0
+$text = (string) arithmetic(7)->currency->currency('USD')->locale('en_US'); // '$7.00'
+```
+
+Accessors pass the raw stored value; they do not copy formatter configuration or geographic
+metadata. To create a point through `geometry()`, pass latitude and optional elevation;
+the stored value becomes longitude. The property form supplies no starting latitude.
+On `Currency`, `currency('USD')` remains the configuration setter, while `currency()` with
+no argument and the `currency` property create a fresh formatter. Its code is stored in
+`currencyCode`.
 
 `assertNumber()` is available to subclasses, not callers. Numeric strings, booleans, null,
 arrays, and objects fail this check. `INF` and `NAN` are floats and pass it;
@@ -30,6 +70,25 @@ $isBase = $number instanceof Base; // true
 
 // $number->value = 20; // Would throw PHP Error: the property is readonly.
 ```
+
+## Compare a stored value
+
+Every value class inherits `compare(): Compare` and the read-only `compare` property,
+including `Number` and `Compare` itself. Each access creates a fresh comparison object
+containing the raw stored value, leaving the source unchanged. Non-numeric values throw
+`MustBeNumberException` before the object is created.
+
+```php
+use function ReeStyleIt\NumberClass\geometry;
+use function ReeStyleIt\NumberClass\pythagoras;
+
+$equal = geometry(3)->circleDiameter()->compare->equals(6); // true
+$higher = pythagoras(3)->hypotenuse(4)->compare->higherThan(4); // true
+```
+
+See [Compare](Number/Compare.md) for all comparison operations. On a currency formatter this
+compares the raw amount; on a geographic point it compares the stored longitude. Comparisons
+return booleans, while accessing `compare` returns the comparison object.
 
 ## Extending the base
 
@@ -63,3 +122,20 @@ echo $value->get(); // 42
 ```
 
 See the [helper reference](helpers.md) and [validation exception](Exceptions/MustBeNumberException.md).
+
+## Continue with a Number
+
+Both `number(): Number` and the read-only `number` property return a fresh
+`ReeStyleIt\NumberClass\Number` containing the raw stored value. Each access validates that
+the value is an integer or float; otherwise it throws `MustBeNumberException`.
+The source instance remains unchanged.
+
+```php
+use ReeStyleIt\NumberClass\Mathematical\Arithmetic;
+
+$value = new Arithmetic(6)->multiply(7);
+$converted = $value->number->add(8)->get(); // 50
+$viaProperty = $value->number->divide(2)->get(); // 21
+```
+
+This API is inherited by every concrete value class, including `Number` itself.

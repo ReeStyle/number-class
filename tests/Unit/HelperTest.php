@@ -3,6 +3,8 @@
 namespace Tests\Unit;
 
 use Closure;
+use ReeStyleIt\NumberClass\Conversion\Time;
+use ReeStyleIt\NumberClass\Conversion\Time\Diff;
 use ReeStyleIt\NumberClass\Exceptions\MustBeNumberException;
 use ReeStyleIt\NumberClass\Enums\Currencies;
 use ReeStyleIt\NumberClass\Format\Currency;
@@ -15,10 +17,12 @@ use ReeStyleIt\NumberClass\Number;
 use ReeStyleIt\NumberClass\Number\Compare;
 
 use function ReeStyleIt\NumberClass\compare;
+use function ReeStyleIt\NumberClass\diff;
 use function ReeStyleIt\NumberClass\arithmetic;
 use function ReeStyleIt\NumberClass\geometry;
 use function ReeStyleIt\NumberClass\pythagoras;
 use function ReeStyleIt\NumberClass\round;
+use function ReeStyleIt\NumberClass\time;
 use function ReeStyleIt\NumberClass\trigonometry;
 use function ReeStyleIt\NumberClass\number;
 use function ReeStyleIt\NumberClass\currencyFormatter;
@@ -107,6 +111,21 @@ it('creates rounding calculations through the helper', function () {
         ->and($round->get())->toBe(1.236);
 });
 
+it('creates time starting points through the helper', function () {
+    $duration = time()->from(0);
+
+    expect($duration)->toBeInstanceOf(\ReeStyleIt\NumberClass\Conversion\Time\Diff::class)
+        ->and($duration->from->getTimestamp())->toBe(0);
+});
+
+it('creates a difference directly through the helper', function () {
+    $difference = diff(from: '1970-01-01T00:01:00Z');
+
+    expect($difference)->toBeInstanceOf(Diff::class)
+        ->and($difference->from->getTimestamp())->toBe(60)
+        ->and($difference->diff(90)->s)->toBe(30);
+});
+
 it('validates values from the new helpers when calculating', function (Closure $calculate) {
     expect($calculate)->toThrow(MustBeNumberException::class);
 })->with([
@@ -114,5 +133,6 @@ it('validates values from the new helpers when calculating', function (Closure $
     'geometry' => [fn () => geometry('0')->haversine(0, 0, 90)],
     'pythagoras' => [fn () => pythagoras('3')->hypotenuse(4)],
     'round' => [fn () => round('1.236')->decimals(2)],
+    'time' => [fn () => time('60')->number],
     'trigonometry' => [fn () => trigonometry('90')->deg2rad()],
 ]);

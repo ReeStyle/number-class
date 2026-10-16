@@ -32,9 +32,9 @@ the label and display rules; it does not convert the amount using an exchange ra
 
 | Member | Default / behavior |
 | --- | --- |
-| `public string $currency` | `'EUR'` |
+| `public string $currencyCode` | `'EUR'` |
 | `public string $locale` | `'nl_NL'` |
-| `currency(Currencies|string $currency): self` | Set the currency code and return the same formatter |
+| `currency(Currencies|string|null $currency = null): self` | With a code, configure and return the same formatter; without a code, create a fresh formatter |
 | `locale(Locales|string $locale): self` | Set the locale identifier and return the same formatter |
 
 Currency strings are uppercased and must contain exactly three ASCII letters. This is a
@@ -49,7 +49,7 @@ use ReeStyleIt\NumberClass\Format\Currency;
 $formatter = new Currency(25);
 $same = $formatter->currency('usd')->locale('en_US');
 $isSameObject = $same === $formatter; // true
-$code = $formatter->currency;         // 'USD'
+$code = $formatter->currencyCode;     // 'USD'
 $locale = $formatter->locale;         // 'en_US'
 echo $formatter;                     // $25.00
 ```
@@ -69,6 +69,14 @@ echo $formatter; // Swiss franc amount using de_CH conventions
 
 ## Helper usage and Number access
 
+All value classes inherit the `currency()` method and read-only `currency` property from
+[Base](../Base.md#shared-helper-accessors). On a `Currency` instance, these also create
+fresh formatters with the same amount and default configuration. Passing a code to
+`currency($code)` instead configures the existing formatter.
+
+The code property has been renamed from `currency` to `currencyCode`: `$formatter->currency`
+now returns a formatter object. Use `$formatter->currencyCode` to read or directly set its code.
+
 ```php
 use ReeStyleIt\NumberClass\Enums\Currencies;
 use ReeStyleIt\NumberClass\Enums\Locales;
@@ -78,7 +86,6 @@ use function ReeStyleIt\NumberClass\number;
 echo currencyFormatter(19.95)->currency(Currencies::USD)->locale(Locales::EN_US); // $19.95
 
 $fromProperty = number(19.95)->currency;
-$fromMethod = number(19.95)->currency();
 // Each accessor creates a fresh Currency; keep it if reusing its configuration.
 $text = (string) $fromProperty->currency('USD')->locale('en_US'); // '$19.95'
 ```
@@ -97,3 +104,22 @@ and [EmptyLocaleException](../Exceptions/EmptyLocaleException.md) for invalid ar
 
 [Currencies::symbol()](../Enums/Currencies.md) can fall back to bundled locale symbols without
 `intl`. That fallback does not provide currency amount formatting.
+
+## Continue with a Number
+
+Both `number(): Number` and the read-only `number` property return a fresh
+`ReeStyleIt\NumberClass\Number` containing the raw stored value. Each access validates that
+the value is an integer or float; otherwise it throws `MustBeNumberException`.
+The source instance remains unchanged.
+
+```php
+use ReeStyleIt\NumberClass\Format\Currency;
+
+$value = new Currency(12.5)->currency('USD')->locale('en_US');
+$converted = $value->number->multiply(2)->get(); // 25.0
+$viaProperty = $value->number->format(2); // '12.50'
+```
+
+Conversion uses the raw amount; locale, currency configuration, and formatted text are not copied.
+
+See [the shared base API](../Base.md) for numeric validation and storage.

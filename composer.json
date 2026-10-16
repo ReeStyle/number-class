@@ -37,7 +37,8 @@
         "generate:symbols": "@php tools/generate-currency-symbols.php"
     },
     "require": {
-        "php": "^8.4"
+        "php": "^8.4",
+        "nesbot/carbon": "^3.14"
     },
     "keywords": [
         "number",

@@ -32,7 +32,7 @@ it('validates rounding modes through the with alias', function () {
 
 it('converts a Number into a Round formatter without changing its value', function () {
     $number = new Number(1234.56);
-    $rounded = $number->round();
+    $rounded = $number->round;
 
     expect($rounded)->toBeInstanceOf(Round::class)
         ->and($rounded)->toBeInstanceOf(Base::class)

@@ -13,18 +13,22 @@ use ReeStyleIt\NumberClass\Exceptions\MustBeFiniteCurrencyValue;
 
 class Currency extends Base
 {
-    public string $currency = 'EUR';
+    public string $currencyCode = 'EUR';
     public string $locale = 'nl_NL';
 
-    public function currency(Currencies|string $currency): self
+    public function currency(Currencies|string|null $currency = null): self
     {
+        if ($currency === null) {
+            return parent::currency();
+        }
+
         $currency = $currency instanceof Currencies ? $currency->value : strtoupper($currency);
 
         if (!preg_match('/^[A-Z]{3}$/D', $currency)) {
             throw new InvalidCurrencyCodeException();
         }
 
-        $this->currency = $currency;
+        $this->currencyCode = $currency;
 
         return $this;
     }
@@ -55,7 +59,7 @@ class Currency extends Base
         }
 
         $formatter = new NumberFormatter($this->locale, NumberFormatter::CURRENCY);
-        $result = $formatter->formatCurrency($this->value, $this->currency);
+        $result = $formatter->formatCurrency($this->value, $this->currencyCode);
 
         if ($result === false) {
             throw new CurrencyFormattingException($formatter->getErrorMessage());

@@ -2,8 +2,8 @@
 
 [Usage index](README.md)
 
-Composer automatically loads `src/helper.php`. Every helper takes one required `mixed $value`
-argument and creates a new instance; the equivalent constructor has the same parameters.
+Composer automatically loads `src/helper.php`. Numeric helpers take a `mixed $value` argument and create a new instance;
+`time()` defaults this value to `0`. The equivalent constructor has the same parameters.
 `geometry()` additionally accepts optional latitude and elevation arguments for geographic points.
 Import helpers from `ReeStyleIt\NumberClass` with `use function`.
 
@@ -12,10 +12,12 @@ Import helpers from `ReeStyleIt\NumberClass` with `use function`.
 | `number(mixed $value): Number` | [`new Number($value)`](Number.md) |
 | `arithmetic(mixed $value): Arithmetic` | [`new Arithmetic($value)`](Mathematical/Arithmetic.md) |
 | `compare(mixed $value): Compare` | [`new Compare($value)`](Number/Compare.md) |
+| `diff(DateTimeInterface\|Carbon\|int\|string $from): Diff` | [`new Time\Diff($from)`](Conversion/Time.md) |
 | `currencyFormatter(mixed $value): Currency` | [`new Currency($value)`](Format/Currency.md) |
 | `geometry(mixed $value, int|float|null $latitude = null, int|float $elevation = 0): Geometry` | [`new Geometry($value, $latitude, $elevation)`](Mathematical/Geometry.md) |
 | `pythagoras(mixed $value): Pythagoras` | [`new Pythagoras($value)`](Mathematical/Pythagoras.md) |
 | `round(mixed $value): Round` | [`new Round($value)`](Format/Round.md) |
+| `time(mixed $value = 0): Time` | [`new Time($value)`](Conversion/Time.md) |
 | `trigonometry(mixed $value): Trigonometry` | [`new Trigonometry($value)`](Mathematical/Trigonometry.md) |
 
 ```php
@@ -48,5 +50,25 @@ echo currencyFormatter(1234.5)
 
 The package's `round()` returns an object. After importing it, use `\round(12.345, 2)`
 to call PHP's built-in function, which returns a float. Helpers do not convert strings to numbers
-or validate values at construction time; the operation being called performs validation.
+or validate numeric values at construction time; the operation being called performs validation.
+The `diff()` helper validates its starting point when creating the `Time\Diff` instance.
 There are no factory helpers for the abstract base, enums, or exception classes.
+
+The imported `time()` helper creates a `Time` instance; use `\time()` for PHP's native timestamp function:
+
+```php
+use function ReeStyleIt\NumberClass\time;
+
+$start = time()->from('2024-10-17T12:00:00Z');
+$timestamp = $start->from->getTimestamp(); // 1729166400
+$seconds = time(60)->from->diff(90)->s; // 30
+```
+
+Use `diff()` to create a `Time\Diff` directly with a Unix timestamp, date object, or date string:
+
+```php
+use function ReeStyleIt\NumberClass\diff;
+
+$interval = diff(from: 60)->diff(90); // DateInterval
+$seconds = $interval->s; // 30
+```

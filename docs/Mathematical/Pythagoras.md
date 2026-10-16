@@ -50,7 +50,7 @@ use function ReeStyleIt\NumberClass\pythagoras;
 $length = pythagoras(3)->hypotenuse(4)->get();     // 5.0
 $leg = pythagoras(5)->leg(3)->get();              // approximately 4.0
 $viaProperty = number(3)->pythagoras->hypotenuse(4)->get();   // 5.0
-$viaMethod = number(3)->pythagoras()->hypotenuse(4)->get();   // 5.0
+$converted = number(3)->pythagoras->hypotenuse(4)->get();   // 5.0
 ```
 
 For angles, use [Trigonometry](Trigonometry.md), for example `atan2()` with the two legs.
@@ -72,3 +72,20 @@ try {
     echo $error->getMessage(); // A leg cannot be longer than the hypotenuse.
 }
 ```
+
+## Continue with a Number
+
+Both `number(): Number` and the read-only `number` property return a fresh
+`ReeStyleIt\NumberClass\Number` containing the raw stored value. Each access validates that
+the value is an integer or float; otherwise it throws `MustBeNumberException`.
+The source instance remains unchanged.
+
+```php
+use ReeStyleIt\NumberClass\Mathematical\Pythagoras;
+
+$value = new Pythagoras(3)->hypotenuse(4);
+$converted = $value->number->add(1)->get(); // 6.0
+$viaProperty = $value->number->format(2); // '5.00'
+```
+
+See [the shared base API](../Base.md) for numeric validation and storage.

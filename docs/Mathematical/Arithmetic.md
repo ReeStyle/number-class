@@ -28,6 +28,7 @@ All calculation methods return `self`.
 | `divide(int|float $divisor): self` | Divide by a nonzero divisor |
 | `floor(): self` | Round downward to an integer-valued float |
 | `increase(int|float $amount = 1): self` | Alias of `add()` |
+| `intdiv(int $divisor): self` | Integer quotient, truncated toward zero; stored value must be an integer |
 | `mod(int|float $divisor): self` | Remainder, with the dividend's sign |
 | `multiply(int|float $factor): self` | Multiply by a factor |
 | `negate(): self` | Change the sign |
@@ -68,6 +69,20 @@ $isNaN = is_nan($undefined);                     // true
 
 ## Division and remainders
 
+`intdiv(int $divisor): self` uses native `\intdiv()`. It returns an integer quotient, truncating
+toward zero. The stored value must be an actual integer; floats such as `7.0` are rejected with
+[MustBeIntegerException](../Exceptions/MustBeIntegerException.md). The divisor parameter is typed `int`.
+Zero divisors throw `DivisionByZeroError`; `PHP_INT_MIN` divided by `-1` throws `ArithmeticError`.
+
+```php
+use function ReeStyleIt\NumberClass\arithmetic;
+use function ReeStyleIt\NumberClass\number;
+
+$quotient = arithmetic(7)->intdiv(2)->get(); // 3
+$negative = arithmetic(-7)->intdiv(2)->get(); // -3
+$viaNumber = number(7)->intdiv(2)->get(); // 3; also an Arithmetic result
+```
+
 Division follows PHP's native `/` result type. Integer remainders use `%`; if either input
 is a float, the operation uses `fmod()` and preserves the fractional remainder.
 
@@ -94,8 +109,8 @@ use function ReeStyleIt\NumberClass\arithmetic;
 echo arithmetic(6)->multiply(7)->get(); // 42
 ```
 
-[Number](../Number.md) also provides all these operations directly, returning `Number`,
-or exposes this class through `number(6)->arithmetic` and `number(6)->arithmetic()`.
+[Number](../Number.md) also provides all these operations directly, returning an `Arithmetic` result,
+or exposes this class through `number(6)->arithmetic`.
 
 ## Errors and numeric behavior
 
@@ -105,3 +120,20 @@ Each operation checks the stored value and throws
 Invalid root degrees throw [MustBePositiveNumberException](../Exceptions/MustBePositiveNumberException.md).
 Results otherwise follow PHP's arithmetic behavior, including floating point approximation,
 overflow, `INF`, and `NAN`; this class does not provide arbitrary precision arithmetic.
+
+## Continue with a Number
+
+Both `number(): Number` and the read-only `number` property return a fresh
+`ReeStyleIt\NumberClass\Number` containing the raw stored value. Each access validates that
+the value is an integer or float; otherwise it throws `MustBeNumberException`.
+The source instance remains unchanged.
+
+```php
+use ReeStyleIt\NumberClass\Mathematical\Arithmetic;
+
+$value = new Arithmetic(6)->multiply(7);
+$converted = $value->number->format(2); // '42.00'
+$viaProperty = $value->number->compare->equals(42); // true
+```
+
+See [the shared base API](../Base.md) for numeric validation and storage.

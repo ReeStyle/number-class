@@ -76,7 +76,7 @@ it('supports circle conversions and shape measurements through helpers and Numbe
         ->toEqualWithDelta(28.274333882308138, 1e-12)
         ->and(number(3)->geometry->circleCircumference()->get())
         ->toEqualWithDelta(18.84955592153876, 1e-12)
-        ->and(number(3)->geometry()->ellipseSurface(2)->get())
+        ->and(number(3)->geometry->ellipseSurface(2)->get())
         ->toEqualWithDelta(18.84955592153876, 1e-12);
 });
 
@@ -183,7 +183,7 @@ it('rejects nonpositive or nonfinite radii', function (int|float $radius) {
 
 it('validates stored values before calculating or creating Geometry', function () {
     expect(fn () => new Geometry('0')->haversine(0, 0, 90))->toThrow(MustBeNumberException::class)
-        ->and(fn () => number('0')->geometry())->toThrow(MustBeNumberException::class);
+        ->and(fn () => number('0')->geometry)->toThrow(MustBeNumberException::class);
 });
 
 it('requires an explicit starting latitude for haversine', function () {

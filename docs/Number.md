@@ -7,7 +7,8 @@ inheriting `__construct(mixed $value)`, `public readonly mixed $value`, and `get
 
 ## Create and calculate
 
-Arithmetic operations return a new `Number`; they leave the original value unchanged.
+Arithmetic operations delegate to [Arithmetic](Mathematical/Arithmetic.md) and return its new
+`Arithmetic` result directly; they leave the original `Number` unchanged.
 
 ```php
 use ReeStyleIt\NumberClass\Number;
@@ -20,7 +21,7 @@ echo $price->get(); // 10
 
 ## Arithmetic methods
 
-Every method below returns `self`. Parameters marked `int|float` accept either numeric type.
+Every method below returns `Mathematical\Arithmetic`. Parameters marked `int|float` accept either numeric type.
 See [Arithmetic](Mathematical/Arithmetic.md) for detailed root, remainder, and numeric behavior.
 
 | Method | Example result from `get()` |
@@ -32,6 +33,7 @@ See [Arithmetic](Mathematical/Arithmetic.md) for detailed root, remainder, and n
 | `divide(int|float $divisor)` | `new Number(8)->divide(2)->get()` → `4` |
 | `floor()` | `new Number(8.9)->floor()->get()` → `8.0` |
 | `increase(int|float $amount = 1)` | Alias of `add()`; `8` becomes `9` by default |
+| `intdiv(int $divisor)` | `new Number(7)->intdiv(2)->get()` → `3`; stored value must be an integer |
 | `mod(int|float $divisor)` | `new Number(8)->mod(3)->get()` → `2` |
 | `multiply(int|float $factor)` | `new Number(8)->multiply(2)->get()` → `16` |
 | `negate()` | `new Number(8)->negate()->get()` → `-8` |
@@ -47,6 +49,17 @@ $cubeRoot = new Number(-27)->sqrt(3)->get();        // approximately -3.0
 $power = new Number(2)->pow(-2)->get();            // 0.25
 $remainder = new Number(5.5)->mod(2)->get();       // 1.5
 $negative = new Number(4)->negate()->abs()->get(); // 4
+```
+
+Arithmetic results can continue through other arithmetic operations and the inherited helper
+accessors. Use `number()` or the `number` property when calling `Number`-specific methods:
+
+```php
+use function ReeStyleIt\NumberClass\number;
+
+$result = number(9)->add(3)->divide(4); // Arithmetic containing 3
+$text = $result->number->format(2);   // '3.00'
+$isNumber = $result->number->isNumber(); // true
 ```
 
 ## Type checks
@@ -94,17 +107,22 @@ For numeric rounding results use [Round](Format/Round.md). For currency text use
 
 ## Helper methods and properties
 
-All seven accessors work as a method or a read-only property. Each access creates a fresh helper
+All nine accessors work as a method or a read-only property. Each access creates a fresh instance
 with the current value and validates that the value is numeric.
+
+These properties and methods are inherited from [Base](Base.md#shared-helper-accessors),
+so they are also available on every other value class.
 
 | Method / property | Return type and usage |
 | --- | --- |
 | `arithmetic()` / `$arithmetic` | [Arithmetic](Mathematical/Arithmetic.md) |
-| `compare()` / `$compare` | [Compare](Number/Compare.md) |
+| `compare()` / `$compare` | [Compare](Number/Compare.md), inherited from [Base](Base.md) |
 | `currency()` / `$currency` | [Currency](Format/Currency.md) |
 | `geometry(int|float|null $latitude = null, int|float $elevation = 0)` / `$geometry` | [Geometry](Mathematical/Geometry.md); provide latitude for geographic points, using the stored value as longitude |
+| `number()` / `$number` | A fresh `Number` with the same value, inherited from [Base](Base.md) |
 | `pythagoras()` / `$pythagoras` | [Pythagoras](Mathematical/Pythagoras.md) |
 | `round()` / `$round` | [Round](Format/Round.md) |
+| `time()` / `$time` | [Time](Conversion/Time.md), retaining the stored value and supporting a date starting point |
 | `trigonometry()` / `$trigonometry` | [Trigonometry](Mathematical/Trigonometry.md) |
 
 ```php
@@ -112,7 +130,7 @@ use ReeStyleIt\NumberClass\Number;
 
 $number = new Number(3);
 $equal = $number->compare->equals(3.0);              // true
-$greater = $number->compare()->higherThan(2);        // true
+$greater = $number->compare->higherThan(2);        // true
 $product = $number->arithmetic->multiply(4)->get();  // 12
 $length = $number->pythagoras->hypotenuse(4)->get();  // 5.0
 $rounded = new Number(12.345)->round->decimals(2)->get(); // 12.35
@@ -146,3 +164,20 @@ when performing arithmetic, formatting, or obtaining a helper. Type checks and `
 Zero divisors, including `0 / 0`, throw `DivisionByZeroError`.
 Root exponents at or below zero throw [MustBePositiveNumberException](Exceptions/MustBePositiveNumberException.md).
 Even roots of negative numbers produce `NAN`. Floating point calculations use PHP's native precision.
+
+## Continue with a Number
+
+Both `number(): Number` and the read-only `number` property return a fresh
+`ReeStyleIt\NumberClass\Number` containing the raw stored value. Each access validates that
+the value is an integer or float; otherwise it throws `MustBeNumberException`.
+The source instance remains unchanged.
+
+```php
+use ReeStyleIt\NumberClass\Number;
+
+$value = new Number(6);
+$converted = $value->number->add(1)->get(); // 7
+$viaProperty = $value->number->multiply(2)->get(); // 12
+```
+
+See [the shared base API](Base.md) for numeric validation and storage.

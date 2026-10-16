@@ -7,6 +7,7 @@ use stdClass;
 use ReeStyleIt\NumberClass\Exceptions\MustBeNumberException;
 use ReeStyleIt\NumberClass\Exceptions\MustBePositiveNumberException;
 use ReeStyleIt\NumberClass\Base;
+use ReeStyleIt\NumberClass\Mathematical\Arithmetic;
 use ReeStyleIt\NumberClass\Number;
 
 dataset('values', [
@@ -56,6 +57,8 @@ dataset('arithmetic', [
     'multiply by a float' => [6, 'multiply', [0.5], 3.0],
     'multiply by zero' => [6, 'multiply', [0], 0],
     'divide evenly' => [6, 'divide', [3], 2],
+    'integer quotient' => [7, 'intdiv', [2], 3],
+    'negative integer quotient' => [-7, 'intdiv', [2], -3],
     'divide with remainder' => [7, 'divide', [2], 3.5],
     'divide by a fraction' => [6, 'divide', [0.5], 12.0],
     'divide by a negative fraction' => [6, 'divide', [-0.5], -12.0],
@@ -83,11 +86,11 @@ dataset('arithmetic', [
     'ceil negative' => [-1.5, 'ceil', [], -1.0],
 ]);
 
-it('returns the calculated value in a new instance', function (int|float $value, string $method, array $arguments, int|float $expected) {
+it('returns the calculated value in a new Arithmetic instance', function (int|float $value, string $method, array $arguments, int|float $expected) {
     $number = new Number($value);
     $result = $number->$method(...$arguments);
 
-    expect($result)->toBeInstanceOf(Number::class)
+    expect($result)->toBeInstanceOf(Arithmetic::class)
         ->not->toBe($number)
         ->and($result->get())->toBe($expected)
         ->and($number->get())->toBe($value);
@@ -100,6 +103,7 @@ dataset('operations', [
     'decrease' => ['decrease', []],
     'multiply' => ['multiply', [2]],
     'divide' => ['divide', [2]],
+    'intdiv' => ['intdiv', [2]],
     'pow' => ['pow', [2]],
     'sqrt' => ['sqrt', []],
     'abs' => ['abs', []],
@@ -140,7 +144,7 @@ it('calculates a root with the given exponent in a new instance', function (int|
     $number = new Number($value);
     $result = $number->sqrt(exponent: $exponent);
 
-    expect($result)->toBeInstanceOf(Number::class)
+    expect($result)->toBeInstanceOf(Arithmetic::class)
         ->not->toBe($number)
         ->and($result->get())->toEqualWithDelta($expected, 1e-12)
         ->and($number->get())->toBe($value);
@@ -168,6 +172,16 @@ it('allows chaining without changing the original value', function () {
     $number = new Number(9);
     $result = $number->increase(3)->multiply(2)->divide(4)->negate()->abs();
 
-    expect($result->get())->toBe(6)
+    expect($result)->toBeInstanceOf(Arithmetic::class)
+        ->and($result->get())->toBe(6)
         ->and($number->get())->toBe(9);
+});
+
+it('returns to Number when its formatting or type inspection is needed', function () {
+    $result = new Number(9)->add(3)->divide(4);
+
+    expect($result)->toBeInstanceOf(Arithmetic::class)
+        ->and($result->number->format(2))->toBe('3.00')
+        ->and($result->number->isNumber())->toBeTrue()
+        ->and($result->get())->toBe(3);
 });

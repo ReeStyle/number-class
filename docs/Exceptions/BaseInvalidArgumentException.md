@@ -52,9 +52,11 @@ try {
 [GeometryException](GeometryException.md),
 [InvalidCurrencyCodeException](InvalidCurrencyCodeException.md),
 [MustBeFiniteCurrencyValue](MustBeFiniteCurrencyValue.md),
+[MustBeIntegerException](MustBeIntegerException.md),
 [MustBeNumberException](MustBeNumberException.md),
 [MustBePositiveNumberException](MustBePositiveNumberException.md),
-[PythagorasException](PythagorasException.md), and [RoundingException](RoundingException.md)
+[PythagorasException](PythagorasException.md), [RoundingException](RoundingException.md),
+and [TimeException](TimeException.md)
 all extend this base.
 
 Inherited PHP exception methods include `getMessage()`, `getCode()`, `getPrevious()`,

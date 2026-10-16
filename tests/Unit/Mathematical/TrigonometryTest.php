@@ -36,7 +36,7 @@ it('calculates trigonometry in a new instance without changing the original', fu
 
 it('creates trigonometry calculations from a Number and chains them', function () {
     $number = number(90);
-    $trigonometry = $number->trigonometry();
+    $trigonometry = $number->trigonometry;
 
     expect($trigonometry)->toBeInstanceOf(Trigonometry::class)
         ->and($trigonometry->deg2rad()->sin()->get())->toEqualWithDelta(1.0, 1e-12)
@@ -54,7 +54,7 @@ it('validates values before trigonometry calculations', function (string $method
 ]);
 
 it('validates a Number before creating trigonometry calculations', function () {
-    expect(fn () => new Number('1')->trigonometry())->toThrow(MustBeNumberException::class);
+    expect(fn () => new Number('1')->trigonometry)->toThrow(MustBeNumberException::class);
 });
 
 it('returns NaN for inverse functions outside their real domain', function (string $method, int $value) {

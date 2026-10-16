@@ -2,4 +2,5 @@
 /.phpunit.cache/
 /.idea/
 /build/
+/.venv-docs/
 /.DS_Store
