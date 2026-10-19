@@ -4,6 +4,9 @@ namespace ReeStyleIt\NumberClass;
 
 use ReeStyleIt\NumberClass\Conversion\Time;
 use ReeStyleIt\NumberClass\Exceptions\MustBeNumberException;
+use ReeStyleIt\NumberClass\Exceptions\StatisticalException;
+use ReeStyleIt\NumberClass\Financial\Amortization;
+use ReeStyleIt\NumberClass\Financial\CompoundInterest;
 use ReeStyleIt\NumberClass\Format\Currency;
 use ReeStyleIt\NumberClass\Format\Round;
 use ReeStyleIt\NumberClass\Mathematical\Arithmetic;
@@ -11,9 +14,20 @@ use ReeStyleIt\NumberClass\Mathematical\Geometry;
 use ReeStyleIt\NumberClass\Mathematical\Pythagoras;
 use ReeStyleIt\NumberClass\Mathematical\Trigonometry;
 use ReeStyleIt\NumberClass\Number\Compare;
+use ReeStyleIt\NumberClass\Statistical\BoxPlot;
+use ReeStyleIt\NumberClass\Statistical\Median;
+use ReeStyleIt\NumberClass\Statistical\Mode;
 
 abstract class Base
 {
+    public Amortization $amortization {
+        get {
+            $this->assertNumber();
+
+            return new Amortization($this->value);
+        }
+    }
+
     public Arithmetic $arithmetic {
         get {
             $this->assertNumber();
@@ -22,11 +36,27 @@ abstract class Base
         }
     }
 
+    public BoxPlot $boxPlot {
+        get {
+            $this->assertSample();
+
+            return new BoxPlot($this->value);
+        }
+    }
+
     public Compare $compare {
         get {
             $this->assertNumber();
 
             return new Compare($this->value);
+        }
+    }
+
+    public CompoundInterest $compoundInterest {
+        get {
+            $this->assertNumber();
+
+            return new CompoundInterest($this->value);
         }
     }
 
@@ -43,6 +73,22 @@ abstract class Base
             $this->assertNumber();
 
             return new Geometry($this->value);
+        }
+    }
+
+    public Median $median {
+        get {
+            $this->assertSample();
+
+            return new Median($this->value);
+        }
+    }
+
+    public Mode $mode {
+        get {
+            $this->assertSample();
+
+            return new Mode($this->value);
         }
     }
 
@@ -93,14 +139,29 @@ abstract class Base
         $this->value = $value;
     }
 
+    public function amortization(): Amortization
+    {
+        return $this->amortization;
+    }
+
     public function arithmetic(): Arithmetic
     {
         return $this->arithmetic;
     }
 
+    public function boxPlot(): BoxPlot
+    {
+        return $this->boxPlot;
+    }
+
     public function compare(): Compare
     {
         return $this->compare;
+    }
+
+    public function compoundInterest(): CompoundInterest
+    {
+        return $this->compoundInterest;
     }
 
     public function currency(): Currency
@@ -118,6 +179,16 @@ abstract class Base
     public function get(): mixed
     {
         return $this->value;
+    }
+
+    public function median(): Median
+    {
+        return $this->median;
+    }
+
+    public function mode(): Mode
+    {
+        return $this->mode;
     }
 
     public function number(): Number
@@ -147,8 +218,15 @@ abstract class Base
 
     protected function assertNumber(): void
     {
-        if (!is_int($this->value) && !is_float($this->value)) {
+        if (! is_int($this->value) && ! is_float($this->value)) {
             throw new MustBeNumberException();
+        }
+    }
+
+    protected function assertSample(): void
+    {
+        if (! is_array($this->value)) {
+            throw new StatisticalException();
         }
     }
 }

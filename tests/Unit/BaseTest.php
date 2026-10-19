@@ -6,6 +6,8 @@ use Error;
 use ReeStyleIt\NumberClass\Base;
 use ReeStyleIt\NumberClass\Conversion\Time;
 use ReeStyleIt\NumberClass\Exceptions\MustBeNumberException;
+use ReeStyleIt\NumberClass\Financial\Amortization;
+use ReeStyleIt\NumberClass\Financial\CompoundInterest;
 use ReeStyleIt\NumberClass\Format\Currency;
 use ReeStyleIt\NumberClass\Format\Round;
 use ReeStyleIt\NumberClass\Mathematical\Arithmetic;
@@ -16,6 +18,8 @@ use ReeStyleIt\NumberClass\Number;
 use ReeStyleIt\NumberClass\Number\Compare;
 
 dataset('value classes', [
+    Amortization::class,
+    CompoundInterest::class,
     Arithmetic::class,
     Compare::class,
     Currency::class,

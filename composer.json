@@ -38,6 +38,7 @@
     },
     "require": {
         "php": "^8.4",
+        "ext-bcmath": "*",
         "nesbot/carbon": "^3.14"
     },
     "keywords": [

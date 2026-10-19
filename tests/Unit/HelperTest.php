@@ -23,6 +23,7 @@ use function ReeStyleIt\NumberClass\geometry;
 use function ReeStyleIt\NumberClass\pythagoras;
 use function ReeStyleIt\NumberClass\round;
 use function ReeStyleIt\NumberClass\time;
+use function ReeStyleIt\NumberClass\toPct;
 use function ReeStyleIt\NumberClass\trigonometry;
 use function ReeStyleIt\NumberClass\number;
 use function ReeStyleIt\NumberClass\currencyFormatter;
@@ -125,6 +126,31 @@ it('creates a difference directly through the helper', function () {
         ->and($difference->from->getTimestamp())->toBe(60)
         ->and($difference->diff(90)->s)->toBe(30);
 });
+
+it('converts percentages with floats by default', function () {
+    expect(toPct(15))->toBe(0.15)
+        ->and(toPct(2.5, exact: false))->toBe(0.025);
+});
+
+it('converts percentages exactly without truncating decimal places', function (int|float|string $value, string $expected) {
+    $previous = bcscale(0);
+
+    try {
+        expect(toPct($value, exact: true))->toBe($expected)
+            ->and(bcscale())->toBe(0);
+    } finally {
+        bcscale($previous);
+    }
+})->with([
+    'integer' => [15, '0.15'],
+    'float' => [2.5, '0.025'],
+    'zero' => [0, '0.00'],
+    'negative' => [-15, '-0.15'],
+    'decimal string' => ['15.123456789123456789', '0.15123456789123456789'],
+    'large decimal string' => ['12345678912345678912345', '123456789123456789123.45'],
+    'small float' => [1e-8, '0.00000000010'],
+    'large float' => [1e20, '1000000000000000000.00'],
+]);
 
 it('validates values from the new helpers when calculating', function (Closure $calculate) {
     expect($calculate)->toThrow(MustBeNumberException::class);

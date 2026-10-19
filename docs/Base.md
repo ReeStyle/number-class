@@ -139,3 +139,37 @@ $viaProperty = $value->number->divide(2)->get(); // 21
 ```
 
 This API is inherited by every concrete value class, including `Number` itself.
+
+## Financial accessors
+
+`amortization` and `amortization(): Amortization` create a fresh
+[Financial\Amortization](Financial/Amortization.md) from the stored numeric principal.
+`compoundInterest` and `compoundInterest(): CompoundInterest` similarly create a
+[Financial\CompoundInterest](Financial/CompoundInterest.md). All value classes inherit
+these accessors; the original stored value is preserved.
+
+## Statistical accessors
+
+When the stored value is a non-empty array of finite integers or floats, `Base`
+provides readonly statistical properties and matching methods:
+
+| Property / method | Class |
+| --- | --- |
+| `boxPlot` / `boxPlot()` | [Statistical\BoxPlot](Statistical/BoxPlot.md) |
+| `median` / `median()` | [Statistical\Median](Statistical/Median.md) |
+| `mode` / `mode()` | [Statistical\Mode](Statistical/Mode.md) |
+
+```php
+use function ReeStyleIt\NumberClass\number;
+
+$sample = number([3, 1, 2, 2]);
+$sample->median->get(); // 2
+$sample->median()->get(); // 2
+$sample->mode->get(); // [2]
+$sample->boxPlot->q1; // 1.5
+```
+
+All subclasses of `Base` inherit these accessors. Each access creates a fresh statistical
+object and preserves the original stored array. Scalar values, iterable objects,
+empty arrays, and arrays containing invalid entries throw `StatisticalException`.
+Standalone statistical constructors and helpers additionally accept other iterables.

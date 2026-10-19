@@ -182,6 +182,64 @@ PHP's native timestamp function remains available as `\time()`.
 
 [Time reference](docs/Conversion/Time.md)
 
+### Compound interest and amortization
+
+```php
+use function ReeStyleIt\NumberClass\amortization;
+use function ReeStyleIt\NumberClass\compoundInterest;
+
+$future = compoundInterest(1000)->futureValue(annualRate: 0.05, years: 10);
+$future->number->format(2); // '1,628.89'
+$loan = amortization(100000);
+$loan->payment(annualRate: 0.06, periods: 360)->number->format(2); // '599.55'
+$schedule = $loan->schedule(0.06, 360);
+```
+
+Rates are annual decimals; amortization defaults to monthly payments and compound
+interest to annual compounding. Numeric results are `Number` instances. Both calculations
+also have shared accessors: `number(1000)->compoundInterest` and `number(100000)->amortization`.
+
+[Compound interest reference](docs/Financial/CompoundInterest.md) ·
+[Amortization reference](docs/Financial/Amortization.md)
+
+### Statistical samples
+
+```php
+use function ReeStyleIt\NumberClass\boxPlot;
+use function ReeStyleIt\NumberClass\median;
+use function ReeStyleIt\NumberClass\mode;
+
+median([7, 1, 3])->get(); // 3
+mode([3, 2, 3, 2, 1])->get(); // [2, 3]
+$plot = boxPlot([-100, 1, 2, 3, 4, 5, 6, 7, 100]);
+$plot->median; // 4
+$plot->outliers; // [-100, 100]
+```
+
+Statistical classes accept non-empty iterables of finite integers or floats.
+BoxPlot uses medians of halves (excluding an odd middle value) and 1.5 × IQR fences.
+Mode returns every tied most-frequent value, or `[]` if no values repeat.
+Stored numeric arrays can also use shared accessors: `number([3, 1, 2])->median->get()`,
+`number([1, 2, 2])->mode->get()`, and `number([1, 2, 3])->boxPlot`.
+
+[BoxPlot](docs/Statistical/BoxPlot.md) · [Median](docs/Statistical/Median.md) ·
+[Mode](docs/Statistical/Mode.md)
+
+### Decimal price calculations
+
+```php
+use function ReeStyleIt\NumberClass\price;
+
+price('0.10')->add('0.20')->get(); // '0.30'
+price('19.95')->multiply(3)->discount(15)->withTax(21)->format(); // '61.56'
+```
+
+`Financial\Price` uses BCMath decimal strings, with explicit rounding and fixed decimal
+formatting. Percentages use whole units (`15` means 15%). Pass strings or integers;
+floats are rejected to preserve decimal precision. The package requires `ext-bcmath`.
+
+[Price reference](docs/Financial/Price.md)
+
 ### Currency and locale formatting
 
 Requires the PHP `intl` extension:

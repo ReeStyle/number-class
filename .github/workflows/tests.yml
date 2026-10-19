@@ -22,7 +22,7 @@ jobs:
       - uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
-          extensions: intl, dom, mbstring, xml, xmlwriter
+          extensions: bcmath, intl, dom, mbstring, xml, xmlwriter
           tools: composer:v2
           coverage: none
       - run: composer install --no-interaction --prefer-dist
@@ -39,7 +39,7 @@ jobs:
       - uses: shivammathur/setup-php@v2
         with:
           php-version: '8.4'
-          extensions: ':intl'
+          extensions: 'bcmath, :intl'
           tools: composer:v2
           coverage: none
       - run: composer install --no-dev --no-plugins --no-scripts --no-interaction --prefer-dist

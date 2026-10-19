@@ -2,6 +2,15 @@
 
 ## Unreleased
 
+- Added readonly `Statistical\BoxPlot`, `Median`, and `Mode` sample calculations,
+  alphabetized factory helpers, and `StatisticalException` validation.
+
+- Added readonly `Financial\Price` calculations using BCMath, decimal string inputs,
+  percentage discounts and taxes, and explicit currency rounding; require `ext-bcmath`.
+
+- Added `Financial\CompoundInterest` and `Financial\Amortization` with financial validation,
+  alphabetized factory helpers, shared accessors, and repayment schedules.
+
 - Rebuilt `Conversion\Time` around a chainable `from()` starting point accepting timestamps,
   date objects, and date strings, stored as a Carbon date with Unix timestamp access.
 - Added named starting-point validation errors and the optional-value `time()` helper.

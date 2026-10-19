@@ -25,11 +25,19 @@ import them with `use function`. See the [helper reference](helpers.md) for all 
 | [Base](Base.md) | Shared storage, numeric validation, `number()` / `number`, and `compare()` / `compare` |
 | [Number](Number.md) | Main entry point, arithmetic, type checks, display formatting, and helper accessors |
 | [Conversion\Time](Conversion/Time.md) | Starting points from timestamps, date objects, and date strings |
+| [Statistical\BoxPlot](Statistical/BoxPlot.md) | Quartiles, IQR, whiskers, and outliers |
+| [Statistical\BoxPlot\Result](Statistical/BoxPlot.md) | Precomputed readonly box plot results |
+| [Statistical\Median](Statistical/Median.md) | Median of a finite numeric sample |
+| [Statistical\Mode](Statistical/Mode.md) | All most frequent sample values |
 | [Number\Compare](Number/Compare.md) | Equality and ordered comparisons |
 | [Mathematical\Arithmetic](Mathematical/Arithmetic.md) | Chainable arithmetic, powers, roots, and remainders |
 | [Mathematical\Geometry](Mathematical/Geometry.md) | Circle and ellipse measurements, and haversine great-circle distances |
 | [Mathematical\Pythagoras](Mathematical/Pythagoras.md) | Hypotenuse and missing leg calculations |
 | [Mathematical\Trigonometry](Mathematical/Trigonometry.md) | Trigonometric functions and angle conversions |
+| [Financial\Amortization](Financial/Amortization.md) | Fixed loan payments, interest totals, and repayment schedules |
+| [Financial\Amortization\Total](Financial/Amortization.md) | Readonly access to payment and interest totals |
+| [Financial\CompoundInterest](Financial/CompoundInterest.md) | Future value and earned compound interest |
+| [Financial\Price](Financial/Price.md) | Exact BCMath decimal prices, percentages, discounts, and tax |
 | [Format\Round](Format/Round.md) | Decimal rounding, rounding modes, and nearest multiples |
 | [Format\Currency](Format/Currency.md) | Currency amount formatting with a configurable currency and locale |
 
@@ -77,6 +85,7 @@ currency-symbol fallback can be used without it.
 | [CurrencyFormattingException](Exceptions/CurrencyFormattingException.md) | Missing `intl` or failed amount formatting |
 | [CurrencySymbolLookupException](Exceptions/CurrencySymbolLookupException.md) | Failed ICU symbol lookup |
 | [EmptyLocaleException](Exceptions/EmptyLocaleException.md) | An empty or whitespace-only locale |
+| [FinancialException](Exceptions/FinancialException.md) | Invalid financial terms or nonfinite financial results |
 | [GeometryException](Exceptions/GeometryException.md) | Invalid shape lengths, coordinates, or sphere radius |
 | [InvalidCurrencyCodeException](Exceptions/InvalidCurrencyCodeException.md) | A currency code without exactly three ASCII letters |
 | [MustBeFiniteCurrencyValue](Exceptions/MustBeFiniteCurrencyValue.md) | An infinite or NaN currency amount |
@@ -85,8 +94,12 @@ currency-symbol fallback can be used without it.
 | [MustBePositiveNumberException](Exceptions/MustBePositiveNumberException.md) | An invalid root exponent or rounding multiple |
 | [PythagorasException](Exceptions/PythagorasException.md) | Invalid right triangle lengths |
 | [RoundingException](Exceptions/RoundingException.md) | An invalid integer rounding mode |
+| [StatisticalException](Exceptions/StatisticalException.md) | Empty or invalid statistical samples and box plot overflow |
 | [TimeException](Exceptions/TimeException.md) | An invalid date or timestamp starting point |
 
 Division and remainder operations with a zero divisor throw PHP's native `DivisionByZeroError`,
 including `0 / 0`. PHP may also throw native type, enum conversion, or engine errors;
 the named exceptions above do not replace those errors.
+
+For stored numeric arrays, `Base` exposes `boxPlot`, `median`, and `mode` properties
+and matching methods. See [statistical accessors](Base.md#statistical-accessors).

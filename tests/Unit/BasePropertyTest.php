@@ -5,6 +5,9 @@ namespace Tests\Unit;
 use Error;
 use ReeStyleIt\NumberClass\Conversion\Time;
 use ReeStyleIt\NumberClass\Exceptions\MustBeNumberException;
+use ReeStyleIt\NumberClass\Exceptions\StatisticalException;
+use ReeStyleIt\NumberClass\Financial\Amortization;
+use ReeStyleIt\NumberClass\Financial\CompoundInterest;
 use ReeStyleIt\NumberClass\Format\Currency;
 use ReeStyleIt\NumberClass\Format\Round;
 use ReeStyleIt\NumberClass\Mathematical\Arithmetic;
@@ -13,8 +16,13 @@ use ReeStyleIt\NumberClass\Mathematical\Pythagoras;
 use ReeStyleIt\NumberClass\Mathematical\Trigonometry;
 use ReeStyleIt\NumberClass\Number;
 use ReeStyleIt\NumberClass\Number\Compare;
+use ReeStyleIt\NumberClass\Statistical\BoxPlot;
+use ReeStyleIt\NumberClass\Statistical\Median;
+use ReeStyleIt\NumberClass\Statistical\Mode;
 
 dataset('helper properties', [
+    'amortization' => ['amortization', Amortization::class],
+    'compoundInterest' => ['compoundInterest', CompoundInterest::class],
     'compare' => ['compare', Compare::class],
     'round' => ['round', Round::class],
     'arithmetic' => ['arithmetic', Arithmetic::class],
@@ -27,6 +35,8 @@ dataset('helper properties', [
 ]);
 
 dataset('helper sources', [
+    Amortization::class,
+    CompoundInterest::class,
     Arithmetic::class,
     Compare::class,
     Currency::class,
@@ -37,6 +47,56 @@ dataset('helper sources', [
     Time::class,
     Trigonometry::class,
 ]);
+
+dataset('statistical helper properties', [
+    ['boxPlot', BoxPlot::class],
+    ['median', Median::class],
+    ['mode', Mode::class],
+]);
+
+it('creates fresh statistical calculations from arrays on every value class', function (
+    string $property,
+    string $class,
+    string $sourceClass,
+) {
+    $values = [3, 1, 2, 2];
+    $source = new $sourceClass($values);
+    $helper = $source->$property;
+    $method = $source->$property();
+
+    expect($helper)->toBeInstanceOf($class)
+        ->and($method)->toBeInstanceOf($class)->not->toBe($helper)
+        ->and($helper->values)->toBe([1, 2, 2, 3])
+        ->and($helper->get())->toEqual($method->get())
+        ->and($source->get())->toBe($values);
+})->with('statistical helper properties')->with('helper sources');
+
+it('validates stored arrays before statistical calculations', function (string $property, string $class, mixed $value) {
+    $source = new Number($value);
+
+    expect(fn () => $source->$property)->toThrow(StatisticalException::class)
+        ->and(fn () => $source->$property())->toThrow(StatisticalException::class);
+})->with('statistical helper properties')->with([
+    'scalar' => [7],
+    'numeric string' => ['7'],
+    'null' => [null],
+    'empty array' => [[]],
+    'array with numeric string' => [[1, '2']],
+    'nonfinite' => [[1, INF]],
+    'iterable object' => [new \ArrayIterator([1, 2])],
+]);
+
+it('calculates statistics through the shared entry point', function () {
+    $source = new Number([3, 1, 2, 2]);
+
+    expect($source->median->get())->toBe(2)
+        ->and($source->mode->get())->toBe([2])
+        ->and($source->boxPlot->median)->toBe(2);
+
+    expect(function () use ($source) {
+        $source->median = new Median([1]);
+    })->toThrow(Error::class);
+});
 
 it('provides matching helper instances on every value class', function (
     string $property,

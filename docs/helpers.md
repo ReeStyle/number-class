@@ -7,17 +7,24 @@ Composer automatically loads `src/helper.php`. Numeric helpers take a `mixed $va
 `geometry()` additionally accepts optional latitude and elevation arguments for geographic points.
 Import helpers from `ReeStyleIt\NumberClass` with `use function`.
 
-| Helper signature | Equivalent constructor and full usage |
+| Helper signature | Equivalent constructor or usage |
 | --- | --- |
-| `number(mixed $value): Number` | [`new Number($value)`](Number.md) |
+| `amortization(mixed $value): Amortization` | [`new Amortization($value)`](Financial/Amortization.md) |
 | `arithmetic(mixed $value): Arithmetic` | [`new Arithmetic($value)`](Mathematical/Arithmetic.md) |
+| `boxPlot(iterable $values): BoxPlot` | [`new BoxPlot($values)`](Statistical/BoxPlot.md) |
 | `compare(mixed $value): Compare` | [`new Compare($value)`](Number/Compare.md) |
-| `diff(DateTimeInterface\|Carbon\|int\|string $from): Diff` | [`new Time\Diff($from)`](Conversion/Time.md) |
+| `compoundInterest(mixed $value): CompoundInterest` | [`new CompoundInterest($value)`](Financial/CompoundInterest.md) |
 | `currencyFormatter(mixed $value): Currency` | [`new Currency($value)`](Format/Currency.md) |
+| `diff(DateTimeInterface\|Carbon\|int\|string $from): Diff` | [`new Time\Diff($from)`](Conversion/Time.md) |
 | `geometry(mixed $value, int|float|null $latitude = null, int|float $elevation = 0): Geometry` | [`new Geometry($value, $latitude, $elevation)`](Mathematical/Geometry.md) |
+| `median(iterable $values): Median` | [`new Median($values)`](Statistical/Median.md) |
+| `mode(iterable $values): Mode` | [`new Mode($values)`](Statistical/Mode.md) |
+| `number(mixed $value): Number` | [`new Number($value)`](Number.md) |
+| `price(mixed $value): Price` | [`new Price($value)`](Financial/Price.md) |
 | `pythagoras(mixed $value): Pythagoras` | [`new Pythagoras($value)`](Mathematical/Pythagoras.md) |
 | `round(mixed $value): Round` | [`new Round($value)`](Format/Round.md) |
 | `time(mixed $value = 0): Time` | [`new Time($value)`](Conversion/Time.md) |
+| `toPct(int\|float\|string $value, bool $exact = false): float\|string` | Divides by 100; exact mode uses BCMath and returns a decimal string |
 | `trigonometry(mixed $value): Trigonometry` | [`new Trigonometry($value)`](Mathematical/Trigonometry.md) |
 
 ```php
@@ -52,6 +59,8 @@ The package's `round()` returns an object. After importing it, use `\round(12.34
 to call PHP's built-in function, which returns a float. Helpers do not convert strings to numbers
 or validate numeric values at construction time; the operation being called performs validation.
 The `diff()` helper validates its starting point when creating the `Time\Diff` instance.
+The `price()` helper validates its decimal input immediately; pass an integer, plain
+decimal string, or `Price`, rather than a float.
 There are no factory helpers for the abstract base, enums, or exception classes.
 
 The imported `time()` helper creates a `Time` instance; use `\time()` for PHP's native timestamp function:
@@ -72,3 +81,19 @@ use function ReeStyleIt\NumberClass\diff;
 $interval = diff(from: 60)->diff(90); // DateInterval
 $seconds = $interval->s; // 30
 ```
+
+`toPct()` returns a float by default. Pass `exact: true` to divide with BCMath and
+receive a decimal string, preserving all fractional digits. Use a decimal string as
+input when its full precision matters; float inputs use their decimal representation.
+
+```php
+use function ReeStyleIt\NumberClass\toPct;
+
+toPct(15); // 0.15
+toPct(15, exact: true); // '0.15'
+toPct('15.123456789123456789', exact: true); // '0.15123456789123456789'
+```
+
+The `boxPlot()`, `median()`, and `mode()` helpers accept iterable samples and validate
+them immediately. They return readonly statistical objects; call `get()` for the readonly box plot result,
+median value, or mode list. Samples must be non-empty finite integers or floats.

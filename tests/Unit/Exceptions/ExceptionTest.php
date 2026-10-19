@@ -10,6 +10,7 @@ use ReeStyleIt\NumberClass\Exceptions\BaseRuntimeException;
 use ReeStyleIt\NumberClass\Exceptions\CurrencyFormattingException;
 use ReeStyleIt\NumberClass\Exceptions\CurrencySymbolLookupException;
 use ReeStyleIt\NumberClass\Exceptions\EmptyLocaleException;
+use ReeStyleIt\NumberClass\Exceptions\FinancialException;
 use ReeStyleIt\NumberClass\Exceptions\GeometryException;
 use ReeStyleIt\NumberClass\Exceptions\InvalidCurrencyCodeException;
 use ReeStyleIt\NumberClass\Exceptions\MustBeFiniteCurrencyValue;
@@ -19,6 +20,7 @@ use ReeStyleIt\NumberClass\Exceptions\MustBePositiveNumberException;
 use ReeStyleIt\NumberClass\Exceptions\PythagorasException;
 use ReeStyleIt\NumberClass\Exceptions\RoundingException;
 use ReeStyleIt\NumberClass\Exceptions\TimeException;
+use ReeStyleIt\NumberClass\Exceptions\StatisticalException;
 
 it('provides default messages and allows catching named exceptions through their shared base', function (string $exception, string $message) {
     $error = new $exception();
@@ -30,6 +32,7 @@ it('provides default messages and allows catching named exceptions through their
     [BaseInvalidArgumentException::class, 'Invalid argument.'],
     [CurrencyFormattingException::class, 'Currency formatting failed.'],
     [EmptyLocaleException::class, 'Locale must not be empty.'],
+    [FinancialException::class, 'Invalid financial calculation.'],
     [GeometryException::class, 'Invalid geometry dimensions.'],
     [InvalidCurrencyCodeException::class, 'Currency must be a three-letter currency code.'],
     [MustBeFiniteCurrencyValue::class, 'Currency value must be finite.'],
@@ -39,6 +42,7 @@ it('provides default messages and allows catching named exceptions through their
     [PythagorasException::class, 'Invalid right triangle dimensions.'],
     [RoundingException::class, 'Rounding mode must be a valid RoundingMode case or its integer equivalent.'],
     [TimeException::class, 'Time must be a non-negative finite number of seconds.'],
+    [StatisticalException::class, 'Statistics require a non-empty sample of finite integers or floats.'],
 ]);
 
 it('preserves formatter details and the original exception', function () {
