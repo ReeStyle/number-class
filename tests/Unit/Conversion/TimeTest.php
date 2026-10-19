@@ -66,6 +66,7 @@ it('calculates an interval directly when an endpoint is supplied', function (mix
         ->and($time->get())->toBe(42);
 })->with([
     'zero timestamp' => [0],
+    'zero timestamp string' => ['0'],
     'timestamp' => [90],
     'timestamp string' => ['90'],
     'date string' => ['1970-01-01T00:01:30Z'],

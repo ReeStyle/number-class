@@ -52,6 +52,6 @@ class Time extends Base
     ): Diff|DateInterval {
         $difference = new Diff($from);
 
-        return $to ? $difference->diff($to) : $difference;
+        return func_num_args() > 1 ? $difference->diff($to) : $difference;
     }
 }
