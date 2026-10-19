@@ -3,6 +3,13 @@
 namespace Tests\Unit\Number;
 
 use ReeStyleIt\NumberClass\Exceptions\MustBeNumberException;
+use ReeStyleIt\NumberClass\Conversion\Time;
+use ReeStyleIt\NumberClass\Format\Currency;
+use ReeStyleIt\NumberClass\Format\Round;
+use ReeStyleIt\NumberClass\Mathematical\Arithmetic;
+use ReeStyleIt\NumberClass\Mathematical\Geometry;
+use ReeStyleIt\NumberClass\Mathematical\Pythagoras;
+use ReeStyleIt\NumberClass\Mathematical\Trigonometry;
 use ReeStyleIt\NumberClass\Number;
 use ReeStyleIt\NumberClass\Number\Compare;
 
@@ -52,3 +59,52 @@ it('rejects non-numeric stored values on either side of a comparison', function 
         ->and(fn () => new Number(7)->compare->$method(new Number('7')))
         ->toThrow(MustBeNumberException::class, 'Value must be an integer or float.');
 })->with(['equals', 'higherThan', 'lowerThan', 'higherThanOrEqual', 'lowerThanOrEqual']);
+
+it('compares package value objects using their validated numbers', function (string $class) {
+    $other = new $class(7);
+    $comparison = new Compare(7);
+
+    foreach (['equals' => true, 'higherThan' => false, 'lowerThan' => false,
+        'higherThanOrEqual' => true, 'lowerThanOrEqual' => true] as $method => $expected) {
+        expect($comparison->$method($other))->toBe($expected)
+            ->and(fn () => $comparison->$method(new $class('7')))->toThrow(MustBeNumberException::class);
+    }
+
+    expect(new Compare(8)->higherThan($other))->toBeTrue()
+        ->and(new Compare(6)->lowerThan($other))->toBeTrue()
+        ->and($other->get())->toBe(7);
+})->with([
+    Arithmetic::class, Compare::class, Currency::class, Geometry::class,
+    Number::class, Pythagoras::class, Round::class, Time::class, Trigonometry::class,
+]);
+
+it('compares calculation results directly', function () {
+    $result = new Number(3)->add(4);
+
+    expect(new Number(7)->compare->equals($result))->toBeTrue()
+        ->and(new Number(8)->compare->higherThan($result))->toBeTrue()
+        ->and($result->get())->toBe(7);
+});
+
+it('supports strict equality without converting numeric types', function (int|float $value, int|float $other, bool $expected) {
+    $comparison = new Compare($value);
+
+    expect($comparison->equals($other, strict: true))->toBe($expected)
+        ->and($comparison->equals(new Number($other), strict: true))->toBe($expected)
+        ->and($comparison->equals(new Arithmetic($other), strict: true))->toBe($expected);
+})->with([
+    'integers' => [7, 7, true],
+    'floats' => [7.0, 7.0, true],
+    'integer and float' => [7, 7.0, false],
+    'float and integer' => [7.0, 7, false],
+    'different floats' => [7.5, 7.0, false],
+    'zero types' => [0, 0.0, false],
+    'infinity' => [INF, INF, true],
+    'NaN' => [NAN, NAN, false],
+]);
+
+it('validates both operands when using strict equality', function () {
+    expect(fn () => new Compare('7')->equals(7, strict: true))->toThrow(MustBeNumberException::class)
+        ->and(fn () => new Compare(7)->equals(new Arithmetic('7'), strict: true))
+        ->toThrow(MustBeNumberException::class);
+});
