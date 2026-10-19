@@ -129,7 +129,7 @@ class Geometry extends Base
         $this->assertElevation($this->elevation);
         $this->assertElevation($elevation);
 
-        if (!is_finite($radius) || $radius <= 0) {
+        if (! is_finite($radius) || $radius <= 0) {
             throw GeometryException::invalidRadius();
         }
 
@@ -150,28 +150,28 @@ class Geometry extends Base
 
     private function assertElevation(int|float $elevation): void
     {
-        if (!is_finite($elevation)) {
+        if (! is_finite($elevation)) {
             throw GeometryException::invalidElevation();
         }
     }
 
     private function assertLatitude(int|float $latitude): void
     {
-        if (!is_finite($latitude) || $latitude < -90 || $latitude > 90) {
+        if (! is_finite($latitude) || $latitude < -90 || $latitude > 90) {
             throw GeometryException::invalidLatitude();
         }
     }
 
     private function assertLength(int|float $length): void
     {
-        if (!is_finite($length) || $length < 0) {
+        if (! is_finite($length) || $length < 0) {
             throw GeometryException::invalidLength();
         }
     }
 
     private function assertLongitude(int|float $longitude): void
     {
-        if (!is_finite($longitude) || $longitude < -180 || $longitude > 180) {
+        if (! is_finite($longitude) || $longitude < -180 || $longitude > 180) {
             throw GeometryException::invalidLongitude();
         }
     }

@@ -37,7 +37,7 @@ it('compares numeric values and Number instances without changing them', functio
             ->and($number->compare->$method($otherNumber))->toBe($result);
     }
 
-    if (!is_nan($value) && !is_nan($other)) {
+    if (! is_nan($value) && ! is_nan($other)) {
         expect($number->get())->toBe($value)
             ->and($otherNumber->get())->toBe($other);
     }

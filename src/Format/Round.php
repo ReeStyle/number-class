@@ -24,7 +24,7 @@ class Round extends Base
     {
         $this->assertNumber();
 
-        if (!is_finite($multiple) || $multiple <= 0) {
+        if (! is_finite($multiple) || $multiple <= 0) {
             throw MustBePositiveNumberException::multiple();
         }
 

@@ -14,7 +14,7 @@ if ($simulate) {
     require __DIR__ . '/mock-intl-availability.php';
 }
 
-if (class_exists(NumberFormatter::class) && !$simulate) {
+if (class_exists(NumberFormatter::class) && ! $simulate) {
     throw new RuntimeException('This check requires NumberFormatter to be unavailable.');
 }
 
@@ -55,7 +55,7 @@ foreach (Locales::cases() as $locale) {
         throw new RuntimeException('Default symbol does not match the locale: ' . $locale->value);
     }
 
-    if (!in_array($locale->symbolPosition(), ['prefix', 'suffix'], true)) {
+    if (! in_array($locale->symbolPosition(), ['prefix', 'suffix'], true)) {
         throw new RuntimeException('Invalid symbol position for ' . $locale->value);
     }
 }
@@ -64,7 +64,7 @@ try {
     (string) currencyFormatter(7);
     throw new RuntimeException('Full amount formatting must report the missing intl extension.');
 } catch (CurrencyFormattingException $exception) {
-    if (!str_contains($exception->getMessage(), 'intl extension is required')) {
+    if (! str_contains($exception->getMessage(), 'intl extension is required')) {
         throw $exception;
     }
 }

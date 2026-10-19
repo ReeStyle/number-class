@@ -37,7 +37,7 @@ class Arithmetic extends Base
     {
         $this->assertNumber();
 
-        if (!is_int($this->value)) {
+        if (! is_int($this->value)) {
             throw new MustBeIntegerException();
         }
 

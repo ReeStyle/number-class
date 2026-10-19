@@ -4,7 +4,7 @@ use ReeStyleIt\NumberClass\Enums\Locales;
 
 require dirname(__DIR__) . '/vendor/autoload.php';
 
-if (!class_exists(NumberFormatter::class)) {
+if (! class_exists(NumberFormatter::class)) {
     fwrite(STDERR, "The intl extension is required to regenerate the symbol data.\n");
     exit(1);
 }
@@ -40,7 +40,7 @@ foreach (Locales::cases() as $locale) {
 $lines[] = '];';
 $directory = dirname(__DIR__) . '/src/Resources';
 
-if (!is_dir($directory)) {
+if (! is_dir($directory)) {
     mkdir($directory, 0777, true);
 }
 

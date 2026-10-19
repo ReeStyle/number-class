@@ -24,7 +24,7 @@ class Currency extends Base
 
         $currency = $currency instanceof Currencies ? $currency->value : strtoupper($currency);
 
-        if (!preg_match('/^[A-Z]{3}$/D', $currency)) {
+        if (! preg_match('/^[A-Z]{3}$/D', $currency)) {
             throw new InvalidCurrencyCodeException();
         }
 
@@ -50,11 +50,11 @@ class Currency extends Base
     {
         $this->assertNumber();
 
-        if (!is_finite($this->value)) {
+        if (! is_finite($this->value)) {
             throw new MustBeFiniteCurrencyValue();
         }
 
-        if (!class_exists(NumberFormatter::class)) {
+        if (! class_exists(NumberFormatter::class)) {
             throw CurrencyFormattingException::intlRequired();
         }
 

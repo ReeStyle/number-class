@@ -36,13 +36,13 @@ enum Currencies: string
     {
         $locale = $locale instanceof Locales ? $locale->value : $locale;
 
-        if (!class_exists(NumberFormatter::class)) {
+        if (! class_exists(NumberFormatter::class)) {
             return $this->fallbackSymbol($locale);
         }
 
         $formatter = new NumberFormatter($locale, NumberFormatter::CURRENCY);
 
-        if (!$formatter->setTextAttribute(NumberFormatter::CURRENCY_CODE, $this->value)) {
+        if (! $formatter->setTextAttribute(NumberFormatter::CURRENCY_CODE, $this->value)) {
             throw new CurrencySymbolLookupException($formatter->getErrorMessage());
         }
 

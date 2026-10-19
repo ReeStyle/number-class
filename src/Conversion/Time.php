@@ -28,7 +28,7 @@ class Time extends Base
     {
         $this->assertNumber();
 
-        if (!is_finite($this->value) || $this->value < 0) {
+        if (! is_finite($this->value) || $this->value < 0) {
             throw new TimeException();
         }
 

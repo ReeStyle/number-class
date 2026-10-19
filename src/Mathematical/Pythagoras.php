@@ -65,7 +65,7 @@ class Pythagoras extends Base
 
     private function assertLength(int|float $length): void
     {
-        if (!is_finite($length) || $length < 0) {
+        if (! is_finite($length) || $length < 0) {
             throw PythagorasException::invalidLength();
         }
     }
