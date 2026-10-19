@@ -10,6 +10,7 @@ use ReeStyleIt\NumberClass\Financial\CompoundInterest;
 use ReeStyleIt\NumberClass\Format\Currency;
 use ReeStyleIt\NumberClass\Format\Round;
 use ReeStyleIt\NumberClass\Mathematical\Arithmetic;
+use ReeStyleIt\NumberClass\Mathematical\Dimension;
 use ReeStyleIt\NumberClass\Mathematical\Geometry;
 use ReeStyleIt\NumberClass\Mathematical\Pythagoras;
 use ReeStyleIt\NumberClass\Mathematical\Trigonometry;
@@ -65,6 +66,14 @@ abstract class Base
             $this->assertNumber();
 
             return new Currency($this->value);
+        }
+    }
+
+    public Dimension $dimension {
+        get {
+            $this->assertNumber();
+
+            return new Dimension($this->value);
         }
     }
 
@@ -167,6 +176,11 @@ abstract class Base
     public function currency(): Currency
     {
         return $this->currency;
+    }
+
+    public function dimension(): Dimension
+    {
+        return $this->dimension;
     }
 
     public function geometry(int|float|null $latitude = null, int|float $elevation = 0): Geometry

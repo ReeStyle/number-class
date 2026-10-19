@@ -160,6 +160,25 @@ for `leg($otherLeg)`, it is the hypotenuse.
 [Trigonometry reference](docs/Mathematical/Trigonometry.md) ·
 [Pythagoras reference](docs/Mathematical/Pythagoras.md)
 
+### Shape dimensions
+
+```php
+use function ReeStyleIt\NumberClass\dimension;
+
+$rectangle = dimension(3)->rectangle(4);
+$rectangle->area()->get(); // 12
+$rectangle->perimeter()->get(); // 14
+$solid = dimension(3)->cuboid(4, 5);
+$solid->volume()->get(); // 60
+$solid->surface()->get(); // 94
+```
+
+The factory creates readonly rectangle, square, triangle, circle, ellipse, cube, cuboid,
+pyramid, cylinder, cone, and sphere objects. It uses the stored value as the first
+measurement; shared access is available as `number(3)->dimension`.
+
+[Dimension reference](docs/Mathematical/Dimension.md)
+
 ### Time starting points
 
 ```php

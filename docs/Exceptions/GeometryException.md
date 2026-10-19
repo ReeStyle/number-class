@@ -63,3 +63,7 @@ try {
 
 Catch `BaseInvalidArgumentException` instead if handling this alongside other package value
 validation errors. See the [exception index](../README.md#exceptions).
+
+[Dimension](../Mathematical/Dimension.md) shape constructors also raise this exception
+for invalid lengths and impossible triangles. Shape measurements raise it when the
+calculated result is nonfinite.

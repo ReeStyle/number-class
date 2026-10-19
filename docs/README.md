@@ -31,6 +31,7 @@ import them with `use function`. See the [helper reference](helpers.md) for all 
 | [Statistical\Mode](Statistical/Mode.md) | All most frequent sample values |
 | [Number\Compare](Number/Compare.md) | Equality and ordered comparisons |
 | [Mathematical\Arithmetic](Mathematical/Arithmetic.md) | Chainable arithmetic, powers, roots, and remainders |
+| [Mathematical\Dimension](Mathematical/Dimension.md) | Readonly plane and solid shapes with areas, perimeters, surfaces, and volumes |
 | [Mathematical\Geometry](Mathematical/Geometry.md) | Circle and ellipse measurements, and haversine great-circle distances |
 | [Mathematical\Pythagoras](Mathematical/Pythagoras.md) | Hypotenuse and missing leg calculations |
 | [Mathematical\Trigonometry](Mathematical/Trigonometry.md) | Trigonometric functions and angle conversions |

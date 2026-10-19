@@ -16,6 +16,7 @@ Import helpers from `ReeStyleIt\NumberClass` with `use function`.
 | `compoundInterest(mixed $value): CompoundInterest` | [`new CompoundInterest($value)`](Financial/CompoundInterest.md) |
 | `currencyFormatter(mixed $value): Currency` | [`new Currency($value)`](Format/Currency.md) |
 | `diff(DateTimeInterface\|Carbon\|int\|string $from): Diff` | [`new Time\Diff($from)`](Conversion/Time.md) |
+| `dimension(mixed $value): Dimension` | [`new Dimension($value)`](Mathematical/Dimension.md) |
 | `geometry(mixed $value, int|float|null $latitude = null, int|float $elevation = 0): Geometry` | [`new Geometry($value, $latitude, $elevation)`](Mathematical/Geometry.md) |
 | `median(iterable $values): Median` | [`new Median($values)`](Statistical/Median.md) |
 | `mode(iterable $values): Mode` | [`new Mode($values)`](Statistical/Mode.md) |

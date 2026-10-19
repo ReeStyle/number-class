@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Added `Mathematical\Dimension` factory, alphabetized helper and shared accessors,
+  with readonly plane and solid shape classes returning numeric measurements.
+
 - Added readonly `Statistical\BoxPlot`, `Median`, and `Mode` sample calculations,
   alphabetized factory helpers, and `StatisticalException` validation.
 

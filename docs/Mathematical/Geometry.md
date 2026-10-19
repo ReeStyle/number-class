@@ -207,3 +207,6 @@ Convert a completed calculation to work with its distance or measurement. On a g
 point itself, conversion wraps its stored longitude; latitude and elevation are not copied.
 
 See [the shared base API](../Base.md) for numeric validation and storage.
+
+For separate readonly shape objects, use the
+[Dimension factory](Dimension.md), for example `dimension(3)->circle()->area()`.

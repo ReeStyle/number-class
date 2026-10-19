@@ -11,6 +11,7 @@ use ReeStyleIt\NumberClass\Financial\CompoundInterest;
 use ReeStyleIt\NumberClass\Format\Currency;
 use ReeStyleIt\NumberClass\Format\Round;
 use ReeStyleIt\NumberClass\Mathematical\Arithmetic;
+use ReeStyleIt\NumberClass\Mathematical\Dimension;
 use ReeStyleIt\NumberClass\Mathematical\Geometry;
 use ReeStyleIt\NumberClass\Mathematical\Pythagoras;
 use ReeStyleIt\NumberClass\Mathematical\Trigonometry;
@@ -21,6 +22,7 @@ use ReeStyleIt\NumberClass\Statistical\Median;
 use ReeStyleIt\NumberClass\Statistical\Mode;
 
 dataset('helper properties', [
+    'dimension' => ['dimension', Dimension::class],
     'amortization' => ['amortization', Amortization::class],
     'compoundInterest' => ['compoundInterest', CompoundInterest::class],
     'compare' => ['compare', Compare::class],
@@ -35,6 +37,7 @@ dataset('helper properties', [
 ]);
 
 dataset('helper sources', [
+    Dimension::class,
     Amortization::class,
     CompoundInterest::class,
     Arithmetic::class,

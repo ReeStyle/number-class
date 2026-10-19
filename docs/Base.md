@@ -173,3 +173,10 @@ All subclasses of `Base` inherit these accessors. Each access creates a fresh st
 object and preserves the original stored array. Scalar values, iterable objects,
 empty arrays, and arrays containing invalid entries throw `StatisticalException`.
 Standalone statistical constructors and helpers additionally accept other iterables.
+
+## Shape dimensions
+
+`dimension` and `dimension(): Dimension` create a fresh
+[Mathematical\Dimension](Mathematical/Dimension.md) factory from the stored numeric
+value. For example, `number(3)->dimension->rectangle(4)->area()->get()` returns `12`.
+All subclasses of `Base` inherit these accessors.

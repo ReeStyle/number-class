@@ -11,6 +11,7 @@ use ReeStyleIt\NumberClass\Financial\CompoundInterest;
 use ReeStyleIt\NumberClass\Format\Currency;
 use ReeStyleIt\NumberClass\Format\Round;
 use ReeStyleIt\NumberClass\Mathematical\Arithmetic;
+use ReeStyleIt\NumberClass\Mathematical\Dimension;
 use ReeStyleIt\NumberClass\Mathematical\Geometry;
 use ReeStyleIt\NumberClass\Mathematical\Pythagoras;
 use ReeStyleIt\NumberClass\Mathematical\Trigonometry;
@@ -18,6 +19,7 @@ use ReeStyleIt\NumberClass\Number;
 use ReeStyleIt\NumberClass\Number\Compare;
 
 dataset('value classes', [
+    Dimension::class,
     Amortization::class,
     CompoundInterest::class,
     Arithmetic::class,

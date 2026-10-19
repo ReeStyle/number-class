@@ -12,6 +12,7 @@ use ReeStyleIt\NumberClass\Financial\Price;
 use ReeStyleIt\NumberClass\Format\Currency;
 use ReeStyleIt\NumberClass\Format\Round;
 use ReeStyleIt\NumberClass\Mathematical\Arithmetic;
+use ReeStyleIt\NumberClass\Mathematical\Dimension;
 use ReeStyleIt\NumberClass\Mathematical\Geometry;
 use ReeStyleIt\NumberClass\Mathematical\Pythagoras;
 use ReeStyleIt\NumberClass\Mathematical\Trigonometry;
@@ -66,6 +67,13 @@ if (! function_exists(__NAMESPACE__ . '\\diff')) {
     function diff(DateTimeInterface|Carbon|int|string $from): Diff
     {
         return new Diff($from);
+    }
+}
+
+if (! function_exists(__NAMESPACE__ . '\\dimension')) {
+    function dimension(mixed $value): Dimension
+    {
+        return new Dimension($value);
     }
 }
 
