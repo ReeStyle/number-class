@@ -11,6 +11,7 @@ class Amortization extends Calculation
     public function payment(int|float $annualRate, int $periods, int $paymentsPerYear = 12): Number
     {
         $this->assertTerms($annualRate, $periods, $paymentsPerYear);
+
         $rate = $annualRate / $paymentsPerYear;
 
         if ($rate == 0) {
