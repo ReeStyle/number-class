@@ -22,7 +22,7 @@ jobs:
       - uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
-          extensions: bcmath, intl, dom, mbstring, xml, xmlwriter
+          extensions: bcmath, gd, intl, dom, mbstring, xml, xmlwriter
           tools: composer:v2
           coverage: none
       - run: composer install --no-interaction --prefer-dist

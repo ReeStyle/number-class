@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+- Added `Conversion\Ordinal`, the `ordinal()` helper, and shared accessors for ICU-backed
+  localized numeric ordinals, including English, Dutch, French, Spanish, and Italian.
+
+- Added GD box plot rendering with an optional `ext-gd` Composer suggestion; statistical
+  calculations remain available without GD.
+
 - Added `Mathematical\Dimension` factory, alphabetized helper and shared accessors,
   with readonly plane and solid shape classes returning numeric measurements.
 

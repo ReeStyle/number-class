@@ -7,6 +7,7 @@ use RoundingMode;
 use RuntimeException;
 use ReeStyleIt\NumberClass\Exceptions\BaseInvalidArgumentException;
 use ReeStyleIt\NumberClass\Exceptions\BaseRuntimeException;
+use ReeStyleIt\NumberClass\Exceptions\BoxPlotImageException;
 use ReeStyleIt\NumberClass\Exceptions\CurrencyFormattingException;
 use ReeStyleIt\NumberClass\Exceptions\CurrencySymbolLookupException;
 use ReeStyleIt\NumberClass\Exceptions\EmptyLocaleException;
@@ -62,6 +63,7 @@ it('provides default messages for runtime exceptions and their base hierarchy', 
         ->and(fn () => throw $error)->toThrow(RuntimeException::class, $message);
 })->with([
     [BaseRuntimeException::class, 'Runtime error.'],
+    [BoxPlotImageException::class, 'The GD extension is required to render box plot images.'],
     [CurrencySymbolLookupException::class, 'Currency symbol lookup failed.'],
 ]);
 

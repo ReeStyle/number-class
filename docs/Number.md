@@ -120,6 +120,7 @@ so they are also available on every other value class.
 | `currency()` / `$currency` | [Currency](Format/Currency.md) |
 | `geometry(int|float|null $latitude = null, int|float $elevation = 0)` / `$geometry` | [Geometry](Mathematical/Geometry.md); provide latitude for geographic points, using the stored value as longitude |
 | `number()` / `$number` | A fresh `Number` with the same value, inherited from [Base](Base.md) |
+| `ordinal()` / `$ordinal` | [Ordinal](Conversion/Ordinal.md), locale-aware numeric ordinals |
 | `pythagoras()` / `$pythagoras` | [Pythagoras](Mathematical/Pythagoras.md) |
 | `round()` / `$round` | [Round](Format/Round.md) |
 | `time()` / `$time` | [Time](Conversion/Time.md), retaining the stored value and supporting a date starting point |

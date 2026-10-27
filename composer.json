@@ -63,6 +63,7 @@
         ]
     },
     "suggest": {
-        "ext-intl": "Required for full currency amount formatting and ICU-backed currency symbol lookup."
+        "ext-gd": "Optional: render box plot images through BoxPlot::image().",
+        "ext-intl": "Required for ordinal formatting, full currency amount formatting and ICU-backed currency symbol lookup."
     }
 }

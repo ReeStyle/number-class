@@ -54,3 +54,32 @@ nonfinite calculated fences throw [StatisticalException](../Exceptions/Statistic
 
 All `Base` value objects expose `boxPlot` and `boxPlot()` for stored numeric arrays.
 See [statistical accessors](../Base.md#statistical-accessors).
+
+## Image rendering (optional GD extension)
+
+`image(int $width = 800, int $height = 300): GdImage` creates a fresh horizontal box plot
+using the precomputed result. It draws the quartile box, median, whiskers, outlier
+markers, a numeric axis, and a legend. It does not write files or send HTTP headers.
+GD is optional: `ext-gd` appears only in Composer's `suggest` section. Calculation,
+construction, shared accessors, and `get()` continue to work without it.
+
+```php
+use function ReeStyleIt\NumberClass\boxPlot;
+
+$plot = boxPlot([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 25]);
+$image = $plot->image(width: 800, height: 300);
+imagepng($image, 'box-plot.png'); // Requires GD with PNG support.
+```
+
+![Generated box plot with one outlier](box-plot.png)
+
+To serve it directly, send `Content-Type: image/png` before calling `imagepng($image)`.
+The returned GD object can also be used with other GD encoders supported by the local
+installation. Repeated calls return independent images and preserve the readonly
+statistical result.
+
+Image sizes range from 320 × 180 to 4096 × 4096 pixels. Invalid dimensions throw
+`StatisticalException`. If GD or its image creation function is unavailable,
+[BoxPlotImageException](../Exceptions/BoxPlotImageException.md) explains the requirement.
+Allocation failures also use that runtime exception. Singleton and constant samples
+are centered on a single axis tick. Repeated outliers at the same value overlap.

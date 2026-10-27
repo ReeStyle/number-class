@@ -21,6 +21,7 @@ Import helpers from `ReeStyleIt\NumberClass` with `use function`.
 | `median(iterable $values): Median` | [`new Median($values)`](Statistical/Median.md) |
 | `mode(iterable $values): Mode` | [`new Mode($values)`](Statistical/Mode.md) |
 | `number(mixed $value): Number` | [`new Number($value)`](Number.md) |
+| `ordinal(mixed $value): Ordinal` | [`new Ordinal($value)`](Conversion/Ordinal.md) |
 | `price(mixed $value): Price` | [`new Price($value)`](Financial/Price.md) |
 | `pythagoras(mixed $value): Pythagoras` | [`new Pythagoras($value)`](Mathematical/Pythagoras.md) |
 | `round(mixed $value): Round` | [`new Round($value)`](Format/Round.md) |

@@ -24,6 +24,7 @@ import them with `use function`. See the [helper reference](helpers.md) for all 
 | --- | --- |
 | [Base](Base.md) | Shared storage, numeric validation, `number()` / `number`, and `compare()` / `compare` |
 | [Number](Number.md) | Main entry point, arithmetic, type checks, display formatting, and helper accessors |
+| [Conversion\Ordinal](Conversion/Ordinal.md) | Localized numeric ordinals using ICU |
 | [Conversion\Time](Conversion/Time.md) | Starting points from timestamps, date objects, and date strings |
 | [Statistical\BoxPlot](Statistical/BoxPlot.md) | Quartiles, IQR, whiskers, and outliers |
 | [Statistical\BoxPlot\Result](Statistical/BoxPlot.md) | Precomputed readonly box plot results |
@@ -74,7 +75,7 @@ Floating point results follow PHP's native precision and domain behavior.
 | [Enums\Locales](Enums/Locales.md) | Locale identifiers, native currencies, symbols, and symbol positions |
 
 The namespace is `Enums` even though the source directory is named `Enum`.
-Currency amount formatting requires the PHP `intl` extension. Enum metadata and the bundled
+Currency amount formatting and ordinal formatting require the PHP `intl` extension. Enum metadata and the bundled
 currency-symbol fallback can be used without it.
 
 ## Exceptions
@@ -83,6 +84,7 @@ currency-symbol fallback can be used without it.
 | --- | --- |
 | [BaseInvalidArgumentException](Exceptions/BaseInvalidArgumentException.md) | Common parent for argument and value validation errors |
 | [BaseRuntimeException](Exceptions/BaseRuntimeException.md) | Common parent for runtime lookup errors |
+| [BoxPlotImageException](Exceptions/BoxPlotImageException.md) | Missing optional GD rendering support or image allocation failure |
 | [CurrencyFormattingException](Exceptions/CurrencyFormattingException.md) | Missing `intl` or failed amount formatting |
 | [CurrencySymbolLookupException](Exceptions/CurrencySymbolLookupException.md) | Failed ICU symbol lookup |
 | [EmptyLocaleException](Exceptions/EmptyLocaleException.md) | An empty or whitespace-only locale |
@@ -91,8 +93,9 @@ currency-symbol fallback can be used without it.
 | [InvalidCurrencyCodeException](Exceptions/InvalidCurrencyCodeException.md) | A currency code without exactly three ASCII letters |
 | [MustBeFiniteCurrencyValue](Exceptions/MustBeFiniteCurrencyValue.md) | An infinite or NaN currency amount |
 | [MustBeNumberException](Exceptions/MustBeNumberException.md) | A stored value that is neither an integer nor a float |
-| [MustBeIntegerException](Exceptions/MustBeIntegerException.md) | A float stored value used with integer division |
+| [MustBeIntegerException](Exceptions/MustBeIntegerException.md) | A float stored value used with integer division or ordinal formatting |
 | [MustBePositiveNumberException](Exceptions/MustBePositiveNumberException.md) | An invalid root exponent or rounding multiple |
+| [OrdinalFormattingException](Exceptions/OrdinalFormattingException.md) | Missing `intl`, out-of-range integers, or failed ordinal formatting |
 | [PythagorasException](Exceptions/PythagorasException.md) | Invalid right triangle lengths |
 | [RoundingException](Exceptions/RoundingException.md) | An invalid integer rounding mode |
 | [StatisticalException](Exceptions/StatisticalException.md) | Empty or invalid statistical samples and box plot overflow |

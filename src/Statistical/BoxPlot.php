@@ -2,7 +2,9 @@
 
 namespace ReeStyleIt\NumberClass\Statistical;
 
+use GdImage;
 use ReeStyleIt\NumberClass\Exceptions\StatisticalException;
+use ReeStyleIt\NumberClass\Statistical\BoxPlot\Image;
 use ReeStyleIt\NumberClass\Statistical\BoxPlot\Result;
 
 readonly class BoxPlot extends Sample
@@ -73,5 +75,10 @@ readonly class BoxPlot extends Sample
     public function get(): Result
     {
         return $this->result;
+    }
+
+    public function image(int $width = 800, int $height = 300): GdImage
+    {
+        return new Image($this->result)->render($width, $height);
     }
 }

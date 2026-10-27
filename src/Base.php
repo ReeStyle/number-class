@@ -2,6 +2,7 @@
 
 namespace ReeStyleIt\NumberClass;
 
+use ReeStyleIt\NumberClass\Conversion\Ordinal;
 use ReeStyleIt\NumberClass\Conversion\Time;
 use ReeStyleIt\NumberClass\Exceptions\MustBeNumberException;
 use ReeStyleIt\NumberClass\Exceptions\StatisticalException;
@@ -109,6 +110,14 @@ abstract class Base
         }
     }
 
+    public Ordinal $ordinal {
+        get {
+            $this->assertNumber();
+
+            return new Ordinal($this->value);
+        }
+    }
+
     public Pythagoras $pythagoras {
         get {
             $this->assertNumber();
@@ -208,6 +217,11 @@ abstract class Base
     public function number(): Number
     {
         return $this->number;
+    }
+
+    public function ordinal(): Ordinal
+    {
+        return $this->ordinal;
     }
 
     public function pythagoras(): Pythagoras

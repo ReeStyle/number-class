@@ -4,6 +4,7 @@ namespace ReeStyleIt\NumberClass;
 
 use Carbon\Carbon;
 use DateTimeInterface;
+use ReeStyleIt\NumberClass\Conversion\Ordinal;
 use ReeStyleIt\NumberClass\Conversion\Time;
 use ReeStyleIt\NumberClass\Conversion\Time\Diff;
 use ReeStyleIt\NumberClass\Financial\Amortization;
@@ -102,6 +103,13 @@ if (! function_exists(__NAMESPACE__ . '\\number')) {
     function number(mixed $value): Number
     {
         return new Number($value);
+    }
+}
+
+if (! function_exists(__NAMESPACE__ . '\\ordinal')) {
+    function ordinal(mixed $value): Ordinal
+    {
+        return new Ordinal($value);
     }
 }
 

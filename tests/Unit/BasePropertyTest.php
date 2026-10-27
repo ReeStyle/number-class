@@ -3,6 +3,7 @@
 namespace Tests\Unit;
 
 use Error;
+use ReeStyleIt\NumberClass\Conversion\Ordinal;
 use ReeStyleIt\NumberClass\Conversion\Time;
 use ReeStyleIt\NumberClass\Exceptions\MustBeNumberException;
 use ReeStyleIt\NumberClass\Exceptions\StatisticalException;
@@ -33,6 +34,7 @@ dataset('helper properties', [
     'pythagoras' => ['pythagoras', Pythagoras::class],
     'currency' => ['currency', Currency::class],
     'number' => ['number', Number::class],
+    'ordinal' => ['ordinal', Ordinal::class],
     'time' => ['time', Time::class],
 ]);
 
@@ -45,6 +47,7 @@ dataset('helper sources', [
     Currency::class,
     Geometry::class,
     Number::class,
+    Ordinal::class,
     Pythagoras::class,
     Round::class,
     Time::class,

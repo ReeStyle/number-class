@@ -22,7 +22,7 @@ The examples assume Composer's autoloader is loaded; the quick start shows a com
 ## Installation
 
 Requires **PHP 8.4 or later within PHP 8.x**. Install the PHP `intl` extension for full
-currency amount formatting. Other calculations and bundled currency symbol lookup work without it.
+currency amount formatting and localized ordinals. Other calculations and bundled currency symbol lookup work without it.
 
 For a published Packagist release:
 
@@ -241,6 +241,10 @@ Mode returns every tied most-frequent value, or `[]` if no values repeat.
 Stored numeric arrays can also use shared accessors: `number([3, 1, 2])->median->get()`,
 `number([1, 2, 2])->mode->get()`, and `number([1, 2, 3])->boxPlot`.
 
+With the optional GD extension, `$plot->image()` returns a `GdImage` that can be saved
+using `imagepng($plot->image(), 'box-plot.png')`. GD is suggested by Composer and is
+not required for calculations.
+
 [BoxPlot](docs/Statistical/BoxPlot.md) · [Median](docs/Statistical/Median.md) ·
 [Mode](docs/Statistical/Mode.md)
 
@@ -300,6 +304,7 @@ Each value class page includes constructor, method, property, and helper example
 | Class or guide | What it covers |
 | --- | --- |
 | [Number](docs/Number.md) | Main numeric API, type checks, arithmetic, formatting, and helper accessors |
+| [Ordinal](docs/Conversion/Ordinal.md) | Localized numeric ordinals for English, Dutch, French, Spanish, Italian, and other ICU languages |
 | [Time](docs/Conversion/Time.md) | Starting points normalized to Carbon dates with Unix timestamps |
 | [Base](docs/Base.md) | Shared storage, validation, `number()` / `number`, and `compare()` / `compare` |
 | [Arithmetic](docs/Mathematical/Arithmetic.md) | Operators, powers, roots, and remainders |

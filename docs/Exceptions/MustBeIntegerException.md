@@ -39,3 +39,6 @@ try {
 Non-numeric stored values fail the shared type check first with `MustBeNumberException`.
 Zero divisors still throw native `DivisionByZeroError`, and `PHP_INT_MIN / -1` throws
 native `ArithmeticError`. See the [exception index](../README.md#exceptions).
+
+[Ordinal formatting](../Conversion/Ordinal.md) also throws this exception for floats,
+including whole-valued floats such as `1.0`.

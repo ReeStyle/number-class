@@ -33,6 +33,7 @@ such as `geometry(latitude: 52, elevation: 10)` or `currency('USD')`.
 | `currency(): Currency` | `currency` | [Currency](Format/Currency.md) |
 | `geometry(int|float|null $latitude = null, int|float $elevation = 0): Geometry` | `geometry` | [Geometry](Mathematical/Geometry.md) |
 | `number(): Number` | `number` | [Number](Number.md) |
+| `ordinal(): Ordinal` | `ordinal` | [Ordinal](Conversion/Ordinal.md) |
 | `pythagoras(): Pythagoras` | `pythagoras` | [Pythagoras](Mathematical/Pythagoras.md) |
 | `round(): Round` | `round` | [Round](Format/Round.md) |
 | `time(): Time` | `time` | [Time](Conversion/Time.md), retaining the stored value and supporting a date starting point |
