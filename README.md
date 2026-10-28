@@ -91,7 +91,7 @@ use function ReeStyleIt\NumberClass\number;
 
 setDefaultLocale(Locales::NL_NL);
 echo number(21)->ordinal;          // 21ste
-echo number(21)->ordinal->toWords; // eenentwintigste
+echo number(21)->ordinal->wordify; // eenentwintigste
 ```
 
 Per-instance `locale()` settings take precedence. Existing formatter instances keep their locale.

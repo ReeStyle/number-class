@@ -35,7 +35,7 @@ use function ReeStyleIt\NumberClass\number;
 
 Number::setDefaultLocale(Locales::NL_NL);
 echo number(21)->ordinal;          // 21ste
-echo number(21)->ordinal->toWords; // eenentwintigste
+echo number(21)->ordinal->wordify; // eenentwintigste
 
 Number::setDefaultLocale(null); // Restore the original defaults.
 ```

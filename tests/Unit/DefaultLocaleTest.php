@@ -31,9 +31,9 @@ it('shares the default locale across value classes for strings and enums', funct
         ->and(Ordinal::getDefaultLocale())->toBe('nl_NL')
         ->and(Currency::getDefaultLocale())->toBe('nl_NL')
         ->and(new Ordinal(21)->format())->toBe('21ste')
-        ->and(ordinal(21)->toWords)->toBe('eenentwintigste')
+        ->and(ordinal(21)->wordify)->toBe('eenentwintigste')
         ->and(number(21)->ordinal->format())->toBe('21ste')
-        ->and(number(21)->ordinal()->toWords())->toBe('eenentwintigste');
+        ->and(number(21)->ordinal()->wordify())->toBe('eenentwintigste');
 })->with(['nl_NL', Locales::NL_NL]);
 
 it('applies the default locale to currency formatting and default symbol lookup', function () {
@@ -60,7 +60,7 @@ it('preserves existing instances and allows local overrides', function () {
 
     expect($existing->format())->toBe('1st')
         ->and($dutch->format())->toBe('1ste')
-        ->and($dutch->locale('it')->toWords)->toBe('primo')
+        ->and($dutch->locale('it')->wordify)->toBe('primo')
         ->and((string) $currency)->toBe('$7.00')
         ->and($dutch->ordinal->format())->toBe('1er')
         ->and(ordinal(1)->locale('en_US')->format())->toBe('1st');

@@ -18,9 +18,9 @@ ordinal(2)->locale('es_ES')->format();             // '2.º'
 ordinal(3)->locale(Locales::IT_IT)->format();       // '3º'
 echo number(20)->add(1)->ordinal;                  // 21st
 echo number(2)->ordinal()->locale('fr_FR');        // 2e
-ordinal(21)->toWords();                           // 'twenty-first'
-ordinal(21)->locale('nl')->toWords();             // 'eenentwintigste'
-number(21)->ordinal->toWords;                     // 'twenty-first'
+ordinal(21)->wordify();                           // 'twenty-first'
+ordinal(21)->locale('nl')->wordify();             // 'eenentwintigste'
+number(21)->ordinal->wordify;                     // 'twenty-first'
 ```
 
 | Member | Behavior |
@@ -29,8 +29,8 @@ number(21)->ordinal->toWords;                     // 'twenty-first'
 | `locale(Locales|string $locale): self` | Configures the same formatter and returns it |
 | `public string $locale` | Global default captured at construction, or `en_US` |
 | `format(): string` | Returns the localized numeric ordinal |
-| `toWords(): string` | Returns the ordinal spelled out in the configured locale |
-| `public string $toWords` | Read-only property equivalent of `toWords()` |
+| `wordify(): string` | Returns the ordinal spelled out in the configured locale |
+| `public string $wordify` | Read-only property equivalent of `wordify()` |
 | `__toString(): string` | Calls `format()`, allowing `echo` or a string cast |
 | `get(): mixed` | Returns the original, unformatted value |
 
@@ -64,13 +64,13 @@ create a fresh formatter containing the original value, with the global default 
 
 ## Ordinal words
 
-`toWords()` and the read-only `toWords` property are available only on `Ordinal`,
-including through `number(21)->ordinal->toWords`. Each property access converts the
+`wordify()` and the read-only `wordify` property are available only on `Ordinal`,
+including through `number(21)->ordinal->wordify`. Each property access converts the
 value using the current locale, just like calling the method.
 It uses the configured locale and leaves the raw value, numeric formatting, and string cast unchanged.
 `Ordinal` delegates word conversion to the separate internal class
 `ReeStyleIt\NumberClass\Conversion\Ordinal\Words`, after validating the value and locale.
-There is no separate word converter helper or shared `toWords()` accessor.
+There is no separate word converter helper or shared `wordify()` accessor.
 
 | Locale | Value | Words |
 | --- | --- | --- |
@@ -85,4 +85,4 @@ language has gendered forms. It removes optional soft hyphens from the output. D
 is rendered as `nulde`, matching the numeric `0de` exception.
 The same integer validation, range, locale checks, and `intl` requirement apply as for `format()`.
 If ICU does not provide a generic or masculine ordinal word ruleset for the locale,
-`toWords()` throws `OrdinalFormattingException` rather than returning cardinal words.
+`wordify()` throws `OrdinalFormattingException` rather than returning cardinal words.

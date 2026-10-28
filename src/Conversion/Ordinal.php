@@ -16,9 +16,9 @@ class Ordinal extends Base
 {
     public string $locale = 'en_US';
 
-    public string $toWords {
+    public string $wordify {
         get {
-            return $this->toWords();
+            return $this->wordify();
         }
     }
 
@@ -68,7 +68,7 @@ class Ordinal extends Base
         return $result;
     }
 
-    public function toWords(): string
+    public function wordify(): string
     {
         $this->assertFormattable();
 
