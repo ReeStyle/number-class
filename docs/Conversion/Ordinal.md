@@ -64,13 +64,14 @@ create a fresh formatter containing the original value, with the global default 
 
 ## Ordinal words
 
-`wordify()` and the read-only `wordify` property are available only on `Ordinal`,
+`Ordinal::wordify()` and the read-only `wordify` property spell ordinal words,
 including through `number(21)->ordinal->wordify`. Each property access converts the
 value using the current locale, just like calling the method.
 It uses the configured locale and leaves the raw value, numeric formatting, and string cast unchanged.
 `Ordinal` delegates word conversion to the separate internal class
-`ReeStyleIt\NumberClass\Conversion\Ordinal\Words`, after validating the value and locale.
-There is no separate word converter helper or shared `wordify()` accessor.
+`ReeStyleIt\NumberClass\Conversion\Ordinal\Wordify`, after validating the value and locale.
+There is no separate word converter helper or shared `wordify()` accessor on `Base`.
+For cardinal words such as `twenty-one`, use [Number::wordify()](../Number.md#numbers-as-words).
 
 | Locale | Value | Words |
 | --- | --- | --- |

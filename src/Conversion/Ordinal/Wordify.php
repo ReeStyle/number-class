@@ -8,7 +8,7 @@ use NumberFormatter;
 use ReeStyleIt\NumberClass\Exceptions\OrdinalFormattingException;
 
 /** @internal Converts values already validated by the parent Ordinal class. */
-readonly class Words
+readonly class Wordify
 {
     public function __construct(private int $value, private string $locale) {}
 

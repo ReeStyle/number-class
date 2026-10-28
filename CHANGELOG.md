@@ -2,11 +2,14 @@
 
 ## Unreleased
 
+- Added cardinal word conversion through `Number::wordify()` and its read-only property,
+  backed by `Number\Wordify`; renamed `Conversion\Ordinal\Words` to `Conversion\Ordinal\Wordify`.
+
 - Added a shared default locale through `Base::setDefaultLocale()` / `Number::setDefaultLocale()`,
   used by new ordinal and currency formatters and default currency symbol lookup.
 
 - Added `Ordinal::wordify()` for localized ordinal words, delegated to the separate internal
-  `Conversion\Ordinal\Words` class and available only through the ordinal class.
+  `Conversion\Ordinal\Wordify` class and available only through the ordinal class.
 
 - Added `Conversion\Ordinal`, the `ordinal()` helper, and shared accessors for ICU-backed
   localized numeric ordinals, including English, Dutch, French, Spanish, and Italian.

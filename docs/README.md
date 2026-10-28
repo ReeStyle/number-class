@@ -95,6 +95,7 @@ currency-symbol fallback can be used without it.
 | [MustBeNumberException](Exceptions/MustBeNumberException.md) | A stored value that is neither an integer nor a float |
 | [MustBeIntegerException](Exceptions/MustBeIntegerException.md) | A float stored value used with integer division or ordinal formatting |
 | [MustBePositiveNumberException](Exceptions/MustBePositiveNumberException.md) | An invalid root exponent or rounding multiple |
+| [NumberFormattingException](Exceptions/NumberFormattingException.md) | Invalid word conversion values, missing `intl`, or failed cardinal word conversion |
 | [OrdinalFormattingException](Exceptions/OrdinalFormattingException.md) | Missing `intl`, out-of-range integers, or failed ordinal formatting |
 | [PythagorasException](Exceptions/PythagorasException.md) | Invalid right triangle lengths |
 | [RoundingException](Exceptions/RoundingException.md) | An invalid integer rounding mode |

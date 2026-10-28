@@ -6,7 +6,7 @@ use IntlException;
 use Locale;
 use NumberFormatter;
 use ReeStyleIt\NumberClass\Base;
-use ReeStyleIt\NumberClass\Conversion\Ordinal\Words;
+use ReeStyleIt\NumberClass\Conversion\Ordinal\Wordify;
 use ReeStyleIt\NumberClass\Enums\Locales;
 use ReeStyleIt\NumberClass\Exceptions\EmptyLocaleException;
 use ReeStyleIt\NumberClass\Exceptions\MustBeIntegerException;
@@ -72,7 +72,7 @@ class Ordinal extends Base
     {
         $this->assertFormattable();
 
-        return new Words($this->value, $this->locale)->format();
+        return new Wordify($this->value, $this->locale)->format();
     }
 
     public function __toString(): string

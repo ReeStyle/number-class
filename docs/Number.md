@@ -182,3 +182,30 @@ $viaProperty = $value->number->multiply(2)->get(); // 12
 ```
 
 See [the shared base API](Base.md) for numeric validation and storage.
+
+## Numbers as words
+
+`wordify(Locales|string|null $locale = null): string` spells out the stored number as
+cardinal words. The read-only `wordify` property calls the method without a locale override.
+The separate internal `ReeStyleIt\NumberClass\Number\Wordify` class performs conversion.
+
+```php
+use function ReeStyleIt\NumberClass\number;
+
+number(21)->wordify;                // 'twenty-one'
+number(21)->wordify('nl');          // 'eenentwintig'
+number(1.25)->wordify('en');         // 'one point two five'
+number(21)->ordinal->wordify;       // 'twenty-first'
+number(20)->add(1)->number->wordify; // 'twenty-one'
+```
+
+Without an explicit locale, conversion uses the current [global locale](Base.md#global-default-locale),
+or `en_US` when no global override is set. Explicit locales can be strings or `Locales` cases.
+The PHP `intl` extension is required. ICU controls spelling, grammatical form, and decimal
+wording; optional soft hyphens are removed from the returned text. Floating point inputs
+follow native precision. Stored values remain unchanged.
+
+Values must be finite integers or floats within `Number::MIN_SAFE_INTEGER` and
+`Number::MAX_SAFE_INTEGER`. Non-numeric inputs throw `MustBeNumberException`, blank
+locales throw `EmptyLocaleException`, and nonfinite or out-of-range values, missing `intl`,
+and ICU failures throw [NumberFormattingException](Exceptions/NumberFormattingException.md).

@@ -2,10 +2,20 @@
 
 namespace ReeStyleIt\NumberClass;
 
+use ReeStyleIt\NumberClass\Enums\Locales;
+use ReeStyleIt\NumberClass\Exceptions\EmptyLocaleException;
+use ReeStyleIt\NumberClass\Exceptions\NumberFormattingException;
 use ReeStyleIt\NumberClass\Mathematical\Arithmetic;
+use ReeStyleIt\NumberClass\Number\Wordify;
 
 class Number extends Base
 {
+    public string $wordify {
+        get {
+            return $this->wordify();
+        }
+    }
+
     public function abs(): Arithmetic
     {
         return $this->arithmetic->abs();
@@ -105,5 +115,27 @@ class Number extends Base
     public function subtract(int|float $amount = 1): Arithmetic
     {
         return $this->arithmetic->subtract($amount);
+    }
+
+    public function wordify(Locales|string|null $locale = null): string
+    {
+        $this->assertNumber();
+
+        if (! is_finite($this->value)) {
+            throw NumberFormattingException::mustBeFinite();
+        }
+
+        if ($this->value < self::MIN_SAFE_INTEGER || $this->value > self::MAX_SAFE_INTEGER) {
+            throw NumberFormattingException::outOfRange(self::MIN_SAFE_INTEGER, self::MAX_SAFE_INTEGER);
+        }
+
+        $locale ??= self::getDefaultLocale() ?? 'en_US';
+        $locale = $locale instanceof Locales ? $locale->value : $locale;
+
+        if (trim($locale) === '') {
+            throw new EmptyLocaleException();
+        }
+
+        return new Wordify($this->value, $locale)->format();
     }
 }
