@@ -80,6 +80,9 @@ currency-symbol fallback can be used without it.
 
 ## Exceptions
 
+All library-defined exceptions implement [NumberException](Contracts/NumberException.md).
+Use `catch (NumberException $exception)` to handle both validation and runtime failures.
+
 | Class | Raised for / purpose |
 | --- | --- |
 | [BaseInvalidArgumentException](Exceptions/BaseInvalidArgumentException.md) | Common parent for argument and value validation errors |

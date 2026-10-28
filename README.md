@@ -342,6 +342,23 @@ Comparisons return booleans, display formatting returns strings, and calculation
 objects. Division and remainder by zero throw PHP's `DivisionByZeroError`.
 Calculations use native PHP integers and floats, including their precision and range limits.
 
+## Error handling
+
+Catch all library-defined exceptions using the shared `NumberException` interface:
+
+```php
+use ReeStyleIt\NumberClass\Contracts\NumberException;
+use function ReeStyleIt\NumberClass\number;
+
+try {
+    number('invalid')->add(1);
+} catch (NumberException $exception) {
+    echo $exception->getMessage();
+}
+```
+
+See [exception handling](docs/Contracts/NumberException.md) for details.
+
 ## Development
 
 ```bash

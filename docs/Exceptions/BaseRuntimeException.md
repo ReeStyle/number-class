@@ -51,3 +51,6 @@ Inherited PHP exception methods include `getMessage()`, `getCode()`, `getPreviou
 `getFile()`, `getLine()`, `getTrace()`, `getTraceAsString()`, and `__toString()`.
 See the [helper reference](../helpers.md) and [exception index](../README.md#exceptions).
 
+
+This class implements [NumberException](../Contracts/NumberException.md), allowing integrations to catch
+all library-defined exceptions through that interface.

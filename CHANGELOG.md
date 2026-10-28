@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Added the `Contracts\NumberException` interface, implemented by both exception base classes,
+  so integrations can catch all library-defined exceptions with one catch clause.
+
 - Added cardinal word conversion through `Number::wordify()` and its read-only property,
   backed by `Number\Wordify`; renamed `Conversion\Ordinal\Words` to `Conversion\Ordinal\Wordify`.
 

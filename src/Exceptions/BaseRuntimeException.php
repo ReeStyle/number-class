@@ -4,8 +4,9 @@ namespace ReeStyleIt\NumberClass\Exceptions;
 
 use RuntimeException;
 use Throwable;
+use ReeStyleIt\NumberClass\Contracts\NumberException;
 
-class BaseRuntimeException extends RuntimeException
+class BaseRuntimeException extends RuntimeException implements NumberException
 {
     protected const string DEFAULT_MESSAGE = 'Runtime error.';
 

@@ -4,8 +4,9 @@ namespace ReeStyleIt\NumberClass\Exceptions;
 
 use InvalidArgumentException;
 use Throwable;
+use ReeStyleIt\NumberClass\Contracts\NumberException;
 
-class BaseInvalidArgumentException extends InvalidArgumentException
+class BaseInvalidArgumentException extends InvalidArgumentException implements NumberException
 {
     protected const string DEFAULT_MESSAGE = 'Invalid argument.';
 
