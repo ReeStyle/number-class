@@ -6,6 +6,7 @@ use IntlException;
 use Locale;
 use NumberFormatter;
 use ReeStyleIt\NumberClass\Base;
+use ReeStyleIt\NumberClass\Conversion\Ordinal\Words;
 use ReeStyleIt\NumberClass\Enums\Locales;
 use ReeStyleIt\NumberClass\Exceptions\EmptyLocaleException;
 use ReeStyleIt\NumberClass\Exceptions\MustBeIntegerException;
@@ -14,6 +15,19 @@ use ReeStyleIt\NumberClass\Exceptions\OrdinalFormattingException;
 class Ordinal extends Base
 {
     public string $locale = 'en_US';
+
+    public string $toWords {
+        get {
+            return $this->toWords();
+        }
+    }
+
+    public function __construct(mixed $value)
+    {
+        parent::__construct($value);
+
+        $this->locale = self::getDefaultLocale() ?? $this->locale;
+    }
 
     public function locale(Locales|string $locale): self
     {
@@ -30,24 +44,7 @@ class Ordinal extends Base
 
     public function format(): string
     {
-        $this->assertNumber();
-
-        if (! is_int($this->value)) {
-            throw new MustBeIntegerException();
-        }
-
-        // ICU's rule-based formatter uses doubles internally for ordinal rules.
-        if ($this->value < -9007199254740991 || $this->value > 9007199254740991) {
-            throw new OrdinalFormattingException('Value must be between -9007199254740991 and 9007199254740991.');
-        }
-
-        if (trim($this->locale) === '') {
-            throw new EmptyLocaleException();
-        }
-
-        if (! class_exists(NumberFormatter::class)) {
-            throw OrdinalFormattingException::intlRequired();
-        }
+        $this->assertFormattable();
 
         try {
             $formatter = new NumberFormatter($this->locale, NumberFormatter::ORDINAL);
@@ -62,7 +59,7 @@ class Ordinal extends Base
 
         if (Locale::getPrimaryLanguage($this->locale) === 'nl') {
             $ending = abs($this->value % 100);
-            $suffix = $ending === 0 || $ending === 1 || $ending === 8 || $ending >= 20 ? 'ste' : 'de';
+            $suffix = $this->value !== 0 && ($ending === 0 || $ending === 1 || $ending === 8 || $ending >= 20) ? 'ste' : 'de';
 
             // ICU abbreviates Dutch ordinals with "e"; expose the full suffix.
             return preg_replace('/e$/D', $suffix, $result);
@@ -71,8 +68,37 @@ class Ordinal extends Base
         return $result;
     }
 
+    public function toWords(): string
+    {
+        $this->assertFormattable();
+
+        return new Words($this->value, $this->locale)->format();
+    }
+
     public function __toString(): string
     {
         return $this->format();
+    }
+
+    private function assertFormattable(): void
+    {
+        $this->assertNumber();
+
+        if (! is_int($this->value)) {
+            throw new MustBeIntegerException();
+        }
+
+        // ICU's rule-based formatter uses doubles internally for ordinal rules.
+        if ($this->value < self::MIN_SAFE_INTEGER || $this->value > self::MAX_SAFE_INTEGER) {
+            throw OrdinalFormattingException::outOfRange(self::MIN_SAFE_INTEGER, self::MAX_SAFE_INTEGER);
+        }
+
+        if (trim($this->locale) === '') {
+            throw new EmptyLocaleException();
+        }
+
+        if (! class_exists(NumberFormatter::class)) {
+            throw OrdinalFormattingException::intlRequired();
+        }
     }
 }

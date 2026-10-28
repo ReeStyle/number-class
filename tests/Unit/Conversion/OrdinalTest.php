@@ -37,7 +37,7 @@ it('formats ordinals in common languages using locale strings and enums', functi
 it('uses full Dutch ordinal suffixes across hundreds and locale variants', function (int $value, string $expected, Locales|string $locale) {
     expect(ordinal($value)->locale($locale)->format())->toBe($expected);
 })->with([
-    [0, '0ste'], [1, '1ste'], [2, '2de'], [3, '3de'], [4, '4de'],
+    [0, '0de'], [1, '1ste'], [2, '2de'], [3, '3de'], [4, '4de'],
     [7, '7de'], [8, '8ste'], [9, '9de'], [10, '10de'], [11, '11de'],
     [12, '12de'], [18, '18de'], [19, '19de'], [20, '20ste'],
     [21, '21ste'], [22, '22ste'], [31, '31ste'], [41, '41ste'], [99, '99ste'],
@@ -59,21 +59,21 @@ it('preserves values while configuring the formatter and accessing it from calcu
         ->and($formatter->number->add(1)->ordinal->format())->toBe('22nd');
 });
 
-it('rejects non-numeric stored values when formatting', function (mixed $value) {
-    expect(fn () => ordinal($value)->format())->toThrow(MustBeNumberException::class);
-})->with([['1'], [true], [null], [[]], [new \stdClass()]]);
+it('rejects non-numeric stored values when formatting', function (mixed $value, string $method) {
+    expect(fn () => ordinal($value)->$method())->toThrow(MustBeNumberException::class);
+})->with([['1'], [true], [null], [[]], [new \stdClass()]])->with(['format', 'toWords']);
 
-it('rejects floating point values rather than rounding them', function (float $value) {
-    expect(fn () => ordinal($value)->format())->toThrow(MustBeIntegerException::class);
-})->with([1.0, 1.5, INF, -INF, NAN]);
+it('rejects floating point values rather than rounding them', function (float $value, string $method) {
+    expect(fn () => ordinal($value)->$method())->toThrow(MustBeIntegerException::class);
+})->with([1.0, 1.5, INF, -INF, NAN])->with(['format', 'toWords']);
 
-it('rejects integers beyond the exact ICU ordinal range', function (int $value) {
-    expect(fn () => ordinal($value)->format())->toThrow(OrdinalFormattingException::class);
-})->with([9007199254740992, -9007199254740992, PHP_INT_MAX, PHP_INT_MIN]);
+it('rejects integers beyond the exact ICU ordinal range', function (int $value, string $method) {
+    expect(fn () => ordinal($value)->$method())->toThrow(OrdinalFormattingException::class);
+})->with([Ordinal::MAX_SAFE_INTEGER + 1, Ordinal::MIN_SAFE_INTEGER - 1, PHP_INT_MAX, PHP_INT_MIN])->with(['format', 'toWords']);
 
 it('formats integers at the exact ICU range boundaries', function () {
-    expect(ordinal(9007199254740991)->format())->toBe('9,007,199,254,740,991st')
-        ->and(ordinal(-9007199254740991)->format())->toBe('−9,007,199,254,740,991st');
+    expect(ordinal(Ordinal::MAX_SAFE_INTEGER)->format())->toBe('9,007,199,254,740,991st')
+        ->and(ordinal(Ordinal::MIN_SAFE_INTEGER)->format())->toBe('−9,007,199,254,740,991st');
 });
 
 it('rejects empty locales through both public configuration entry points', function (string $locale) {
@@ -84,14 +84,52 @@ it('rejects empty locales through both public configuration entry points', funct
 
     $formatter->locale = $locale;
 
-    expect(fn () => $formatter->format())->toThrow(EmptyLocaleException::class);
+    expect(fn () => $formatter->format())->toThrow(EmptyLocaleException::class)
+        ->and(fn () => $formatter->toWords())->toThrow(EmptyLocaleException::class);
 })->with(['', ' ', "\t\n"]);
 
-it('reports the optional intl dependency when it is unavailable', function () {
+it('reports the optional intl dependency when it is unavailable', function (string $method) {
     $command = escapeshellarg(PHP_BINARY) . ' -n '
-        . escapeshellarg(dirname(__DIR__, 2) . '/fixtures/ordinal-without-intl.php');
+        . escapeshellarg(dirname(__DIR__, 2) . '/fixtures/ordinal-without-intl.php') . ' ' . escapeshellarg($method);
     exec($command, $output, $exitCode);
 
     expect($exitCode)->toBe(0)
         ->and(implode("\n", $output))->toBe('Ordinal formatting failed: The intl extension is required for ordinal formatting.');
+})->with(['format', 'toWords']);
+
+it('converts ordinal values to words in the configured language', function (Locales|string $locale, int $value, string $expected) {
+    $formatter = ordinal($value)->locale($locale);
+
+    expect($formatter->toWords())->toBe($expected)
+        ->and($formatter->toWords)->toBe($expected);
+})->with([
+    ['en', 0, 'zeroth'], ['en', 1, 'first'], ['en', 2, 'second'],
+    ['en', 3, 'third'], ['en', 11, 'eleventh'], ['en', 21, 'twenty-first'],
+    ['en', -21, 'minus twenty-first'],
+    ['nl', 0, 'nulde'], [Locales::NL_NL, 1, 'eerste'], ['nl', 2, 'tweede'],
+    ['nl', 8, 'achtste'], ['nl', 11, 'elfde'], [Locales::NL_BE, 21, 'eenentwintigste'],
+    ['nl-NL', 31, 'eenendertigste'], ['nl', -11, 'min elfde'],
+    [Locales::FR_FR, 1, 'premier'], ['fr', 2, 'deuxième'], ['fr', 21, 'vingt-et-unième'],
+    [Locales::ES_ES, 1, 'primero'], ['es', 2, 'segundo'], ['es', 21, 'vigésimo primero'],
+    [Locales::IT_IT, 1, 'primo'], ['it', 2, 'secondo'], ['it', 21, 'ventunesimo'],
+    ['de', 2, 'zweite'], ['pt', 2, 'segundo'],
+]);
+
+it('keeps word conversion on the ordinal class and preserves numeric formatting', function () {
+    $source = number(20)->add(1);
+    $formatter = $source->ordinal->locale('nl');
+
+    expect($formatter->toWords())->toBe('eenentwintigste')
+        ->and($formatter->format())->toBe('21ste')
+        ->and((string) $formatter)->toBe('21ste')
+        ->and($formatter->get())->toBe(21)
+        ->and($formatter->locale)->toBe('nl')
+        ->and($source->get())->toBe(21)
+        ->and(method_exists($source, 'toWords'))->toBeFalse()
+        ->and(function_exists('ReeStyleIt\\NumberClass\\toWords'))->toBeFalse();
+});
+
+it('reports locales without a supported ordinal word ruleset', function () {
+    expect(fn () => ordinal(1)->locale('ko')->toWords())
+        ->toThrow(OrdinalFormattingException::class, 'Ordinal words are not supported for locale ko.');
 });

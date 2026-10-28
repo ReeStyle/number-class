@@ -69,4 +69,12 @@ try {
     }
 }
 
+\ReeStyleIt\NumberClass\Base::setDefaultLocale(Locales::EN_CA);
+
+if (Currencies::CAD->symbol() !== '$' || Currencies::CAD->symbol(Locales::EN_US) !== 'CAD') {
+    throw new RuntimeException('Global locale and explicit overrides must apply without intl.');
+}
+
+\ReeStyleIt\NumberClass\Base::setDefaultLocale(null);
+
 echo "Currency symbol fallback checks passed.\n";

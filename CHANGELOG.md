@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+- Added a shared default locale through `Base::setDefaultLocale()` / `Number::setDefaultLocale()`,
+  used by new ordinal and currency formatters and default currency symbol lookup.
+
+- Added `Ordinal::toWords()` for localized ordinal words, delegated to the separate internal
+  `Conversion\Ordinal\Words` class and available only through the ordinal class.
+
 - Added `Conversion\Ordinal`, the `ordinal()` helper, and shared accessors for ICU-backed
   localized numeric ordinals, including English, Dutch, French, Spanish, and Italian.
 

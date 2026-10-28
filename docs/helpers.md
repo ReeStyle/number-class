@@ -25,6 +25,7 @@ Import helpers from `ReeStyleIt\NumberClass` with `use function`.
 | `price(mixed $value): Price` | [`new Price($value)`](Financial/Price.md) |
 | `pythagoras(mixed $value): Pythagoras` | [`new Pythagoras($value)`](Mathematical/Pythagoras.md) |
 | `round(mixed $value): Round` | [`new Round($value)`](Format/Round.md) |
+| `setDefaultLocale(Locales|string|null $locale): void` | [Sets or clears the global locale](Base.md#global-default-locale) |
 | `time(mixed $value = 0): Time` | [`new Time($value)`](Conversion/Time.md) |
 | `toPct(int\|float\|string $value, bool $exact = false): float\|string` | Divides by 100; exact mode uses BCMath and returns a decimal string |
 | `trigonometry(mixed $value): Trigonometry` | [`new Trigonometry($value)`](Mathematical/Trigonometry.md) |
@@ -99,3 +100,15 @@ toPct('15.123456789123456789', exact: true); // '0.15123456789123456789'
 The `boxPlot()`, `median()`, and `mode()` helpers accept iterable samples and validate
 them immediately. They return readonly statistical objects; call `get()` for the readonly box plot result,
 median value, or mode list. Samples must be non-empty finite integers or floats.
+
+Set the package-wide locale with the configuration helper:
+
+```php
+use ReeStyleIt\NumberClass\Enums\Locales;
+use function ReeStyleIt\NumberClass\setDefaultLocale;
+
+setDefaultLocale(Locales::NL_NL); // Also accepts a locale string.
+setDefaultLocale(null);          // Restore the original defaults.
+```
+
+This delegates to `Base::setDefaultLocale()` and applies the same validation.

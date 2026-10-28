@@ -16,6 +16,13 @@ class Currency extends Base
     public string $currencyCode = 'EUR';
     public string $locale = 'nl_NL';
 
+    public function __construct(mixed $value)
+    {
+        parent::__construct($value);
+
+        $this->locale = self::getDefaultLocale() ?? $this->locale;
+    }
+
     public function currency(Currencies|string|null $currency = null): self
     {
         if ($currency === null) {

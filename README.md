@@ -80,6 +80,24 @@ Examples prefer the property form; use methods when passing configuration argume
 For geographic points, pass starting latitude and
 optional elevation to `geometry()`; the stored number supplies longitude.
 
+## Global locale
+
+Set the default locale once for new ordinal and currency formatters, and currency symbol lookup:
+
+```php
+use ReeStyleIt\NumberClass\Enums\Locales;
+use function ReeStyleIt\NumberClass\setDefaultLocale;
+use function ReeStyleIt\NumberClass\number;
+
+setDefaultLocale(Locales::NL_NL);
+echo number(21)->ordinal;          // 21ste
+echo number(21)->ordinal->toWords; // eenentwintigste
+```
+
+Per-instance `locale()` settings take precedence. Existing formatter instances keep their locale.
+Use `setDefaultLocale(null)` to restore the original defaults.
+See [global locale configuration](docs/Base.md#global-default-locale).
+
 ## Examples
 
 ### Arithmetic, comparisons, and rounding

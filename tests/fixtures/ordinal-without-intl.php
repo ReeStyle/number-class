@@ -11,7 +11,8 @@ namespace {
     require __DIR__ . '/../../vendor/autoload.php';
 
     try {
-        echo new \ReeStyleIt\NumberClass\Conversion\Ordinal(1)->format();
+        $method = $argv[1] ?? 'format';
+        echo new \ReeStyleIt\NumberClass\Conversion\Ordinal(1)->$method();
         exit(1);
     } catch (\ReeStyleIt\NumberClass\Exceptions\OrdinalFormattingException $exception) {
         echo $exception->getMessage();

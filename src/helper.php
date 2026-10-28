@@ -7,6 +7,7 @@ use DateTimeInterface;
 use ReeStyleIt\NumberClass\Conversion\Ordinal;
 use ReeStyleIt\NumberClass\Conversion\Time;
 use ReeStyleIt\NumberClass\Conversion\Time\Diff;
+use ReeStyleIt\NumberClass\Enums\Locales;
 use ReeStyleIt\NumberClass\Financial\Amortization;
 use ReeStyleIt\NumberClass\Financial\CompoundInterest;
 use ReeStyleIt\NumberClass\Financial\Price;
@@ -131,6 +132,13 @@ if (! function_exists(__NAMESPACE__ . '\\round')) {
     function round(mixed $value): Round
     {
         return new Round($value);
+    }
+}
+
+if (! function_exists(__NAMESPACE__ . '\\setDefaultLocale')) {
+    function setDefaultLocale(Locales|string|null $locale): void
+    {
+        Base::setDefaultLocale($locale);
     }
 }
 

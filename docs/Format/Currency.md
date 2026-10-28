@@ -33,7 +33,7 @@ the label and display rules; it does not convert the amount using an exchange ra
 | Member | Default / behavior |
 | --- | --- |
 | `public string $currencyCode` | `'EUR'` |
-| `public string $locale` | `'nl_NL'` |
+| `public string $locale` | Global default captured at construction, or `'nl_NL'` |
 | `currency(Currencies|string|null $currency = null): self` | With a code, configure and return the same formatter; without a code, create a fresh formatter |
 | `locale(Locales|string $locale): self` | Set the locale identifier and return the same formatter |
 
@@ -123,3 +123,7 @@ $viaProperty = $value->number->format(2); // '12.50'
 Conversion uses the raw amount; locale, currency configuration, and formatted text are not copied.
 
 See [the shared base API](../Base.md) for numeric validation and storage.
+
+New formatters use the [global default locale](../Base.md#global-default-locale), if set.
+Configure it with `Number::setDefaultLocale(Locales::EN_US)`. Per-instance `locale()` calls
+continue to override it; setting a global locale does not change the currency code.

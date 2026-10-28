@@ -10,6 +10,8 @@ It supplies storage and shared numeric validation; instantiate a concrete class 
 
 | Member | Behavior |
 | --- | --- |
+| `public const int MAX_SAFE_INTEGER` | `9007199254740991`: upper bound of the range where every integer is exactly representable as an IEEE 754 double |
+| `public const int MIN_SAFE_INTEGER` | `-9007199254740991`: matching lower bound |
 | `__construct(mixed $value)` | Stores the required value without converting or validating it |
 | `public readonly mixed $value` | Reads the originally stored value; it cannot be reassigned |
 | `get(): mixed` | Returns the stored value without formatting or conversion |
@@ -19,7 +21,42 @@ It supplies storage and shared numeric validation; instantiate a concrete class 
 | `public Number $number` | Read-only property accessor for `number()` |
 | `protected assertNumber(): void` | Throws `MustBeNumberException` unless the value is an `int` or `float` |
 
+## Global default locale
+
+Call `Base::setDefaultLocale(Locales|string|null $locale)` once during application setup.
+The inherited `Number::setDefaultLocale()` method and namespaced `setDefaultLocale()` helper
+configure the same package-wide setting.
+`getDefaultLocale(): ?string` reads the override; `null` means each formatter uses its original default.
+
+```php
+use ReeStyleIt\NumberClass\Number;
+use ReeStyleIt\NumberClass\Enums\Locales;
+use function ReeStyleIt\NumberClass\number;
+
+Number::setDefaultLocale(Locales::NL_NL);
+echo number(21)->ordinal;          // 21ste
+echo number(21)->ordinal->toWords; // eenentwintigste
+
+Number::setDefaultLocale(null); // Restore the original defaults.
+```
+
+New ordinal and currency formatters capture this default when constructed, including those
+created by helpers and shared accessors. Existing instances retain their configuration.
+Per-instance `locale()` calls and assignments to the `locale` property override the default.
+`Currencies::symbol()` also uses the global setting when its locale argument is omitted or null.
+The setting changes formatting language and conventions, while the currency code remains unchanged.
+
+Without a global override, ordinals use `en_US`, currency amounts use `nl_NL`, and
+currency symbol lookup uses `en_US`. Blank global locales throw `EmptyLocaleException`
+without changing the current setting. The setting lasts for the current PHP process;
+long-running workers can change or clear it between jobs.
+
 ## Shared helper accessors
+
+The safe integer constants are inherited by subclasses, for example `Number::MAX_SAFE_INTEGER`
+and `Ordinal::MIN_SAFE_INTEGER`. They describe floating point precision boundaries, rather
+than PHP's integer storage limits. Individual classes determine whether to enforce them;
+ordinal formatting does, while native integer arithmetic and BCMath prices use their own ranges.
 
 Every value class inherits the following methods and read-only properties. Each access
 validates the stored value and creates a fresh instance of the requested class.

@@ -19,4 +19,9 @@ class OrdinalFormattingException extends BaseInvalidArgumentException
     {
         return new self('The intl extension is required for ordinal formatting.');
     }
+
+    public static function outOfRange(int $min, int $max): self
+    {
+        return new self(sprintf('Value must be between %d and %d.', $min, $max));
+    }
 }

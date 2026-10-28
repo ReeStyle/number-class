@@ -4,6 +4,8 @@ namespace ReeStyleIt\NumberClass;
 
 use ReeStyleIt\NumberClass\Conversion\Ordinal;
 use ReeStyleIt\NumberClass\Conversion\Time;
+use ReeStyleIt\NumberClass\Enums\Locales;
+use ReeStyleIt\NumberClass\Exceptions\EmptyLocaleException;
 use ReeStyleIt\NumberClass\Exceptions\MustBeNumberException;
 use ReeStyleIt\NumberClass\Exceptions\StatisticalException;
 use ReeStyleIt\NumberClass\Financial\Amortization;
@@ -22,6 +24,12 @@ use ReeStyleIt\NumberClass\Statistical\Mode;
 
 abstract class Base
 {
+    /** Bounds within which every integer is exactly representable as an IEEE 754 double. */
+    public const int MAX_SAFE_INTEGER = 9007199254740991;
+    public const int MIN_SAFE_INTEGER = -self::MAX_SAFE_INTEGER;
+
+    private static ?string $defaultLocale = null;
+
     public Amortization $amortization {
         get {
             $this->assertNumber();
@@ -155,6 +163,22 @@ abstract class Base
     public function __construct(mixed $value)
     {
         $this->value = $value;
+    }
+
+    public static function setDefaultLocale(Locales|string|null $locale): void
+    {
+        $locale = $locale instanceof Locales ? $locale->value : $locale;
+
+        if ($locale !== null && trim($locale) === '') {
+            throw new EmptyLocaleException();
+        }
+
+        self::$defaultLocale = $locale;
+    }
+
+    public static function getDefaultLocale(): ?string
+    {
+        return self::$defaultLocale;
     }
 
     public function amortization(): Amortization

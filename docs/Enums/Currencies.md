@@ -33,7 +33,9 @@ codes with `strtoupper()` first if appropriate. Enums have no public constructor
 
 ## Symbol lookup
 
-`symbol(Locales|string $locale = Locales::EN_US): string` returns a locale-sensitive symbol.
+`symbol(Locales|string|null $locale = null): string` returns a locale-sensitive symbol.
+An omitted or null locale uses the [global default](../Base.md#global-default-locale),
+or `en_US` when no override is configured. An explicit locale takes precedence.
 
 ```php
 use ReeStyleIt\NumberClass\Enums\Currencies;

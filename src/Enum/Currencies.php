@@ -3,6 +3,7 @@
 namespace ReeStyleIt\NumberClass\Enums;
 
 use NumberFormatter;
+use ReeStyleIt\NumberClass\Base;
 use ReeStyleIt\NumberClass\Exceptions\CurrencySymbolLookupException;
 
 enum Currencies: string
@@ -32,8 +33,9 @@ enum Currencies: string
     case USD = 'USD';
     case ZAR = 'ZAR';
 
-    public function symbol(Locales|string $locale = Locales::EN_US): string
+    public function symbol(Locales|string|null $locale = null): string
     {
+        $locale ??= Base::getDefaultLocale() ?? Locales::EN_US;
         $locale = $locale instanceof Locales ? $locale->value : $locale;
 
         if (! class_exists(NumberFormatter::class)) {
