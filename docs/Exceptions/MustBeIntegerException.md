@@ -32,7 +32,7 @@ use function ReeStyleIt\NumberClass\arithmetic;
 try {
     arithmetic(7.5)->intdiv(2);
 } catch (MustBeIntegerException $error) {
-    echo $error->getMessage(); // Value must be an integer.
+    $error->getMessage(); // Value must be an integer.
 }
 ```
 

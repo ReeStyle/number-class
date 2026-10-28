@@ -34,8 +34,8 @@ use ReeStyleIt\NumberClass\Enums\Locales;
 use function ReeStyleIt\NumberClass\number;
 
 Number::setDefaultLocale(Locales::NL_NL);
-echo number(21)->ordinal;          // 21ste
-echo number(21)->ordinal->wordify; // eenentwintigste
+(string) number(21)->ordinal;          // 21ste
+number(21)->ordinal->wordify; // eenentwintigste
 
 Number::setDefaultLocale(null); // Restore the original defaults.
 ```
@@ -156,7 +156,7 @@ with the same storage API:
 use function ReeStyleIt\NumberClass\number;
 
 $value = number(42);
-echo $value->get(); // 42
+$value->get(); // 42
 ```
 
 See the [helper reference](helpers.md) and [validation exception](Exceptions/MustBeNumberException.md).

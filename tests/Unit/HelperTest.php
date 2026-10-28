@@ -34,8 +34,8 @@ it('creates a Number through the number helper without converting its value', fu
     expect($number)->toBeInstanceOf(Number::class)
         ->and($number->get())->toBe($value);
 })->with([
-    'integer' => [7],
-    'float' => [7.5],
+    'integer'        => [7],
+    'float'          => [7.5],
     'numeric string' => ['7'],
 ]);
 
@@ -142,23 +142,23 @@ it('converts percentages exactly without truncating decimal places', function (i
         bcscale($previous);
     }
 })->with([
-    'integer' => [15, '0.15'],
-    'float' => [2.5, '0.025'],
-    'zero' => [0, '0.00'],
-    'negative' => [-15, '-0.15'],
-    'decimal string' => ['15.123456789123456789', '0.15123456789123456789'],
+    'integer'              => [15, '0.15'],
+    'float'                => [2.5, '0.025'],
+    'zero'                 => [0, '0.00'],
+    'negative'             => [-15, '-0.15'],
+    'decimal string'       => ['15.123456789123456789', '0.15123456789123456789'],
     'large decimal string' => ['12345678912345678912345', '123456789123456789123.45'],
-    'small float' => [1e-8, '0.00000000010'],
-    'large float' => [1e20, '1000000000000000000.00'],
+    'small float'          => [1e-8, '0.00000000010'],
+    'large float'          => [1e20, '1000000000000000000.00'],
 ]);
 
 it('validates values from the new helpers when calculating', function (Closure $calculate) {
     expect($calculate)->toThrow(MustBeNumberException::class);
 })->with([
-    'arithmetic' => [fn () => arithmetic('7')->add(1)],
-    'geometry' => [fn () => geometry('0')->haversine(0, 0, 90)],
-    'pythagoras' => [fn () => pythagoras('3')->hypotenuse(4)],
-    'round' => [fn () => round('1.236')->decimals(2)],
-    'time' => [fn () => time('60')->number],
+    'arithmetic'   => [fn () => arithmetic('7')->add(1)],
+    'geometry'     => [fn () => geometry('0')->haversine(0, 0, 90)],
+    'pythagoras'   => [fn () => pythagoras('3')->hypotenuse(4)],
+    'round'        => [fn () => round('1.236')->decimals(2)],
+    'time'         => [fn () => time('60')->number],
     'trigonometry' => [fn () => trigonometry('90')->deg2rad()],
 ]);

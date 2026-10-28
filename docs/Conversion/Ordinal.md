@@ -16,8 +16,8 @@ ordinal(1)->locale(Locales::NL_NL)->format();      // '1ste'
 ordinal(1)->locale('fr')->format();                // '1er'
 ordinal(2)->locale('es_ES')->format();             // '2.º'
 ordinal(3)->locale(Locales::IT_IT)->format();       // '3º'
-echo number(20)->add(1)->ordinal;                  // 21st
-echo number(2)->ordinal()->locale('fr_FR');        // 2e
+(string) number(20)->add(1)->ordinal;                  // 21st
+(string) number(2)->ordinal()->locale('fr_FR');        // 2e
 ordinal(21)->wordify();                           // 'twenty-first'
 ordinal(21)->locale('nl')->wordify();             // 'eenentwintigste'
 number(21)->ordinal->wordify;                     // 'twenty-first'

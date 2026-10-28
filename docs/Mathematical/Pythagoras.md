@@ -17,8 +17,8 @@ use ReeStyleIt\NumberClass\Mathematical\Pythagoras;
 
 $triangle = new Pythagoras(3);
 $hypotenuse = $triangle->hypotenuse(4);
-echo $hypotenuse->get(); // 5.0
-echo $triangle->get();   // 3
+$hypotenuse->get(); // 5.0
+$triangle->get();   // 3
 
 $diagonal = new Pythagoras(1)->hypotenuse(1)->get(); // approximately 1.4142135623730951
 $zero = new Pythagoras(0)->hypotenuse(0)->get();    // 0.0
@@ -69,7 +69,7 @@ use function ReeStyleIt\NumberClass\pythagoras;
 try {
     pythagoras(5)->leg(6);
 } catch (PythagorasException $error) {
-    echo $error->getMessage(); // A leg cannot be longer than the hypotenuse.
+    $error->getMessage(); // A leg cannot be longer than the hypotenuse.
 }
 ```
 

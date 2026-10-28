@@ -2,6 +2,16 @@
 
 ## Unreleased
 
+- Added schedule line `wordify()` and read-only property returning ordinal period words
+  and currency-formatted amounts, with currency and locale overrides.
+
+- Changed amortization schedule entries to readonly `Amortization\Schedule\Line` objects.
+  Access fields as properties; `toArray()` and JSON retain the original row structure.
+
+- Changed amortization schedules from plain arrays to immutable `Amortization\Schedule`
+  results with array reads, first/last access, column extraction, iteration, counting, and JSON serialization.
+  Use `toArray()` when passing schedules to native PHP array functions.
+
 - Added the `Contracts\NumberException` interface, implemented by both exception base classes,
   so integrations can catch all library-defined exceptions with one catch clause.
 

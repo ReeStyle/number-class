@@ -20,21 +20,21 @@ it('stores a starting point as Carbon and supports chaining', function (mixed $f
         ->and($difference->from->getTimestamp())->toBe($expected)
         ->and($time->get())->toBe(60);
 })->with([
-    'epoch' => [0, 0],
-    'before epoch' => [-1, -1],
-    'maximum timestamp' => [PHP_INT_MAX, PHP_INT_MAX],
-    'minimum timestamp' => [PHP_INT_MIN, PHP_INT_MIN],
-    'maximum timestamp string' => [(string) PHP_INT_MAX, PHP_INT_MAX],
-    'minimum timestamp string' => [(string) PHP_INT_MIN, PHP_INT_MIN],
-    'integer' => [1729166400, 1729166400],
-    'timestamp string' => ['1729166400', 1729166400],
-    'epoch string' => ['0', 0],
+    'epoch'                     => [0, 0],
+    'before epoch'              => [-1, -1],
+    'maximum timestamp'         => [PHP_INT_MAX, PHP_INT_MAX],
+    'minimum timestamp'         => [PHP_INT_MIN, PHP_INT_MIN],
+    'maximum timestamp string'  => [(string) PHP_INT_MAX, PHP_INT_MAX],
+    'minimum timestamp string'  => [(string) PHP_INT_MIN, PHP_INT_MIN],
+    'integer'                   => [1729166400, 1729166400],
+    'timestamp string'          => ['1729166400', 1729166400],
+    'epoch string'              => ['0', 0],
     'positive timestamp string' => ['+001234', 1234],
-    'native timestamp string' => ['@1234', 1234],
+    'native timestamp string'   => ['@1234', 1234],
     'negative timestamp string' => ['-1', -1],
     'date string with timezone' => ['2024-10-17T14:00:00+02:00', 1729166400],
-    'mutable date' => [new DateTime('2024-10-17T12:00:00+00:00'), 1729166400],
-    'immutable date' => [new DateTimeImmutable('2024-10-17T12:00:00+00:00'), 1729166400],
+    'mutable date'              => [new DateTime('2024-10-17T12:00:00+00:00'), 1729166400],
+    'immutable date'            => [new DateTimeImmutable('2024-10-17T12:00:00+00:00'), 1729166400],
 ]);
 
 it('rejects invalid starting points without changing the previous timestamp', function (string $from) {

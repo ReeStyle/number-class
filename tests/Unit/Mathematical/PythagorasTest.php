@@ -18,15 +18,15 @@ it('calculates right triangle lengths in a new instance', function (int|float $v
         ->and($result->get())->toEqualWithDelta($expected, 1e-12)
         ->and($pythagoras->get())->toBe($value);
 })->with([
-    'hypotenuse' => [3, 'hypotenuse', 4, 5.0],
-    'reversed sides' => [4, 'hypotenuse', 3, 5.0],
-    'fractional sides' => [1.5, 'hypotenuse', 2, 2.5],
-    'missing leg' => [5, 'leg', 3, 4.0],
+    'hypotenuse'        => [3, 'hypotenuse', 4, 5.0],
+    'reversed sides'    => [4, 'hypotenuse', 3, 5.0],
+    'fractional sides'  => [1.5, 'hypotenuse', 2, 2.5],
+    'missing leg'       => [5, 'leg', 3, 4.0],
     'other missing leg' => [5, 'leg', 4, 3.0],
-    'zero hypotenuse' => [0, 'hypotenuse', 0, 0.0],
-    'zero leg' => [5, 'leg', 0, 5.0],
-    'equal lengths' => [5, 'leg', 5, 0.0],
-    'all zero' => [0, 'leg', 0, 0.0],
+    'zero hypotenuse'   => [0, 'hypotenuse', 0, 0.0],
+    'zero leg'          => [5, 'leg', 0, 5.0],
+    'equal lengths'     => [5, 'leg', 5, 0.0],
+    'all zero'          => [0, 'leg', 0, 0.0],
 ]);
 
 it('calculates lengths from Number and helper functions', function () {

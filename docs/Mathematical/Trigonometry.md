@@ -32,8 +32,8 @@ $tangent = new Trigonometry(M_PI / 4)->tan()->get(); // approximately 1.0
 
 $degrees = new Trigonometry(90);
 $radians = $degrees->deg2rad();
-echo $radians->get(); // approximately 1.5707963267948966
-echo $degrees->get(); // 90; the original remains unchanged
+$radians->get(); // approximately 1.5707963267948966
+$degrees->get(); // 90; the original remains unchanged
 $convertedBack = $radians->rad2deg()->get(); // approximately 90.0
 ```
 

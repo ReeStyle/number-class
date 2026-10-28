@@ -11,8 +11,8 @@ use ReeStyleIt\NumberClass\Mathematical\Arithmetic;
 
 $original = new Arithmetic(10);
 $result = $original->add(5)->subtract(3)->multiply(4)->divide(2);
-echo $result->get();   // 24
-echo $original->get(); // 10
+$result->get();   // 24
+$original->get(); // 10
 ```
 
 ## Methods
@@ -106,7 +106,7 @@ try {
 ```php
 use function ReeStyleIt\NumberClass\arithmetic;
 
-echo arithmetic(6)->multiply(7)->get(); // 42
+arithmetic(6)->multiply(7)->get(); // 42
 ```
 
 [Number](../Number.md) also provides all these operations directly, returning an `Arithmetic` result,

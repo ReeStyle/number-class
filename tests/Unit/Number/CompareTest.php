@@ -42,15 +42,15 @@ it('compares numeric values and Number instances without changing them', functio
             ->and($otherNumber->get())->toBe($other);
     }
 })->with([
-    'equal integers' => [7, 7, ['equals' => true, 'higherThan' => false, 'lowerThan' => false, 'higherThanOrEqual' => true, 'lowerThanOrEqual' => true]],
+    'equal integers'          => [7, 7, ['equals' => true, 'higherThan' => false, 'lowerThan' => false, 'higherThanOrEqual' => true, 'lowerThanOrEqual' => true]],
     'equal integer and float' => [7, 7.0, ['equals' => true, 'higherThan' => false, 'lowerThan' => false, 'higherThanOrEqual' => true, 'lowerThanOrEqual' => true]],
-    'higher' => [8, 7, ['equals' => false, 'higherThan' => true, 'lowerThan' => false, 'higherThanOrEqual' => true, 'lowerThanOrEqual' => false]],
-    'lower' => [6, 7, ['equals' => false, 'higherThan' => false, 'lowerThan' => true, 'higherThanOrEqual' => false, 'lowerThanOrEqual' => true]],
-    'negative values' => [-1.5, -1, ['equals' => false, 'higherThan' => false, 'lowerThan' => true, 'higherThanOrEqual' => false, 'lowerThanOrEqual' => true]],
-    'zero' => [0, 0.0, ['equals' => true, 'higherThan' => false, 'lowerThan' => false, 'higherThanOrEqual' => true, 'lowerThanOrEqual' => true]],
-    'infinity' => [INF, 7, ['equals' => false, 'higherThan' => true, 'lowerThan' => false, 'higherThanOrEqual' => true, 'lowerThanOrEqual' => false]],
-    'NaN as value' => [NAN, 7, ['equals' => false, 'higherThan' => false, 'lowerThan' => false, 'higherThanOrEqual' => false, 'lowerThanOrEqual' => false]],
-    'NaN as argument' => [7, NAN, ['equals' => false, 'higherThan' => false, 'lowerThan' => false, 'higherThanOrEqual' => false, 'lowerThanOrEqual' => false]],
+    'higher'                  => [8, 7, ['equals' => false, 'higherThan' => true, 'lowerThan' => false, 'higherThanOrEqual' => true, 'lowerThanOrEqual' => false]],
+    'lower'                   => [6, 7, ['equals' => false, 'higherThan' => false, 'lowerThan' => true, 'higherThanOrEqual' => false, 'lowerThanOrEqual' => true]],
+    'negative values'         => [-1.5, -1, ['equals' => false, 'higherThan' => false, 'lowerThan' => true, 'higherThanOrEqual' => false, 'lowerThanOrEqual' => true]],
+    'zero'                    => [0, 0.0, ['equals' => true, 'higherThan' => false, 'lowerThan' => false, 'higherThanOrEqual' => true, 'lowerThanOrEqual' => true]],
+    'infinity'                => [INF, 7, ['equals' => false, 'higherThan' => true, 'lowerThan' => false, 'higherThanOrEqual' => true, 'lowerThanOrEqual' => false]],
+    'NaN as value'            => [NAN, 7, ['equals' => false, 'higherThan' => false, 'lowerThan' => false, 'higherThanOrEqual' => false, 'lowerThanOrEqual' => false]],
+    'NaN as argument'         => [7, NAN, ['equals' => false, 'higherThan' => false, 'lowerThan' => false, 'higherThanOrEqual' => false, 'lowerThanOrEqual' => false]],
 ]);
 
 it('rejects non-numeric stored values on either side of a comparison', function (string $method) {
@@ -93,14 +93,14 @@ it('supports strict equality without converting numeric types', function (int|fl
         ->and($comparison->equals(new Number($other), strict: true))->toBe($expected)
         ->and($comparison->equals(new Arithmetic($other), strict: true))->toBe($expected);
 })->with([
-    'integers' => [7, 7, true],
-    'floats' => [7.0, 7.0, true],
+    'integers'          => [7, 7, true],
+    'floats'            => [7.0, 7.0, true],
     'integer and float' => [7, 7.0, false],
     'float and integer' => [7.0, 7, false],
-    'different floats' => [7.5, 7.0, false],
-    'zero types' => [0, 0.0, false],
-    'infinity' => [INF, INF, true],
-    'NaN' => [NAN, NAN, false],
+    'different floats'  => [7.5, 7.0, false],
+    'zero types'        => [0, 0.0, false],
+    'infinity'          => [INF, INF, true],
+    'NaN'               => [NAN, NAN, false],
 ]);
 
 it('validates both operands when using strict equality', function () {

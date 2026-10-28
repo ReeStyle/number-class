@@ -20,9 +20,9 @@ it('keeps with as an alias of decimals', function (array $arguments) {
         ->and($result->get())->toBe($round->decimals(...$arguments)->get())
         ->and($round->get())->toBe(12.545);
 })->with([
-    'defaults' => [[]],
-    'precision' => [[2]],
-    'negative precision' => [[-1]],
+    'defaults'                 => [[]],
+    'precision'                => [[2]],
+    'negative precision'       => [[-1]],
     'named arguments and mode' => [['mode' => RoundingMode::HalfEven, 'precision' => 2]],
 ]);
 
@@ -46,10 +46,10 @@ it('rejects non-number values when rounding', function (mixed $value) {
         ->toThrow(MustBeNumberException::class, 'Value must be an integer or float.');
 })->with([
     'numeric string' => ['7'],
-    'null' => [null],
-    'boolean' => [true],
-    'array' => [[]],
-    'object' => [new stdClass()],
+    'null'           => [null],
+    'boolean'        => [true],
+    'array'          => [[]],
+    'object'         => [new stdClass()],
 ]);
 
 it('rounds without changing its original value', function (int|float $value, array $arguments, float $expected) {
@@ -61,19 +61,19 @@ it('rounds without changing its original value', function (int|float $value, arr
         ->and($result->get())->toBe($expected)
         ->and($rounded->get())->toBe($value);
 })->with([
-    'defaults' => [1234.56, [], 1235.0],
-    'decimal precision' => [1.236, [2], 1.24],
+    'defaults'           => [1234.56, [], 1235.0],
+    'decimal precision'  => [1.236, [2], 1.24],
     'negative precision' => [1234.56, [-2], 1200.0],
-    'negative tie' => [-1.5, [], -2.0],
-    'zero' => [0, [], 0.0],
-    'legacy mode' => [2.5, [0, PHP_ROUND_HALF_DOWN], 2.0],
-    'half even' => [2.5, [0, RoundingMode::HalfEven], 2.0],
-    'half odd' => [2.5, [0, RoundingMode::HalfOdd], 3.0],
-    'towards zero' => [-2.9, [0, RoundingMode::TowardsZero], -2.0],
-    'away from zero' => [2.1, [0, RoundingMode::AwayFromZero], 3.0],
-    'negative infinity' => [-2.1, [0, RoundingMode::NegativeInfinity], -3.0],
-    'positive infinity' => [2.1, [0, RoundingMode::PositiveInfinity], 3.0],
-    'named arguments' => [2.5, ['mode' => RoundingMode::HalfTowardsZero, 'precision' => 0], 2.0],
+    'negative tie'       => [-1.5, [], -2.0],
+    'zero'               => [0, [], 0.0],
+    'legacy mode'        => [2.5, [0, PHP_ROUND_HALF_DOWN], 2.0],
+    'half even'          => [2.5, [0, RoundingMode::HalfEven], 2.0],
+    'half odd'           => [2.5, [0, RoundingMode::HalfOdd], 3.0],
+    'towards zero'       => [-2.9, [0, RoundingMode::TowardsZero], -2.0],
+    'away from zero'     => [2.1, [0, RoundingMode::AwayFromZero], 3.0],
+    'negative infinity'  => [-2.1, [0, RoundingMode::NegativeInfinity], -3.0],
+    'positive infinity'  => [2.1, [0, RoundingMode::PositiveInfinity], 3.0],
+    'named arguments'    => [2.5, ['mode' => RoundingMode::HalfTowardsZero, 'precision' => 0], 2.0],
 ]);
 
 it('rejects invalid integer rounding modes', function (int $mode) {
@@ -112,14 +112,14 @@ it('rounds to the nearest multiple without changing its value', function (int|fl
         ->and($result->get())->toBe($expected)
         ->and($rounded->get())->toBe($value);
 })->with([
-    'down' => [12, 5, 10.0],
-    'up' => [13, 5, 15.0],
-    'positive tie' => [12.5, 5, 15.0],
-    'negative tie' => [-12.5, 5, -15.0],
-    'negative value' => [-12, 5, -10.0],
+    'down'                => [12, 5, 10.0],
+    'up'                  => [13, 5, 15.0],
+    'positive tie'        => [12.5, 5, 15.0],
+    'negative tie'        => [-12.5, 5, -15.0],
+    'negative value'      => [-12, 5, -10.0],
     'fractional multiple' => [1.03, 0.05, 1.05],
-    'exact multiple' => [15, 5, 15.0],
-    'zero' => [0, 5, 0.0],
+    'exact multiple'      => [15, 5, 15.0],
+    'zero'                => [0, 5, 0.0],
 ]);
 
 it('rejects invalid multiples', function (int|float $multiple) {

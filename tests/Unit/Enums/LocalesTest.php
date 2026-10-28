@@ -14,9 +14,9 @@ it('uses locale enum cases for currency formatting', function (Locales $locale, 
         ->and($formatter->locale)->toBe($locale->value)
         ->and((string) $formatter)->toBe($expected);
 })->with([
-    'Dutch' => [Locales::NL_NL, Currencies::EUR, "€\u{00A0}1.234,50"],
+    'Dutch'            => [Locales::NL_NL, Currencies::EUR, "€\u{00A0}1.234,50"],
     'American English' => [Locales::EN_US, Currencies::USD, '$1,234.50'],
-    'British English' => [Locales::EN_GB, Currencies::GBP, '£1,234.50'],
+    'British English'  => [Locales::EN_GB, Currencies::GBP, '£1,234.50'],
 ]);
 
 it('accepts locale enum cases for symbol lookup', function () {
@@ -28,8 +28,8 @@ it('accepts locale enum cases for symbol lookup', function () {
 it('uses the appropriate regional currency symbols for German-speaking locales', function (Locales $locale, Currencies $currency, string $expected) {
     expect($currency->symbol($locale))->toBe($expected);
 })->with([
-    'Germany' => [Locales::DE_DE, Currencies::EUR, '€'],
-    'Austria' => [Locales::DE_AT, Currencies::EUR, '€'],
+    'Germany'     => [Locales::DE_DE, Currencies::EUR, '€'],
+    'Austria'     => [Locales::DE_AT, Currencies::EUR, '€'],
     'Switzerland' => [Locales::DE_CH, Currencies::CHF, 'CHF'],
 ]);
 
@@ -44,11 +44,11 @@ it('provides one default currency symbol and its position for a locale', functio
         ->and($locale->symbol())->toBe($symbol)
         ->and($locale->symbolPosition())->toBe($position);
 })->with([
-    'Germany' => [Locales::DE_DE, Currencies::EUR, '€', 'suffix'],
-    'Austria' => [Locales::DE_AT, Currencies::EUR, '€', 'prefix'],
-    'Switzerland' => [Locales::DE_CH, Currencies::CHF, 'CHF', 'prefix'],
-    'Netherlands' => [Locales::NL_NL, Currencies::EUR, '€', 'prefix'],
-    'United States' => [Locales::EN_US, Currencies::USD, '$', 'prefix'],
+    'Germany'          => [Locales::DE_DE, Currencies::EUR, '€', 'suffix'],
+    'Austria'          => [Locales::DE_AT, Currencies::EUR, '€', 'prefix'],
+    'Switzerland'      => [Locales::DE_CH, Currencies::CHF, 'CHF', 'prefix'],
+    'Netherlands'      => [Locales::NL_NL, Currencies::EUR, '€', 'prefix'],
+    'United States'    => [Locales::EN_US, Currencies::USD, '$', 'prefix'],
     'Canada in French' => [Locales::FR_CA, Currencies::CAD, '$', 'suffix'],
 ]);
 

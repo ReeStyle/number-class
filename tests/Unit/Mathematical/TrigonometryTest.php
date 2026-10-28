@@ -17,21 +17,21 @@ it('calculates trigonometry in a new instance without changing the original', fu
         ->and($result->get())->toEqualWithDelta($expected, 1e-12)
         ->and($trigonometry->get())->toBe($value);
 })->with([
-    'sine' => [M_PI / 2, 'sin', [], 1.0],
-    'negative sine' => [-M_PI / 2, 'sin', [], -1.0],
-    'cosine' => [M_PI, 'cos', [], -1.0],
-    'tangent' => [M_PI / 4, 'tan', [], 1.0],
-    'inverse sine' => [1, 'asin', [], M_PI / 2],
-    'inverse cosine' => [0, 'acos', [], M_PI / 2],
-    'inverse tangent' => [1, 'atan', [], M_PI / 4],
-    'atan2 first quadrant' => [1, 'atan2', [1], M_PI / 4],
+    'sine'                  => [M_PI / 2, 'sin', [], 1.0],
+    'negative sine'         => [-M_PI / 2, 'sin', [], -1.0],
+    'cosine'                => [M_PI, 'cos', [], -1.0],
+    'tangent'               => [M_PI / 4, 'tan', [], 1.0],
+    'inverse sine'          => [1, 'asin', [], M_PI / 2],
+    'inverse cosine'        => [0, 'acos', [], M_PI / 2],
+    'inverse tangent'       => [1, 'atan', [], M_PI / 4],
+    'atan2 first quadrant'  => [1, 'atan2', [1], M_PI / 4],
     'atan2 second quadrant' => [1, 'atan2', [-1], 3 * M_PI / 4],
-    'atan2 third quadrant' => [-1, 'atan2', [-1], -3 * M_PI / 4],
+    'atan2 third quadrant'  => [-1, 'atan2', [-1], -3 * M_PI / 4],
     'atan2 fourth quadrant' => [-1, 'atan2', [1], -M_PI / 4],
-    'atan2 zero x' => [1, 'atan2', [0], M_PI / 2],
-    'degrees to radians' => [180, 'deg2rad', [], M_PI],
-    'radians to degrees' => [M_PI, 'rad2deg', [], 180.0],
-    'zero' => [0, 'sin', [], 0.0],
+    'atan2 zero x'          => [1, 'atan2', [0], M_PI / 2],
+    'degrees to radians'    => [180, 'deg2rad', [], M_PI],
+    'radians to degrees'    => [M_PI, 'rad2deg', [], 180.0],
+    'zero'                  => [0, 'sin', [], 0.0],
 ]);
 
 it('creates trigonometry calculations from a Number and chains them', function () {

@@ -75,9 +75,9 @@ it('rejects inputs that would silently lose decimal precision', function (mixed 
     expect(fn () => price($value))->toThrow(FinancialException::class)
         ->and(fn () => price('1.00')->add($value))->toThrow(FinancialException::class);
 })->with([
-    'float' => [0.1], 'null' => [null], 'boolean' => [true], 'scientific' => ['1e3'],
+    'float'     => [0.1], 'null' => [null], 'boolean' => [true], 'scientific' => ['1e3'],
     'localized' => ['1,23'], 'whitespace' => [' 1.23'], 'invalid' => ['no'],
-    'empty' => [''], 'array' => [[]], 'nonfinite' => [INF], 'object' => [new \stdClass],
+    'empty'     => [''], 'array' => [[]], 'nonfinite' => [INF], 'object' => [new \stdClass],
 ]);
 
 it('rejects zero divisors including decimal and Price zero', function (mixed $zero) {

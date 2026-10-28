@@ -18,11 +18,11 @@ it('formats currency for the configured locale', function (int|float $value, str
 
     expect((string) $format)->toBe($expected);
 })->with([
-    'Dutch euros' => [1234.5, 'EUR', 'nl_NL', "€\u{00A0}1.234,50"],
-    'US dollars' => [1234.5, 'USD', 'en_US', '$1,234.50'],
-    'zero' => [0, 'USD', 'en_US', '$0.00'],
-    'negative amount' => [-1234.5, 'USD', 'en_US', '-$1,234.50'],
-    'rounding' => [1.236, 'USD', 'en_US', '$1.24'],
+    'Dutch euros'          => [1234.5, 'EUR', 'nl_NL', "€\u{00A0}1.234,50"],
+    'US dollars'           => [1234.5, 'USD', 'en_US', '$1,234.50'],
+    'zero'                 => [0, 'USD', 'en_US', '$0.00'],
+    'negative amount'      => [-1234.5, 'USD', 'en_US', '-$1,234.50'],
+    'rounding'             => [1.236, 'USD', 'en_US', '$1.24'],
     'yen without decimals' => [1234, 'JPY', 'en_US', '¥1,234'],
 ]);
 
@@ -93,10 +93,10 @@ it('validates the Number before formatting currency', function (mixed $value) {
         ->toThrow(MustBeNumberException::class, 'Value must be an integer or float.');
 })->with([
     'numeric string' => ['7'],
-    'null' => [null],
-    'boolean' => [true],
-    'array' => [[]],
-    'object' => [new stdClass()],
+    'null'           => [null],
+    'boolean'        => [true],
+    'array'          => [[]],
+    'object'         => [new stdClass()],
 ]);
 
 it('returns the same formatter from configuration methods and keeps its amount', function () {
@@ -131,8 +131,8 @@ it('rejects invalid stored values when formatting directly', function (mixed $va
         ->toThrow(MustBeNumberException::class, 'Value must be an integer or float.');
 })->with([
     'numeric string' => ['7'],
-    'null' => [null],
-    'boolean' => [true],
-    'array' => [[]],
-    'object' => [new stdClass()],
+    'null'           => [null],
+    'boolean'        => [true],
+    'array'          => [[]],
+    'object'         => [new stdClass()],
 ]);

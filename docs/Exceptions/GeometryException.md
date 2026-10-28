@@ -57,7 +57,7 @@ use function ReeStyleIt\NumberClass\geometry;
 try {
     geometry(0, 91, 0)->haversine(0, 0, 0);
 } catch (GeometryException $error) {
-    echo $error->getMessage(); // Latitude must be a finite number between -90 and 90 degrees.
+    $error->getMessage(); // Latitude must be a finite number between -90 and 90 degrees.
 }
 ```
 

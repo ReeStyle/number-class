@@ -16,7 +16,7 @@ use ReeStyleIt\NumberClass\Format\Currency;
 $formatter = new Currency(1234.5);
 $formatter->currency(Currencies::USD)->locale(Locales::EN_US);
 
-echo $formatter;                  // $1,234.50
+(string) $formatter;                  // $1,234.50
 $text = (string) $formatter;      // '$1,234.50'
 $amount = $formatter->get();      // 1234.5
 $original = $formatter->value;    // 1234.5; public readonly
@@ -51,7 +51,7 @@ $same = $formatter->currency('usd')->locale('en_US');
 $isSameObject = $same === $formatter; // true
 $code = $formatter->currencyCode;     // 'USD'
 $locale = $formatter->locale;         // 'en_US'
-echo $formatter;                     // $25.00
+(string) $formatter;                     // $25.00
 ```
 
 Setting a locale does not select its native currency. To choose both from locale metadata,
@@ -64,7 +64,7 @@ use ReeStyleIt\NumberClass\Format\Currency;
 $locale = Locales::DE_CH;
 $formatter = new Currency(1250);
 $formatter->currency($locale->currency())->locale($locale);
-echo $formatter; // Swiss franc amount using de_CH conventions
+(string) $formatter; // Swiss franc amount using de_CH conventions
 ```
 
 ## Helper usage and Number access
@@ -83,7 +83,7 @@ use ReeStyleIt\NumberClass\Enums\Locales;
 use function ReeStyleIt\NumberClass\currencyFormatter;
 use function ReeStyleIt\NumberClass\number;
 
-echo currencyFormatter(19.95)->currency(Currencies::USD)->locale(Locales::EN_US); // $19.95
+(string) currencyFormatter(19.95)->currency(Currencies::USD)->locale(Locales::EN_US); // $19.95
 
 $fromProperty = number(19.95)->currency;
 // Each accessor creates a fresh Currency; keep it if reusing its configuration.

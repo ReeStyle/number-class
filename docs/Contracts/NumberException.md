@@ -13,7 +13,7 @@ use function ReeStyleIt\NumberClass\number;
 try {
     number('invalid')->add(1);
 } catch (NumberException $exception) {
-    echo $exception->getMessage(); // Value must be an integer or float.
+    $exception->getMessage(); // Value must be an integer or float.
 }
 ```
 

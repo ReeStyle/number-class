@@ -22,14 +22,14 @@ it('calculates circle measurements in a new instance', function (
         ->and($result->get())->toEqualWithDelta($expected, 1e-12)
         ->and($circle->get())->toBe($value);
 })->with([
-    'surface' => [3, 'circleSurface', 28.274333882308138],
-    'circumference' => [3, 'circleCircumference', 18.84955592153876],
-    'diameter from radius' => [3, 'circleDiameter', 6.0],
-    'radius from diameter' => [6, 'circleRadius', 3.0],
-    'fractional surface' => [0.5, 'circleSurface', 0.7853981633974483],
+    'surface'                  => [3, 'circleSurface', 28.274333882308138],
+    'circumference'            => [3, 'circleCircumference', 18.84955592153876],
+    'diameter from radius'     => [3, 'circleDiameter', 6.0],
+    'radius from diameter'     => [6, 'circleRadius', 3.0],
+    'fractional surface'       => [0.5, 'circleSurface', 0.7853981633974483],
     'fractional circumference' => [0.5, 'circleCircumference', 3.141592653589793],
-    'fractional diameter' => [0.5, 'circleDiameter', 1.0],
-    'fractional radius' => [0.5, 'circleRadius', 0.25],
+    'fractional diameter'      => [0.5, 'circleDiameter', 1.0],
+    'fractional radius'        => [0.5, 'circleRadius', 0.25],
 ]);
 
 it('calculates ellipse measurements in a new instance', function (string $method, float $expected) {
@@ -42,7 +42,7 @@ it('calculates ellipse measurements in a new instance', function (string $method
         ->and(new Geometry(2)->$method(3)->get())->toEqualWithDelta($expected, 1e-8)
         ->and($ellipse->get())->toBe(3);
 })->with([
-    'surface' => ['ellipseSurface', 18.84955592153876],
+    'surface'       => ['ellipseSurface', 18.84955592153876],
     'circumference' => ['ellipseCircumference', 15.86543958929059],
 ]);
 
@@ -120,13 +120,13 @@ it('calculates spherical distances in a new instance', function (
         ->and($geometry->elevation)->toBe(0)
         ->and($distance->latitude)->toBeNull();
 })->with([
-    'same point' => [52.37, 4.9, 52.37, 4.9, 0.0],
-    'quarter equator' => [0, 0, 0, 90, M_PI / 2],
-    'north pole' => [0, 0, 90, 0, M_PI / 2],
-    'opposite points' => [0, 0, 0, 180, M_PI],
-    'both poles' => [-90, -180, 90, 180, M_PI],
-    'across date line' => [0, 179, 0, -179, deg2rad(2)],
-    'longitude boundary' => [0, -180, 0, 180, 0.0],
+    'same point'          => [52.37, 4.9, 52.37, 4.9, 0.0],
+    'quarter equator'     => [0, 0, 0, 90, M_PI / 2],
+    'north pole'          => [0, 0, 90, 0, M_PI / 2],
+    'opposite points'     => [0, 0, 0, 180, M_PI],
+    'both poles'          => [-90, -180, 90, 180, M_PI],
+    'across date line'    => [0, 179, 0, -179, deg2rad(2)],
+    'longitude boundary'  => [0, -180, 0, 180, 0.0],
     'southern hemisphere' => [-45, 20, 45, 20, M_PI / 2],
 ]);
 
@@ -194,9 +194,9 @@ it('requires an explicit starting latitude for haversine', function () {
 it('includes positive and negative elevation differences', function (int|float $start, int|float $end) {
     expect(geometry(4, 52, $start)->haversine(4, 52, $end)->get())->toBe(100.0);
 })->with([
-    'ascending' => [10, 110],
-    'descending' => [110, 10],
-    'below sea level' => [-110, -10],
+    'ascending'          => [10, 110],
+    'descending'         => [110, 10],
+    'below sea level'    => [-110, -10],
     'crossing sea level' => [-50, 50],
 ]);
 

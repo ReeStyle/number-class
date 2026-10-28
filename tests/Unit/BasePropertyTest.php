@@ -23,19 +23,19 @@ use ReeStyleIt\NumberClass\Statistical\Median;
 use ReeStyleIt\NumberClass\Statistical\Mode;
 
 dataset('helper properties', [
-    'dimension' => ['dimension', Dimension::class],
-    'amortization' => ['amortization', Amortization::class],
+    'dimension'        => ['dimension', Dimension::class],
+    'amortization'     => ['amortization', Amortization::class],
     'compoundInterest' => ['compoundInterest', CompoundInterest::class],
-    'compare' => ['compare', Compare::class],
-    'round' => ['round', Round::class],
-    'arithmetic' => ['arithmetic', Arithmetic::class],
-    'geometry' => ['geometry', Geometry::class],
-    'trigonometry' => ['trigonometry', Trigonometry::class],
-    'pythagoras' => ['pythagoras', Pythagoras::class],
-    'currency' => ['currency', Currency::class],
-    'number' => ['number', Number::class],
-    'ordinal' => ['ordinal', Ordinal::class],
-    'time' => ['time', Time::class],
+    'compare'          => ['compare', Compare::class],
+    'round'            => ['round', Round::class],
+    'arithmetic'       => ['arithmetic', Arithmetic::class],
+    'geometry'         => ['geometry', Geometry::class],
+    'trigonometry'     => ['trigonometry', Trigonometry::class],
+    'pythagoras'       => ['pythagoras', Pythagoras::class],
+    'currency'         => ['currency', Currency::class],
+    'number'           => ['number', Number::class],
+    'ordinal'          => ['ordinal', Ordinal::class],
+    'time'             => ['time', Time::class],
 ]);
 
 dataset('helper sources', [
@@ -83,13 +83,13 @@ it('validates stored arrays before statistical calculations', function (string $
     expect(fn () => $source->$property)->toThrow(StatisticalException::class)
         ->and(fn () => $source->$property())->toThrow(StatisticalException::class);
 })->with('statistical helper properties')->with([
-    'scalar' => [7],
-    'numeric string' => ['7'],
-    'null' => [null],
-    'empty array' => [[]],
+    'scalar'                    => [7],
+    'numeric string'            => ['7'],
+    'null'                      => [null],
+    'empty array'               => [[]],
     'array with numeric string' => [[1, '2']],
-    'nonfinite' => [[1, INF]],
-    'iterable object' => [new \ArrayIterator([1, 2])],
+    'nonfinite'                 => [[1, INF]],
+    'iterable object'           => [new \ArrayIterator([1, 2])],
 ]);
 
 it('calculates statistics through the shared entry point', function () {

@@ -21,13 +21,13 @@ it('returns a native DateInterval with direction', function (mixed $end, float $
         ->and($source->get())->toBe(42)
         ->and($source->results)->toBe([]);
 })->with([
-    'same instant' => [0, 0.0],
-    'later timestamp' => [60, 60.0],
+    'same instant'      => [0, 0.0],
+    'later timestamp'   => [60, 60.0],
     'earlier timestamp' => [-60, -60.0],
-    'timestamp string' => ['60', 60.0],
-    'date string' => ['1970-01-01T01:01:00+01:00', 60.0],
-    'date object' => [new DateTimeImmutable('@60'), 60.0],
-    'Carbon' => [new Carbon('@60'), 60.0],
+    'timestamp string'  => ['60', 60.0],
+    'date string'       => ['1970-01-01T01:01:00+01:00', 60.0],
+    'date object'       => [new DateTimeImmutable('@60'), 60.0],
+    'Carbon'            => [new Carbon('@60'), 60.0],
 ]);
 
 it('preserves fractional seconds and compares instants across a daylight saving change', function () {

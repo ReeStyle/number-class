@@ -70,7 +70,7 @@ use ReeStyleIt\NumberClass\Enums\Currencies;
 use ReeStyleIt\NumberClass\Enums\Locales;
 use function ReeStyleIt\NumberClass\currencyFormatter;
 
-echo currencyFormatter(42.5)
+(string) currencyFormatter(42.5)
     ->currency(Currencies::USD)
     ->locale(Locales::EN_US); // $42.50; requires intl
 ```

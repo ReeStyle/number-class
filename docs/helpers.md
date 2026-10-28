@@ -53,7 +53,7 @@ use ReeStyleIt\NumberClass\Enums\Currencies;
 use ReeStyleIt\NumberClass\Enums\Locales;
 use function ReeStyleIt\NumberClass\currencyFormatter;
 
-echo currencyFormatter(1234.5)
+(string) currencyFormatter(1234.5)
     ->currency(Currencies::USD)
     ->locale(Locales::EN_US); // $1,234.50
 ```

@@ -8,12 +8,12 @@ use Symfony\Component\Process\Process;
 it('provides currency symbols', function (Currencies $currency, string $expected) {
     expect($currency->symbol())->toBe($expected);
 })->with([
-    'euro' => [Currencies::EUR, '€'],
-    'US dollar' => [Currencies::USD, '$'],
-    'British pound' => [Currencies::GBP, '£'],
-    'Japanese yen' => [Currencies::JPY, '¥'],
+    'euro'            => [Currencies::EUR, '€'],
+    'US dollar'       => [Currencies::USD, '$'],
+    'British pound'   => [Currencies::GBP, '£'],
+    'Japanese yen'    => [Currencies::JPY, '¥'],
     'Canadian dollar' => [Currencies::CAD, 'CA$'],
-    'Indian rupee' => [Currencies::INR, '₹'],
+    'Indian rupee'    => [Currencies::INR, '₹'],
 ]);
 
 it('resolves symbols for the requested locale', function () {

@@ -19,11 +19,11 @@ it('calculates compound growth and earned interest', function (float $rate, floa
         ->and($investment->interest($rate, $years, $frequency)->get())->toEqualWithDelta($expected - 1000, 1e-8)
         ->and($investment->get())->toBe(1000);
 })->with([
-    'annual' => [0.05, 10.0, 1, 1628.894626777442],
-    'monthly' => [0.12, 1.0, 12, 1126.82503013197],
+    'annual'          => [0.05, 10.0, 1, 1628.894626777442],
+    'monthly'         => [0.12, 1.0, 12, 1126.82503013197],
     'fractional year' => [0.21, 0.5, 1, 1100.0],
-    'zero rate' => [0.0, 10.0, 12, 1000.0],
-    'zero term' => [0.05, 0.0, 12, 1000.0],
+    'zero rate'       => [0.0, 10.0, 12, 1000.0],
+    'zero term'       => [0.05, 0.0, 12, 1000.0],
 ]);
 
 it('handles zero principal and very small rates', function () {

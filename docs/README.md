@@ -11,7 +11,7 @@ require 'vendor/autoload.php';
 
 use function ReeStyleIt\NumberClass\number;
 
-echo number(12)->add(3)->multiply(2)->get(); // 30
+number(12)->add(3)->multiply(2)->get(); // 30
 ```
 
 The examples on the following pages assume the autoloader is already loaded.
@@ -37,6 +37,9 @@ import them with `use function`. See the [helper reference](helpers.md) for all 
 | [Mathematical\Pythagoras](Mathematical/Pythagoras.md) | Hypotenuse and missing leg calculations |
 | [Mathematical\Trigonometry](Mathematical/Trigonometry.md) | Trigonometric functions and angle conversions |
 | [Financial\Amortization](Financial/Amortization.md) | Fixed loan payments, interest totals, and repayment schedules |
+| [Financial\Amortization\Schedule](Financial/Amortization.md#schedule-collection-api) | Array access, iteration, and collection operations on repayment rows |
+| [Financial\Amortization\Schedule\Line](Financial/Amortization.md#schedule-lines) | Readonly repayment line with period, payment, interest, principal, and balance |
+| [Financial\Amortization\Schedule\Line\Wordify](Financial/Amortization.md#line-display-values) | Ordinal period words and currency-formatted repayment fields |
 | [Financial\Amortization\Total](Financial/Amortization.md) | Readonly access to payment and interest totals |
 | [Financial\CompoundInterest](Financial/CompoundInterest.md) | Future value and earned compound interest |
 | [Financial\Price](Financial/Price.md) | Exact BCMath decimal prices, percentages, discounts, and tax |
@@ -59,8 +62,8 @@ working with the stored value through the main numeric API:
 ```php
 use function ReeStyleIt\NumberClass\geometry;
 
-echo geometry(3)->circleSurface()->number->format(2); // 28.27
-echo geometry(3)->circleDiameter()->number->add(1)->get(); // 7
+geometry(3)->circleSurface()->number->format(2); // 28.27
+geometry(3)->circleDiameter()->number->add(1)->get(); // 7
 ```
 
 Constructors accept `mixed $value`. Numeric operations require an actual PHP `int` or `float`;

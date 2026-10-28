@@ -52,8 +52,8 @@ it('rejects floats outside the supported whole-second range', function () {
 it('requires a numeric stored duration for formatting', function (mixed $seconds) {
     expect(fn () => time($seconds)->asTime())->toThrow(MustBeNumberException::class);
 })->with([
-    'string' => ['60'],
-    'null' => [null],
+    'string'  => ['60'],
+    'null'    => [null],
     'boolean' => [true],
-    'array' => [[]],
+    'array'   => [[]],
 ]);

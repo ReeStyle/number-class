@@ -47,12 +47,12 @@ require 'vendor/autoload.php';
 $original = number(12);
 $result = $original->add(3)->multiply(2);
 
-echo $result->get();   // 30
+$result->get();   // 30
 // Calculations return new instances.
-echo $original->get(); // 12
+$original->get(); // 12
 
 // Constructors and helpers provide the same API.
-echo new Number(1234.567)->format(2, ',', '.'); // 1.234,57
+new Number(1234.567)->format(2, ',', '.'); // 1.234,57
 ```
 
 Every value class exposes its raw value through `get()` and the public readonly `value`
@@ -66,8 +66,8 @@ or use `number()` / `number` to access `Number`-specific formatting and type che
 use function ReeStyleIt\NumberClass\pythagoras;
 
 $result = pythagoras(3)->hypotenuse(4);
-echo $result->number->add(1)->get(); // 6
-echo $result->number->format(2);      // 5.00
+$result->number->add(1)->get(); // 6
+$result->number->format(2);      // 5.00
 ```
 
 Every value class also inherits `compare()` and the read-only `compare` property from `Base`.
@@ -90,8 +90,8 @@ use function ReeStyleIt\NumberClass\setDefaultLocale;
 use function ReeStyleIt\NumberClass\number;
 
 setDefaultLocale(Locales::NL_NL);
-echo number(21)->ordinal;          // 21ste
-echo number(21)->ordinal->wordify; // eenentwintigste
+(string) number(21)->ordinal;          // 21ste
+number(21)->ordinal->wordify; // eenentwintigste
 ```
 
 Per-instance `locale()` settings take precedence. Existing formatter instances keep their locale.
@@ -149,7 +149,7 @@ $distance = geometry(-0.1278, 51.5074, 10)
     ->haversine(2.3522, 48.8566, 35)
     ->number;
 
-echo $distance->divide(1000)->number->format(2); // 343.56 kilometres, London to Paris
+$distance->divide(1000)->number->format(2); // 343.56 kilometres, London to Paris
 ```
 
 Ellipse circumference uses Ramanujan's second approximation. Geographic coordinates use
@@ -229,7 +229,12 @@ $future = compoundInterest(1000)->futureValue(annualRate: 0.05, years: 10);
 $future->number->format(2); // '1,628.89'
 $loan = amortization(100000);
 $loan->payment(annualRate: 0.06, periods: 360)->number->format(2); // '599.55'
-$schedule = $loan->schedule(0.06, 360);
+$schedule = $loan->schedule(0.06, 360); // Amortization\Schedule
+$schedule->first();
+$schedule->last->balance; // 0.0
+$total = $loan->total(0.06, 360);
+$total->payments->get();
+$total->interest->get();
 ```
 
 Rates are annual decimals; amortization defaults to monthly payments and compound
@@ -294,7 +299,7 @@ $formatter = currencyFormatter(1234.5)
     ->currency(Currencies::USD)
     ->locale(Locales::EN_US);
 
-echo $formatter;                          // $1,234.50
+(string) $formatter;                          // $1,234.50
 $amount = $formatter->number->get();       // 1234.5
 $symbol = Currencies::EUR->symbol(Locales::NL_NL); // '€'
 $position = Locales::DE_DE->symbolPosition();     // 'suffix'
@@ -353,7 +358,7 @@ use function ReeStyleIt\NumberClass\number;
 try {
     number('invalid')->add(1);
 } catch (NumberException $exception) {
-    echo $exception->getMessage();
+    $exception->getMessage();
 }
 ```
 

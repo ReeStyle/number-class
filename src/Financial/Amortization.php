@@ -3,6 +3,8 @@
 namespace ReeStyleIt\NumberClass\Financial;
 
 use ReeStyleIt\NumberClass\Exceptions\FinancialException;
+use ReeStyleIt\NumberClass\Financial\Amortization\Schedule;
+use ReeStyleIt\NumberClass\Financial\Amortization\Schedule\Line;
 use ReeStyleIt\NumberClass\Financial\Amortization\Total;
 use ReeStyleIt\NumberClass\Number;
 
@@ -24,10 +26,7 @@ class Amortization extends Calculation
         return $this->result($this->value * $factor);
     }
 
-    /**
-     * @return list<array{period: int, payment: float, interest: float, principal: float, balance: float}>
-     */
-    public function schedule(int|float $annualRate, int $periods, int $paymentsPerYear = 12): array
+    public function schedule(int|float $annualRate, int $periods, int $paymentsPerYear = 12): Schedule
     {
         $payment = $this->payment($annualRate, $periods, $paymentsPerYear)->get();
         $rate = $annualRate / $paymentsPerYear;
@@ -38,16 +37,16 @@ class Amortization extends Calculation
             $interest = $this->result($balance * $rate)->get();
             $principal = $period === $periods ? $balance : min($balance, max(0.0, $payment - $interest));
             $balance = max(0.0, $balance - $principal);
-            $schedule[] = [
-                'period' => $period,
-                'payment' => $this->result($principal + $interest)->get(),
-                'interest' => $interest,
-                'principal' => $principal,
-                'balance' => $balance,
-            ];
+            $schedule[] = new Line(
+                period: $period,
+                payment: $this->result($principal + $interest)->get(),
+                interest: $interest,
+                principal: $principal,
+                balance: $balance,
+            );
         }
 
-        return $schedule;
+        return new Schedule($schedule);
     }
 
     public function total(int|float $annualRate, int $periods, int $paymentsPerYear = 12): Total

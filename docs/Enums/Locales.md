@@ -83,7 +83,7 @@ use ReeStyleIt\NumberClass\Enums\Locales;
 use function ReeStyleIt\NumberClass\currencyFormatter;
 
 $locale = Locales::EN_US;
-echo currencyFormatter(1234.5)
+(string) currencyFormatter(1234.5)
     ->currency($locale->currency())
     ->locale($locale); // $1,234.50; requires intl
 ```

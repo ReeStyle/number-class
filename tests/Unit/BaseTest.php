@@ -79,10 +79,10 @@ it('validates numeric values before providing a Number instance', function (mixe
         ->and(fn () => $value->compare)->toThrow(MustBeNumberException::class);
 })->with([
     'numeric string' => ['7'],
-    'boolean' => [true],
-    'null' => [null],
-    'array' => [[7]],
-    'object' => [new \stdClass],
+    'boolean'        => [true],
+    'null'           => [null],
+    'array'          => [[7]],
+    'object'         => [new \stdClass],
 ]);
 
 it('validates conversion on every value class', function (string $class) {

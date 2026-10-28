@@ -37,6 +37,6 @@ use function ReeStyleIt\NumberClass\time;
 try {
     time()->from('not a date');
 } catch (TimeException $error) {
-    echo $error->getMessage(); // Starting point must be a valid Unix timestamp or date.
+    $error->getMessage(); // Starting point must be a valid Unix timestamp or date.
 }
 ```

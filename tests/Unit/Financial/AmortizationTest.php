@@ -32,28 +32,30 @@ it('supports zero rate, zero principal, annual payments, and tiny rates', functi
 it('produces a schedule whose principal and interest reconcile with the loan', function () {
     $loan = amortization(100000);
     $schedule = $loan->schedule(0.06, 360);
+    $total = $loan->total(0.06, 360);
     $previous = 100000.0;
 
     foreach ($schedule as $index => $row) {
-        expect($row['period'])->toBe($index + 1)
-            ->and($row['interest'])->toEqualWithDelta($previous * 0.005, 1e-8)
-            ->and($row['payment'])->toEqualWithDelta($row['principal'] + $row['interest'], 1e-8)
-            ->and($row['balance'])->toEqualWithDelta($previous - $row['principal'], 1e-8);
-        $previous = $row['balance'];
+        expect($row->period)->toBe($index + 1)
+            ->and($row->interest)->toEqualWithDelta($previous * 0.005, 1e-8)
+            ->and($row->payment)->toEqualWithDelta($row->principal + $row->interest, 1e-8)
+            ->and($row->balance)->toEqualWithDelta($previous - $row->principal, 1e-8);
+        $previous = $row->balance;
     }
 
     expect($schedule)->toHaveCount(360)
-        ->and($schedule[359]['balance'])->toBe(0.0)
-        ->and(array_sum(array_column($schedule, 'principal')))->toEqualWithDelta(100000, 1e-7)
-        ->and(array_sum(array_column($schedule, 'interest')))->toEqualWithDelta($loan->total(0.06, 360)->interest->get(), 1e-6);
+        ->and($schedule[359]->balance)->toBe(0.0)
+        ->and(array_sum($schedule->column('principal')))->toEqualWithDelta(100000, 1e-7)
+        ->and(array_sum($schedule->column('interest')))->toEqualWithDelta($total->interest->get(), 1e-6)
+        ->and(array_sum($schedule->column('payment')))->toEqualWithDelta($total->payments->get(), 1e-6);
 });
 
 it('settles the last payment without rounding residuals', function () {
     $schedule = amortization(100)->schedule(0, 3);
 
-    expect($schedule[2]['balance'])->toBe(0.0)
-        ->and(array_sum(array_column($schedule, 'principal')))->toEqualWithDelta(100, 1e-12)
-        ->and(array_sum(array_column($schedule, 'interest')))->toBe(0.0);
+    expect($schedule[2]->balance)->toBe(0.0)
+        ->and(array_sum($schedule->column('principal')))->toEqualWithDelta(100, 1e-12)
+        ->and(array_sum($schedule->column('interest')))->toBe(0.0);
 });
 
 it('supports the shared amortization accessors', function () {

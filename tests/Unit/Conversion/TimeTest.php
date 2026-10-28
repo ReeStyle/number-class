@@ -34,10 +34,10 @@ it('protects results from external changes', function (\Closure $change) {
     expect(fn () => $change($time))->toThrow(\Error::class)
         ->and($time->results)->toBe([]);
 })->with([
-    'replace' => [function (Time $time) {
+    'replace'   => [function (Time $time) {
         $time->results = ['hours' => 1];
     }],
-    'append' => [function (Time $time) {
+    'append'    => [function (Time $time) {
         $time->results[] = 1;
     }],
     'reference' => [function (Time $time) {
@@ -65,13 +65,13 @@ it('calculates an interval directly when an endpoint is supplied', function (mix
         ->and($interval)->toEqual($expected)
         ->and($time->get())->toBe(42);
 })->with([
-    'zero timestamp' => [0],
+    'zero timestamp'        => [0],
     'zero timestamp string' => ['0'],
-    'timestamp' => [90],
-    'timestamp string' => ['90'],
-    'date string' => ['1970-01-01T00:01:30Z'],
-    'date object' => [new DateTimeImmutable('@90')],
-    'Carbon' => [new Carbon('@90')],
+    'timestamp'             => [90],
+    'timestamp string'      => ['90'],
+    'date string'           => ['1970-01-01T00:01:30Z'],
+    'date object'           => [new DateTimeImmutable('@90')],
+    'Carbon'                => [new Carbon('@90')],
 ]);
 
 it('uses now when an explicit null endpoint is supplied', function () {

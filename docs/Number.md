@@ -15,8 +15,8 @@ use ReeStyleIt\NumberClass\Number;
 
 $price = new Number(10);
 $total = $price->add(5)->multiply(2)->subtract(4)->divide(2);
-echo $total->get(); // 13
-echo $price->get(); // 10
+$total->get(); // 13
+$price->get(); // 10
 ```
 
 ## Arithmetic methods
@@ -94,12 +94,12 @@ Negative decimal counts round digits before the decimal point. Null separators u
 use ReeStyleIt\NumberClass\Number;
 
 $number = new Number(1234.567);
-echo $number->format();              // 1,235
-echo $number->format(2);             // 1,234.57
-echo $number->format(2, ',', '.');   // 1.234,57
-echo $number->format(2, '.', '');    // 1234.57
-echo $number->format(-2);            // 1,200
-echo $number->format(decimals: 1, decimal_separator: ',', thousands_separator: ' '); // 1 234,6
+$number->format();              // 1,235
+$number->format(2);             // 1,234.57
+$number->format(2, ',', '.');   // 1.234,57
+$number->format(2, '.', '');    // 1234.57
+$number->format(-2);            // 1,200
+$number->format(decimals: 1, decimal_separator: ',', thousands_separator: ' '); // 1 234,6
 ```
 
 For numeric rounding results use [Round](Format/Round.md). For currency text use
@@ -146,7 +146,7 @@ use ReeStyleIt\NumberClass\Enums\Locales;
 use ReeStyleIt\NumberClass\Number;
 
 $formatter = new Number(25)->currency->currency(Currencies::USD)->locale(Locales::EN_US);
-echo $formatter; // $25.00; requires intl
+(string) $formatter; // $25.00; requires intl
 ```
 
 ## Helper usage
@@ -155,7 +155,7 @@ echo $formatter; // $25.00; requires intl
 use function ReeStyleIt\NumberClass\number;
 
 $result = number(12)->add(3)->multiply(2);
-echo $result->get(); // 30
+$result->get(); // 30
 ```
 
 ## Errors
