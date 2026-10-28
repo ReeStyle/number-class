@@ -5,7 +5,7 @@ namespace Tests\Unit\Format;
 use stdClass;
 use ReeStyleIt\NumberClass\Exceptions\MustBeNumberException;
 use ReeStyleIt\NumberClass\Base;
-use ReeStyleIt\NumberClass\Enums\Currencies;
+use ReeStyleIt\NumberClass\Enum\Currency as CurrencyEnum;
 use ReeStyleIt\NumberClass\Exceptions\CurrencyFormattingException;
 use ReeStyleIt\NumberClass\Exceptions\EmptyLocaleException;
 use ReeStyleIt\NumberClass\Exceptions\InvalidCurrencyCodeException;
@@ -42,7 +42,7 @@ it('returns the inherited value through its getter', function () {
 });
 
 it('accepts a currency enum when formatting a Number', function () {
-    $format = new Number(1234.5)->currency->currency(Currencies::USD)->locale('en_US');
+    $format = new Number(1234.5)->currency->currency(CurrencyEnum::USD)->locale('en_US');
 
     expect($format->currencyCode)->toBe('USD')
         ->and((string) $format)->toBe('$1,234.50');
@@ -102,12 +102,12 @@ it('validates the Number before formatting currency', function (mixed $value) {
 it('returns the same formatter from configuration methods and keeps its amount', function () {
     $format = new Currency(7);
 
-    expect($format->currency(Currencies::USD))->toBe($format)
+    expect($format->currency(CurrencyEnum::USD))->toBe($format)
         ->and($format->locale('en_US'))->toBe($format)
         ->and((string) $format)->toBe('$7.00')
         ->and($format->get())->toBe(7);
 
-    expect((string) $format->currency(Currencies::EUR)->locale('nl_NL'))->toBe("€\u{00A0}7,00")
+    expect((string) $format->currency(CurrencyEnum::EUR)->locale('nl_NL'))->toBe("€\u{00A0}7,00")
         ->and($format->get())->toBe(7);
 });
 

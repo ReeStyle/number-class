@@ -3,11 +3,11 @@
 namespace ReeStyleIt\NumberClass\Conversion;
 
 use IntlException;
-use Locale;
+use Locale as IntlLocale;
 use NumberFormatter;
 use ReeStyleIt\NumberClass\Base;
 use ReeStyleIt\NumberClass\Conversion\Ordinal\Wordify;
-use ReeStyleIt\NumberClass\Enums\Locales;
+use ReeStyleIt\NumberClass\Enum\Locale;
 use ReeStyleIt\NumberClass\Exceptions\EmptyLocaleException;
 use ReeStyleIt\NumberClass\Exceptions\MustBeIntegerException;
 use ReeStyleIt\NumberClass\Exceptions\OrdinalFormattingException;
@@ -29,9 +29,9 @@ class Ordinal extends Base
         $this->locale = self::getDefaultLocale() ?? $this->locale;
     }
 
-    public function locale(Locales|string $locale): self
+    public function locale(Locale|string $locale): self
     {
-        $locale = $locale instanceof Locales ? $locale->value : $locale;
+        $locale = $locale instanceof Locale ? $locale->value : $locale;
 
         if (trim($locale) === '') {
             throw new EmptyLocaleException();
@@ -57,7 +57,7 @@ class Ordinal extends Base
             throw new OrdinalFormattingException($formatter->getErrorMessage());
         }
 
-        if (Locale::getPrimaryLanguage($this->locale) === 'nl') {
+        if (IntlLocale::getPrimaryLanguage($this->locale) === 'nl') {
             $ending = abs($this->value % 100);
             $suffix = $this->value !== 0 && ($ending === 0 || $ending === 1 || $ending === 8 || $ending >= 20) ? 'ste' : 'de';
 

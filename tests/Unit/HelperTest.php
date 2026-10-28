@@ -6,7 +6,7 @@ use Closure;
 use ReeStyleIt\NumberClass\Conversion\Time;
 use ReeStyleIt\NumberClass\Conversion\Time\Diff;
 use ReeStyleIt\NumberClass\Exceptions\MustBeNumberException;
-use ReeStyleIt\NumberClass\Enums\Currencies;
+use ReeStyleIt\NumberClass\Enum\Currency as CurrencyEnum;
 use ReeStyleIt\NumberClass\Format\Currency;
 use ReeStyleIt\NumberClass\Format\Round;
 use ReeStyleIt\NumberClass\Mathematical\Arithmetic;
@@ -41,7 +41,7 @@ it('creates a Number through the number helper without converting its value', fu
 
 it('uses the helpers together in a calculation and currency formatting', function () {
     $number = number(12)->increase(3)->multiply(2);
-    $formatter = currencyFormatter($number->get())->currency(Currencies::USD)->locale('en_US');
+    $formatter = currencyFormatter($number->get())->currency(CurrencyEnum::USD)->locale('en_US');
 
     expect($number->get())->toBe(30)
         ->and((string) $formatter)->toBe('$30.00');
@@ -52,7 +52,7 @@ it('creates a currency formatter with the supplied value', function () {
 
     expect($formatter)->toBeInstanceOf(Currency::class)
         ->and($formatter->get())->toBe(1234.5)
-        ->and((string) $formatter->currency(Currencies::USD)->locale('en_US'))->toBe('$1,234.50');
+        ->and((string) $formatter->currency(CurrencyEnum::USD)->locale('en_US'))->toBe('$1,234.50');
 });
 
 it('creates a Compare directly through the helper', function () {

@@ -1,7 +1,7 @@
 <?php
 
-use ReeStyleIt\NumberClass\Enums\Currencies;
-use ReeStyleIt\NumberClass\Enums\Locales;
+use ReeStyleIt\NumberClass\Enum\Currency;
+use ReeStyleIt\NumberClass\Enum\Locale;
 use ReeStyleIt\NumberClass\Exceptions\CurrencyFormattingException;
 
 use function ReeStyleIt\NumberClass\currencyFormatter;
@@ -19,21 +19,21 @@ if (class_exists(NumberFormatter::class) && ! $simulate) {
 }
 
 $expected = [
-    [Currencies::EUR, Locales::NL_NL, '€'],
-    [Currencies::EUR, Locales::DE_DE, '€'],
-    [Currencies::EUR, Locales::DE_AT, '€'],
-    [Currencies::CHF, Locales::DE_CH, 'CHF'],
-    [Currencies::USD, Locales::EN_US, '$'],
-    [Currencies::CAD, Locales::EN_US, 'CAD'],
-    [Currencies::CAD, Locales::EN_CA, '$'],
-    [Currencies::USD, Locales::EN_CA, 'USD'],
-    [Currencies::GBP, Locales::EN_GB, '£'],
-    [Currencies::JPY, Locales::JA_JP, '￥'],
-    [Currencies::INR, Locales::EN_IN, '₹'],
-    [Currencies::CAD, 'en-CA', '$'],
-    [Currencies::CAD, 'en_CA.UTF-8', '$'],
-    [Currencies::CAD, 'en_CA@currency=CAD', '$'],
-    [Currencies::CAD, 'not_a_locale', 'CAD'],
+    [Currency::EUR, Locale::NL_NL, '€'],
+    [Currency::EUR, Locale::DE_DE, '€'],
+    [Currency::EUR, Locale::DE_AT, '€'],
+    [Currency::CHF, Locale::DE_CH, 'CHF'],
+    [Currency::USD, Locale::EN_US, '$'],
+    [Currency::CAD, Locale::EN_US, 'CAD'],
+    [Currency::CAD, Locale::EN_CA, '$'],
+    [Currency::USD, Locale::EN_CA, 'USD'],
+    [Currency::GBP, Locale::EN_GB, '£'],
+    [Currency::JPY, Locale::JA_JP, '￥'],
+    [Currency::INR, Locale::EN_IN, '₹'],
+    [Currency::CAD, 'en-CA', '$'],
+    [Currency::CAD, 'en_CA.UTF-8', '$'],
+    [Currency::CAD, 'en_CA@currency=CAD', '$'],
+    [Currency::CAD, 'not_a_locale', 'CAD'],
 ];
 
 foreach ($expected as [$currency, $locale, $symbol]) {
@@ -42,15 +42,15 @@ foreach ($expected as [$currency, $locale, $symbol]) {
     }
 }
 
-foreach (Currencies::cases() as $currency) {
-    foreach (Locales::cases() as $locale) {
+foreach (Currency::cases() as $currency) {
+    foreach (Locale::cases() as $locale) {
         if ($currency->symbol($locale) === '') {
             throw new RuntimeException('Empty fallback symbol for ' . $currency->value);
         }
     }
 }
 
-foreach (Locales::cases() as $locale) {
+foreach (Locale::cases() as $locale) {
     if ($locale->currency()->symbol($locale) !== $locale->symbol()) {
         throw new RuntimeException('Default symbol does not match the locale: ' . $locale->value);
     }
@@ -69,9 +69,9 @@ try {
     }
 }
 
-\ReeStyleIt\NumberClass\Base::setDefaultLocale(Locales::EN_CA);
+\ReeStyleIt\NumberClass\Base::setDefaultLocale(Locale::EN_CA);
 
-if (Currencies::CAD->symbol() !== '$' || Currencies::CAD->symbol(Locales::EN_US) !== 'CAD') {
+if (Currency::CAD->symbol() !== '$' || Currency::CAD->symbol(Locale::EN_US) !== 'CAD') {
     throw new RuntimeException('Global locale and explicit overrides must apply without intl.');
 }
 

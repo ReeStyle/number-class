@@ -5,8 +5,8 @@ namespace ReeStyleIt\NumberClass\Financial\Amortization\Schedule;
 use JsonSerializable;
 use ReeStyleIt\NumberClass\Base;
 use ReeStyleIt\NumberClass\Conversion\Ordinal;
-use ReeStyleIt\NumberClass\Enums\Currencies;
-use ReeStyleIt\NumberClass\Enums\Locales;
+use ReeStyleIt\NumberClass\Enum\Currency as CurrencyEnum;
+use ReeStyleIt\NumberClass\Enum\Locale;
 use ReeStyleIt\NumberClass\Financial\Amortization\Schedule\Line\Wordify;
 use ReeStyleIt\NumberClass\Format\Currency;
 
@@ -26,9 +26,9 @@ class Line implements JsonSerializable
         public readonly float $balance,
     ) {}
 
-    public function wordify(Currencies|string $currency = Currencies::EUR, Locales|string|null $locale = null): Wordify
+    public function wordify(CurrencyEnum|string $currency = CurrencyEnum::EUR, Locale|string|null $locale = null): Wordify
     {
-        $locale ??= Base::getDefaultLocale() ?? Locales::EN_US;
+        $locale ??= Base::getDefaultLocale() ?? Locale::EN_US;
         $format = fn (float $amount): string => (string) new Currency($amount)->currency($currency)->locale($locale);
 
         return new Wordify(

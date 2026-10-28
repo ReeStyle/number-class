@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Renamed the currency and locale enums to singular `Enum\Currency` and `Enum\Locale`,
+  using the standard namespace-to-directory autoload mapping. Update enum imports accordingly.
+
 - Added schedule line `wordify()` and read-only property returning ordinal period words
   and currency-formatted amounts, with currency and locale overrides.
 

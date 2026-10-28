@@ -1,28 +1,28 @@
 <?php
 
-namespace Tests\Unit\Enums;
+namespace Tests\Unit\Enum;
 
-use ReeStyleIt\NumberClass\Enums\Currencies;
+use ReeStyleIt\NumberClass\Enum\Currency;
 use Symfony\Component\Process\Process;
 
-it('provides currency symbols', function (Currencies $currency, string $expected) {
+it('provides currency symbols', function (Currency $currency, string $expected) {
     expect($currency->symbol())->toBe($expected);
 })->with([
-    'euro'            => [Currencies::EUR, '€'],
-    'US dollar'       => [Currencies::USD, '$'],
-    'British pound'   => [Currencies::GBP, '£'],
-    'Japanese yen'    => [Currencies::JPY, '¥'],
-    'Canadian dollar' => [Currencies::CAD, 'CA$'],
-    'Indian rupee'    => [Currencies::INR, '₹'],
+    'euro'            => [Currency::EUR, '€'],
+    'US dollar'       => [Currency::USD, '$'],
+    'British pound'   => [Currency::GBP, '£'],
+    'Japanese yen'    => [Currency::JPY, '¥'],
+    'Canadian dollar' => [Currency::CAD, 'CA$'],
+    'Indian rupee'    => [Currency::INR, '₹'],
 ]);
 
 it('resolves symbols for the requested locale', function () {
-    expect(Currencies::CAD->symbol('en_CA'))->toBe('$')
-        ->and(Currencies::USD->symbol('en_CA'))->toBe('US$');
+    expect(Currency::CAD->symbol('en_CA'))->toBe('$')
+        ->and(Currency::USD->symbol('en_CA'))->toBe('US$');
 });
 
 it('provides a non-empty symbol for every currency case', function () {
-    foreach (Currencies::cases() as $currency) {
+    foreach (Currency::cases() as $currency) {
         expect($currency->symbol())->toBeString()->not->toBeEmpty();
     }
 });

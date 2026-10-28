@@ -25,7 +25,7 @@ Import helpers from `ReeStyleIt\NumberClass` with `use function`.
 | `price(mixed $value): Price` | [`new Price($value)`](Financial/Price.md) |
 | `pythagoras(mixed $value): Pythagoras` | [`new Pythagoras($value)`](Mathematical/Pythagoras.md) |
 | `round(mixed $value): Round` | [`new Round($value)`](Format/Round.md) |
-| `setDefaultLocale(Locales|string|null $locale): void` | [Sets or clears the global locale](Base.md#global-default-locale) |
+| `setDefaultLocale(Locale|string|null $locale): void` | [Sets or clears the global locale](Base.md#global-default-locale) |
 | `time(mixed $value = 0): Time` | [`new Time($value)`](Conversion/Time.md) |
 | `toPct(int\|float\|string $value, bool $exact = false): float\|string` | Divides by 100; exact mode uses BCMath and returns a decimal string |
 | `trigonometry(mixed $value): Trigonometry` | [`new Trigonometry($value)`](Mathematical/Trigonometry.md) |
@@ -49,13 +49,13 @@ $sine = trigonometry(90)->deg2rad()->sin()->get();   // 1.0
 Currency formatting requires `intl`:
 
 ```php
-use ReeStyleIt\NumberClass\Enums\Currencies;
-use ReeStyleIt\NumberClass\Enums\Locales;
+use ReeStyleIt\NumberClass\Enum\Currency;
+use ReeStyleIt\NumberClass\Enum\Locale;
 use function ReeStyleIt\NumberClass\currencyFormatter;
 
 (string) currencyFormatter(1234.5)
-    ->currency(Currencies::USD)
-    ->locale(Locales::EN_US); // $1,234.50
+    ->currency(Currency::USD)
+    ->locale(Locale::EN_US); // $1,234.50
 ```
 
 The package's `round()` returns an object. After importing it, use `\round(12.345, 2)`
@@ -104,10 +104,10 @@ median value, or mode list. Samples must be non-empty finite integers or floats.
 Set the package-wide locale with the configuration helper:
 
 ```php
-use ReeStyleIt\NumberClass\Enums\Locales;
+use ReeStyleIt\NumberClass\Enum\Locale;
 use function ReeStyleIt\NumberClass\setDefaultLocale;
 
-setDefaultLocale(Locales::NL_NL); // Also accepts a locale string.
+setDefaultLocale(Locale::NL_NL); // Also accepts a locale string.
 setDefaultLocale(null);          // Restore the original defaults.
 ```
 

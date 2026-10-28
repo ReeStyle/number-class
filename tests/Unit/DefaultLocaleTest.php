@@ -4,8 +4,8 @@ namespace Tests\Unit;
 
 use ReeStyleIt\NumberClass\Base;
 use ReeStyleIt\NumberClass\Conversion\Ordinal;
-use ReeStyleIt\NumberClass\Enums\Currencies;
-use ReeStyleIt\NumberClass\Enums\Locales;
+use ReeStyleIt\NumberClass\Enum\Currency as CurrencyEnum;
+use ReeStyleIt\NumberClass\Enum\Locale;
 use ReeStyleIt\NumberClass\Exceptions\EmptyLocaleException;
 use ReeStyleIt\NumberClass\Format\Currency;
 use ReeStyleIt\NumberClass\Number;
@@ -24,7 +24,7 @@ afterEach(function () {
     Base::setDefaultLocale($this->previousDefaultLocale);
 });
 
-it('shares the default locale across value classes for strings and enums', function (Locales|string $locale) {
+it('shares the default locale across value classes for strings and enums', function (Locale|string $locale) {
     setDefaultLocale($locale);
 
     expect(Base::getDefaultLocale())->toBe('nl_NL')
@@ -34,10 +34,10 @@ it('shares the default locale across value classes for strings and enums', funct
         ->and(ordinal(21)->wordify)->toBe('eenentwintigste')
         ->and(number(21)->ordinal->format())->toBe('21ste')
         ->and(number(21)->ordinal()->wordify())->toBe('eenentwintigste');
-})->with(['nl_NL', Locales::NL_NL]);
+})->with(['nl_NL', Locale::NL_NL]);
 
 it('applies the default locale to currency formatting and default symbol lookup', function () {
-    Base::setDefaultLocale(Locales::EN_US);
+    Base::setDefaultLocale(Locale::EN_US);
 
     expect((string) new Currency(1234.5)->currency('USD'))->toBe('$1,234.50')
         ->and((string) currencyFormatter(1234.5)->currency('USD'))->toBe('$1,234.50')
@@ -45,9 +45,9 @@ it('applies the default locale to currency formatting and default symbol lookup'
 
     Base::setDefaultLocale('nl_NL');
 
-    expect(Currencies::EUR->symbol())->toBe('€')
-        ->and(Currencies::EUR->symbol('en_US'))->toBe('€')
-        ->and(Currencies::USD->symbol())->toBe(Currencies::USD->symbol('nl_NL'));
+    expect(CurrencyEnum::EUR->symbol())->toBe('€')
+        ->and(CurrencyEnum::EUR->symbol('en_US'))->toBe('€')
+        ->and(CurrencyEnum::USD->symbol())->toBe(CurrencyEnum::USD->symbol('nl_NL'));
 });
 
 it('preserves existing instances and allows local overrides', function () {
@@ -73,7 +73,7 @@ it('restores original class defaults when the global override is cleared', funct
     expect(Base::getDefaultLocale())->toBeNull()
         ->and(ordinal(1)->locale)->toBe('en_US')
         ->and(currencyFormatter(1)->locale)->toBe('nl_NL')
-        ->and(Currencies::USD->symbol())->toBe('$');
+        ->and(CurrencyEnum::USD->symbol())->toBe('$');
 });
 
 it('rejects blank global locales without changing the current default', function (string $locale) {

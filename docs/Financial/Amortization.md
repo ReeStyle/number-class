@@ -124,12 +124,12 @@ The period is an ordinal word; payment, interest, principal, and balance use the
 currency formatter, including its rounding and currency-specific minor units.
 
 ```php
-use ReeStyleIt\NumberClass\Enums\Currencies;
-use ReeStyleIt\NumberClass\Enums\Locales;
+use ReeStyleIt\NumberClass\Enum\Currency;
+use ReeStyleIt\NumberClass\Enum\Locale;
 use function ReeStyleIt\NumberClass\amortization;
 
 $line = amortization(1200)->schedule(0, 12)[0];
-$display = $line->wordify(Currencies::USD, Locales::EN_US);
+$display = $line->wordify(Currency::USD, Locale::EN_US);
 $display->period;    // 'first'
 $display->payment;   // '$100.00'
 $display->interest;  // '$0.00'
@@ -138,7 +138,7 @@ $display->balance;   // '$1,100.00'
 $display->toArray(); // The same fields as a plain array of strings.
 ```
 
-The signature is `wordify(Currencies|string $currency = Currencies::EUR, Locales|string|null $locale = null): Wordify`.
+The signature is `wordify(Currency|string $currency = Currency::EUR, Locale|string|null $locale = null): Wordify`.
 The property uses these defaults: euros and the current global locale, or `en_US` if no
 global locale is set. The selected locale applies to every field. Each access creates a
 new display result, so later global locale changes apply to subsequent accesses.

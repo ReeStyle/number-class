@@ -3,24 +3,24 @@
 namespace Tests\Unit\Number;
 
 use ReeStyleIt\NumberClass\Base;
-use ReeStyleIt\NumberClass\Enums\Locales;
+use ReeStyleIt\NumberClass\Enum\Locale;
 use ReeStyleIt\NumberClass\Exceptions\EmptyLocaleException;
 use ReeStyleIt\NumberClass\Exceptions\MustBeNumberException;
 use ReeStyleIt\NumberClass\Exceptions\NumberFormattingException;
 
 use function ReeStyleIt\NumberClass\number;
 
-it('spells cardinal numbers in common languages', function (int|float $value, Locales|string $locale, string $expected) {
+it('spells cardinal numbers in common languages', function (int|float $value, Locale|string $locale, string $expected) {
     $number = number($value);
 
     expect($number->wordify($locale))->toBe($expected)
         ->and($number->get())->toBe($value);
 })->with([
-    [0, 'en', 'zero'], [1, 'en', 'one'], [21, Locales::EN_US, 'twenty-one'],
+    [0, 'en', 'zero'], [1, 'en', 'one'], [21, Locale::EN_US, 'twenty-one'],
     [-21, 'en', 'minus twenty-one'], [1.25, 'en', 'one point two five'],
-    [0, 'nl', 'nul'], [21, Locales::NL_NL, 'eenentwintig'],
-    [21, Locales::FR_FR, 'vingt-et-un'], [21, Locales::ES_ES, 'veintiuno'],
-    [21, Locales::IT_IT, 'ventuno'],
+    [0, 'nl', 'nul'], [21, Locale::NL_NL, 'eenentwintig'],
+    [21, Locale::FR_FR, 'vingt-et-un'], [21, Locale::ES_ES, 'veintiuno'],
+    [21, Locale::IT_IT, 'ventuno'],
 ]);
 
 it('uses the global locale for method and property access while allowing explicit overrides', function () {

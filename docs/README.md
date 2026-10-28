@@ -1,6 +1,6 @@
 # Usage documentation
 
-[Project homepage](../README.md) · [Helper functions](helpers.md) · [Changelog](../CHANGELOG.md)
+[Project homepage](../README.md) · [API reference](api/README.md) · [Helper functions](helpers.md) · [Changelog](../CHANGELOG.md)
 
 NumberClass requires PHP 8.4 or later within PHP 8.x. Load Composer's autoloader once in your application:
 
@@ -70,14 +70,14 @@ Constructors accept `mixed $value`. Numeric operations require an actual PHP `in
 numeric strings such as `'12'` are rejected when the operation validates the value.
 Floating point results follow PHP's native precision and domain behavior.
 
-## Enums
+## Enum
 
 | Enum | Usage |
 | --- | --- |
-| [Enums\Currencies](Enums/Currencies.md) | Supported currency codes and locale-sensitive symbol lookup |
-| [Enums\Locales](Enums/Locales.md) | Locale identifiers, native currencies, symbols, and symbol positions |
+| [Enum\Currency](Enum/Currency.md) | Supported currency codes and locale-sensitive symbol lookup |
+| [Enum\Locale](Enum/Locale.md) | Locale identifiers, native currencies, symbols, and symbol positions |
 
-The namespace is `Enums` even though the source directory is named `Enum`.
+The enums use the `ReeStyleIt\NumberClass\Enum` namespace and the `src/Enum` directory.
 Currency amount formatting and ordinal formatting require the PHP `intl` extension. Enum metadata and the bundled
 currency-symbol fallback can be used without it.
 

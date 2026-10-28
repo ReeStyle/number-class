@@ -2,7 +2,7 @@
 
 namespace ReeStyleIt\NumberClass;
 
-use ReeStyleIt\NumberClass\Enums\Locales;
+use ReeStyleIt\NumberClass\Enum\Locale;
 use ReeStyleIt\NumberClass\Exceptions\EmptyLocaleException;
 use ReeStyleIt\NumberClass\Exceptions\NumberFormattingException;
 use ReeStyleIt\NumberClass\Mathematical\Arithmetic;
@@ -117,7 +117,7 @@ class Number extends Base
         return $this->arithmetic->subtract($amount);
     }
 
-    public function wordify(Locales|string|null $locale = null): string
+    public function wordify(Locale|string|null $locale = null): string
     {
         $this->assertNumber();
 
@@ -130,7 +130,7 @@ class Number extends Base
         }
 
         $locale ??= self::getDefaultLocale() ?? 'en_US';
-        $locale = $locale instanceof Locales ? $locale->value : $locale;
+        $locale = $locale instanceof Locale ? $locale->value : $locale;
 
         if (trim($locale) === '') {
             throw new EmptyLocaleException();

@@ -85,11 +85,11 @@ optional elevation to `geometry()`; the stored number supplies longitude.
 Set the default locale once for new ordinal and currency formatters, and currency symbol lookup:
 
 ```php
-use ReeStyleIt\NumberClass\Enums\Locales;
+use ReeStyleIt\NumberClass\Enum\Locale;
 use function ReeStyleIt\NumberClass\setDefaultLocale;
 use function ReeStyleIt\NumberClass\number;
 
-setDefaultLocale(Locales::NL_NL);
+setDefaultLocale(Locale::NL_NL);
 (string) number(21)->ordinal;          // 21ste
 number(21)->ordinal->wordify; // eenentwintigste
 ```
@@ -291,18 +291,18 @@ floats are rejected to preserve decimal precision. The package requires `ext-bcm
 Requires the PHP `intl` extension:
 
 ```php
-use ReeStyleIt\NumberClass\Enums\Currencies;
-use ReeStyleIt\NumberClass\Enums\Locales;
+use ReeStyleIt\NumberClass\Enum\Currency;
+use ReeStyleIt\NumberClass\Enum\Locale;
 use function ReeStyleIt\NumberClass\currencyFormatter;
 
 $formatter = currencyFormatter(1234.5)
-    ->currency(Currencies::USD)
-    ->locale(Locales::EN_US);
+    ->currency(Currency::USD)
+    ->locale(Locale::EN_US);
 
 (string) $formatter;                          // $1,234.50
 $amount = $formatter->number->get();       // 1234.5
-$symbol = Currencies::EUR->symbol(Locales::NL_NL); // '€'
-$position = Locales::DE_DE->symbolPosition();     // 'suffix'
+$symbol = Currency::EUR->symbol(Locale::NL_NL); // '€'
+$position = Locale::DE_DE->symbolPosition();     // 'suffix'
 ```
 
 Currency defaults to EUR and `nl_NL`. Currency and locale setters configure the same formatter;
@@ -317,7 +317,7 @@ returns its stored symbol; another currency returns its code. Full amount format
 requires `intl`.
 
 [Currency reference](docs/Format/Currency.md) ·
-[Currency enum](docs/Enums/Currencies.md) · [Locale enum](docs/Enums/Locales.md)
+[Currency enum](docs/Enum/Currency.md) · [Locale enum](docs/Enum/Locale.md)
 
 ## Documentation
 
@@ -337,7 +337,7 @@ Each value class page includes constructor, method, property, and helper example
 | [Trigonometry](docs/Mathematical/Trigonometry.md) | Angles, ratios, and conversions |
 | [Round](docs/Format/Round.md) | Decimal precision, rounding modes, and nearest multiples |
 | [Currency](docs/Format/Currency.md) | Currency amount formatting |
-| [Currencies](docs/Enums/Currencies.md) / [Locales](docs/Enums/Locales.md) | Codes, symbols, and locale metadata |
+| [Currency](docs/Enum/Currency.md) / [Locale](docs/Enum/Locale.md) | Codes, symbols, and locale metadata |
 | [Helpers](docs/helpers.md) | All namespaced factory functions |
 | [Exceptions](docs/README.md#exceptions) | Named errors and their shared base classes |
 

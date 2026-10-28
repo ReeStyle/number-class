@@ -4,7 +4,7 @@ namespace ReeStyleIt\NumberClass;
 
 use ReeStyleIt\NumberClass\Conversion\Ordinal;
 use ReeStyleIt\NumberClass\Conversion\Time;
-use ReeStyleIt\NumberClass\Enums\Locales;
+use ReeStyleIt\NumberClass\Enum\Locale;
 use ReeStyleIt\NumberClass\Exceptions\EmptyLocaleException;
 use ReeStyleIt\NumberClass\Exceptions\MustBeNumberException;
 use ReeStyleIt\NumberClass\Exceptions\StatisticalException;
@@ -165,9 +165,9 @@ abstract class Base
         $this->value = $value;
     }
 
-    public static function setDefaultLocale(Locales|string|null $locale): void
+    public static function setDefaultLocale(Locale|string|null $locale): void
     {
-        $locale = $locale instanceof Locales ? $locale->value : $locale;
+        $locale = $locale instanceof Locale ? $locale->value : $locale;
 
         if ($locale !== null && trim($locale) === '') {
             throw new EmptyLocaleException();

@@ -7,15 +7,15 @@ ICU's locale rules. It requires the PHP `intl` extension. English (`en_US`) is t
 unless a [global locale](../Base.md#global-default-locale) is configured before construction.
 
 ```php
-use ReeStyleIt\NumberClass\Enums\Locales;
+use ReeStyleIt\NumberClass\Enum\Locale;
 use function ReeStyleIt\NumberClass\number;
 use function ReeStyleIt\NumberClass\ordinal;
 
 ordinal(21)->format();                            // '21st'
-ordinal(1)->locale(Locales::NL_NL)->format();      // '1ste'
+ordinal(1)->locale(Locale::NL_NL)->format();      // '1ste'
 ordinal(1)->locale('fr')->format();                // '1er'
 ordinal(2)->locale('es_ES')->format();             // '2.º'
-ordinal(3)->locale(Locales::IT_IT)->format();       // '3º'
+ordinal(3)->locale(Locale::IT_IT)->format();       // '3º'
 (string) number(20)->add(1)->ordinal;                  // 21st
 (string) number(2)->ordinal()->locale('fr_FR');        // 2e
 ordinal(21)->wordify();                           // 'twenty-first'
@@ -26,7 +26,7 @@ number(21)->ordinal->wordify;                     // 'twenty-first'
 | Member | Behavior |
 | --- | --- |
 | `__construct(mixed $value)` | Stores the value; validation occurs when formatting |
-| `locale(Locales|string $locale): self` | Configures the same formatter and returns it |
+| `locale(Locale|string $locale): self` | Configures the same formatter and returns it |
 | `public string $locale` | Global default captured at construction, or `en_US` |
 | `format(): string` | Returns the localized numeric ordinal |
 | `wordify(): string` | Returns the ordinal spelled out in the configured locale |

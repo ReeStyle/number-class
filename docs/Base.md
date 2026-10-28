@@ -23,17 +23,17 @@ It supplies storage and shared numeric validation; instantiate a concrete class 
 
 ## Global default locale
 
-Call `Base::setDefaultLocale(Locales|string|null $locale)` once during application setup.
+Call `Base::setDefaultLocale(Locale|string|null $locale)` once during application setup.
 The inherited `Number::setDefaultLocale()` method and namespaced `setDefaultLocale()` helper
 configure the same package-wide setting.
 `getDefaultLocale(): ?string` reads the override; `null` means each formatter uses its original default.
 
 ```php
 use ReeStyleIt\NumberClass\Number;
-use ReeStyleIt\NumberClass\Enums\Locales;
+use ReeStyleIt\NumberClass\Enum\Locale;
 use function ReeStyleIt\NumberClass\number;
 
-Number::setDefaultLocale(Locales::NL_NL);
+Number::setDefaultLocale(Locale::NL_NL);
 (string) number(21)->ordinal;          // 21ste
 number(21)->ordinal->wordify; // eenentwintigste
 
@@ -43,7 +43,7 @@ Number::setDefaultLocale(null); // Restore the original defaults.
 New ordinal and currency formatters capture this default when constructed, including those
 created by helpers and shared accessors. Existing instances retain their configuration.
 Per-instance `locale()` calls and assignments to the `locale` property override the default.
-`Currencies::symbol()` also uses the global setting when its locale argument is omitted or null.
+`Currency::symbol()` also uses the global setting when its locale argument is omitted or null.
 The setting changes formatting language and conventions, while the currency code remains unchanged.
 
 Without a global override, ordinals use `en_US`, currency amounts use `nl_NL`, and

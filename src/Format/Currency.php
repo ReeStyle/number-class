@@ -4,8 +4,8 @@ namespace ReeStyleIt\NumberClass\Format;
 
 use NumberFormatter;
 use ReeStyleIt\NumberClass\Base;
-use ReeStyleIt\NumberClass\Enums\Currencies;
-use ReeStyleIt\NumberClass\Enums\Locales;
+use ReeStyleIt\NumberClass\Enum\Currency as CurrencyEnum;
+use ReeStyleIt\NumberClass\Enum\Locale;
 use ReeStyleIt\NumberClass\Exceptions\CurrencyFormattingException;
 use ReeStyleIt\NumberClass\Exceptions\EmptyLocaleException;
 use ReeStyleIt\NumberClass\Exceptions\InvalidCurrencyCodeException;
@@ -23,13 +23,13 @@ class Currency extends Base
         $this->locale = self::getDefaultLocale() ?? $this->locale;
     }
 
-    public function currency(Currencies|string|null $currency = null): self
+    public function currency(CurrencyEnum|string|null $currency = null): self
     {
         if ($currency === null) {
             return parent::currency();
         }
 
-        $currency = $currency instanceof Currencies ? $currency->value : strtoupper($currency);
+        $currency = $currency instanceof CurrencyEnum ? $currency->value : strtoupper($currency);
 
         if (! preg_match('/^[A-Z]{3}$/D', $currency)) {
             throw new InvalidCurrencyCodeException();
@@ -40,9 +40,9 @@ class Currency extends Base
         return $this;
     }
 
-    public function locale(Locales|string $locale): self
+    public function locale(Locale|string $locale): self
     {
-        $locale = $locale instanceof Locales ? $locale->value : $locale;
+        $locale = $locale instanceof Locale ? $locale->value : $locale;
 
         if (trim($locale) === '') {
             throw new EmptyLocaleException();

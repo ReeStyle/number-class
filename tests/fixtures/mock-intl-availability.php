@@ -1,6 +1,6 @@
 <?php
 
-namespace ReeStyleIt\NumberClass\Enums {
+namespace ReeStyleIt\NumberClass\Enum {
     function class_exists(string $class, bool $autoload = true): bool
     {
         return $class === \NumberFormatter::class ? false : \class_exists($class, $autoload);

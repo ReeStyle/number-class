@@ -141,11 +141,11 @@ $sine = new Number(90)->trigonometry->deg2rad()->sin()->get(); // 1.0
 Keep a currency helper in a variable if you want to reuse its configuration:
 
 ```php
-use ReeStyleIt\NumberClass\Enums\Currencies;
-use ReeStyleIt\NumberClass\Enums\Locales;
+use ReeStyleIt\NumberClass\Enum\Currency;
+use ReeStyleIt\NumberClass\Enum\Locale;
 use ReeStyleIt\NumberClass\Number;
 
-$formatter = new Number(25)->currency->currency(Currencies::USD)->locale(Locales::EN_US);
+$formatter = new Number(25)->currency->currency(Currency::USD)->locale(Locale::EN_US);
 (string) $formatter; // $25.00; requires intl
 ```
 
@@ -185,7 +185,7 @@ See [the shared base API](Base.md) for numeric validation and storage.
 
 ## Numbers as words
 
-`wordify(Locales|string|null $locale = null): string` spells out the stored number as
+`wordify(Locale|string|null $locale = null): string` spells out the stored number as
 cardinal words. The read-only `wordify` property calls the method without a locale override.
 The separate internal `ReeStyleIt\NumberClass\Number\Wordify` class performs conversion.
 
@@ -200,7 +200,7 @@ number(20)->add(1)->number->wordify; // 'twenty-one'
 ```
 
 Without an explicit locale, conversion uses the current [global locale](Base.md#global-default-locale),
-or `en_US` when no global override is set. Explicit locales can be strings or `Locales` cases.
+or `en_US` when no global override is set. Explicit locales can be strings or `Locale` cases.
 The PHP `intl` extension is required. ICU controls spelling, grammatical form, and decimal
 wording; optional soft hyphens are removed from the returned text. Floating point inputs
 follow native precision. Stored values remain unchanged.

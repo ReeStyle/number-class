@@ -3,7 +3,7 @@
 namespace Tests\Unit\Conversion;
 
 use ReeStyleIt\NumberClass\Conversion\Ordinal;
-use ReeStyleIt\NumberClass\Enums\Locales;
+use ReeStyleIt\NumberClass\Enum\Locale;
 use ReeStyleIt\NumberClass\Exceptions\EmptyLocaleException;
 use ReeStyleIt\NumberClass\Exceptions\MustBeIntegerException;
 use ReeStyleIt\NumberClass\Exceptions\MustBeNumberException;
@@ -23,18 +23,18 @@ it('formats English ordinal endings including the teen exceptions', function (in
     [121, '121st'], [1001, '1,001st'], [-21, '−21st'],
 ]);
 
-it('formats ordinals in common languages using locale strings and enums', function (Locales|string $locale, int $value, string $expected) {
+it('formats ordinals in common languages using locale strings and enums', function (Locale|string $locale, int $value, string $expected) {
     expect(ordinal($value)->locale($locale)->format())->toBe($expected);
 })->with([
-    ['en', 2, '2nd'], [Locales::EN_GB, 3, '3rd'],
-    ['nl', 1, '1ste'], [Locales::NL_NL, 21, '21ste'], [Locales::NL_BE, 8, '8ste'],
-    ['fr', 1, '1er'], [Locales::FR_FR, 2, '2e'], [Locales::FR_CA, 21, '21e'],
-    ['es', 1, '1.º'], [Locales::ES_ES, 2, '2.º'], [Locales::ES_MX, 21, '21º.'],
-    ['it', 1, '1º'], [Locales::IT_IT, 21, '21º'],
-    [Locales::DE_DE, 2, '2.'], [Locales::PT_PT, 3, '3º'], [Locales::SV_SE, 2, '2:a'],
+    ['en', 2, '2nd'], [Locale::EN_GB, 3, '3rd'],
+    ['nl', 1, '1ste'], [Locale::NL_NL, 21, '21ste'], [Locale::NL_BE, 8, '8ste'],
+    ['fr', 1, '1er'], [Locale::FR_FR, 2, '2e'], [Locale::FR_CA, 21, '21e'],
+    ['es', 1, '1.º'], [Locale::ES_ES, 2, '2.º'], [Locale::ES_MX, 21, '21º.'],
+    ['it', 1, '1º'], [Locale::IT_IT, 21, '21º'],
+    [Locale::DE_DE, 2, '2.'], [Locale::PT_PT, 3, '3º'], [Locale::SV_SE, 2, '2:a'],
 ]);
 
-it('uses full Dutch ordinal suffixes across hundreds and locale variants', function (int $value, string $expected, Locales|string $locale) {
+it('uses full Dutch ordinal suffixes across hundreds and locale variants', function (int $value, string $expected, Locale|string $locale) {
     expect(ordinal($value)->locale($locale)->format())->toBe($expected);
 })->with([
     [0, '0de'], [1, '1ste'], [2, '2de'], [3, '3de'], [4, '4de'],
@@ -44,14 +44,14 @@ it('uses full Dutch ordinal suffixes across hundreds and locale variants', funct
     [100, '100ste'], [101, '101ste'], [102, '102de'], [108, '108ste'],
     [111, '111de'], [119, '119de'], [120, '120ste'], [121, '121ste'],
     [211, '211de'], [1001, '1.001ste'], [-11, '−11de'], [-21, '−21ste'],
-])->with(['nl', Locales::NL_NL, Locales::NL_BE, 'nl-NL']);
+])->with(['nl', Locale::NL_NL, Locale::NL_BE, 'nl-NL']);
 
 it('preserves values while configuring the formatter and accessing it from calculations', function () {
     $source = number(20)->add(1);
     $formatter = $source->ordinal;
 
     expect($formatter)->toBeInstanceOf(Ordinal::class)
-        ->and($formatter->locale(Locales::FR_FR))->toBe($formatter)
+        ->and($formatter->locale(Locale::FR_FR))->toBe($formatter)
         ->and($formatter->format())->toBe('21e')
         ->and($formatter->get())->toBe(21)
         ->and($source->get())->toBe(21)
@@ -97,7 +97,7 @@ it('reports the optional intl dependency when it is unavailable', function (stri
         ->and(implode("\n", $output))->toBe('Ordinal formatting failed: The intl extension is required for ordinal formatting.');
 })->with(['format', 'wordify']);
 
-it('converts ordinal values to words in the configured language', function (Locales|string $locale, int $value, string $expected) {
+it('converts ordinal values to words in the configured language', function (Locale|string $locale, int $value, string $expected) {
     $formatter = ordinal($value)->locale($locale);
 
     expect($formatter->wordify())->toBe($expected)
@@ -106,12 +106,12 @@ it('converts ordinal values to words in the configured language', function (Loca
     ['en', 0, 'zeroth'], ['en', 1, 'first'], ['en', 2, 'second'],
     ['en', 3, 'third'], ['en', 11, 'eleventh'], ['en', 21, 'twenty-first'],
     ['en', -21, 'minus twenty-first'],
-    ['nl', 0, 'nulde'], [Locales::NL_NL, 1, 'eerste'], ['nl', 2, 'tweede'],
-    ['nl', 8, 'achtste'], ['nl', 11, 'elfde'], [Locales::NL_BE, 21, 'eenentwintigste'],
+    ['nl', 0, 'nulde'], [Locale::NL_NL, 1, 'eerste'], ['nl', 2, 'tweede'],
+    ['nl', 8, 'achtste'], ['nl', 11, 'elfde'], [Locale::NL_BE, 21, 'eenentwintigste'],
     ['nl-NL', 31, 'eenendertigste'], ['nl', -11, 'min elfde'],
-    [Locales::FR_FR, 1, 'premier'], ['fr', 2, 'deuxième'], ['fr', 21, 'vingt-et-unième'],
-    [Locales::ES_ES, 1, 'primero'], ['es', 2, 'segundo'], ['es', 21, 'vigésimo primero'],
-    [Locales::IT_IT, 1, 'primo'], ['it', 2, 'secondo'], ['it', 21, 'ventunesimo'],
+    [Locale::FR_FR, 1, 'premier'], ['fr', 2, 'deuxième'], ['fr', 21, 'vingt-et-unième'],
+    [Locale::ES_ES, 1, 'primero'], ['es', 2, 'segundo'], ['es', 21, 'vigésimo primero'],
+    [Locale::IT_IT, 1, 'primo'], ['it', 2, 'secondo'], ['it', 21, 'ventunesimo'],
     ['de', 2, 'zweite'], ['pt', 2, 'segundo'],
 ]);
 

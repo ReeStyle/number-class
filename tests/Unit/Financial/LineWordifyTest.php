@@ -3,8 +3,8 @@
 namespace Tests\Unit\Financial;
 
 use ReeStyleIt\NumberClass\Base;
-use ReeStyleIt\NumberClass\Enums\Currencies;
-use ReeStyleIt\NumberClass\Enums\Locales;
+use ReeStyleIt\NumberClass\Enum\Currency;
+use ReeStyleIt\NumberClass\Enum\Locale;
 use ReeStyleIt\NumberClass\Financial\Amortization\Schedule\Line\Wordify;
 
 use function ReeStyleIt\NumberClass\amortization;
@@ -12,7 +12,7 @@ use function ReeStyleIt\NumberClass\amortization;
 it('wordifies every line field and preserves the numeric line', function () {
     $line = amortization(1200)->schedule(0, 12)[0];
     $original = $line->toArray();
-    $display = $line->wordify(Currencies::USD, Locales::EN_US);
+    $display = $line->wordify(Currency::USD, Locale::EN_US);
 
     expect($display)->toBeInstanceOf(Wordify::class)
         ->and($display->toArray())->toBe([
@@ -31,7 +31,7 @@ it('uses the global locale for the display property and accepts explicit overrid
     $previous = Base::getDefaultLocale();
 
     try {
-        Base::setDefaultLocale(Locales::NL_NL);
+        Base::setDefaultLocale(Locale::NL_NL);
         $line = amortization(1200)->schedule(0, 12)[0];
 
         expect($line->wordify->period)->toBe('eerste')

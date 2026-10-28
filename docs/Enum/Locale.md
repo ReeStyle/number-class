@@ -1,9 +1,9 @@
-# Locales
+# Locale
 
 [Usage index](../README.md)
 
-`ReeStyleIt\NumberClass\Enums\Locales` is a string-backed enum of locale identifiers.
-Its source file is in `src/Enum`, but its namespace is `Enums`.
+`ReeStyleIt\NumberClass\Enum\Locale` is a string-backed enum of locale identifiers.
+Its source file is `src/Enum/Locale.php`.
 Each locale has one native currency, one symbol, and a prefix/suffix position in the bundled
 `src/Resources/currency-symbols.php` data. These metadata methods work without `intl`.
 
@@ -34,23 +34,23 @@ Each locale has one native currency, one symbol, and a prefix/suffix position in
 
 | Signature | Result |
 | --- | --- |
-| `currency(): Currencies` | Native currency enum case |
+| `currency(): Currency` | Native currency enum case |
 | `symbol(): string` | Native currency symbol from the bundled data |
 | `symbolPosition(): string` | `'prefix'` or `'suffix'` |
 
 ```php
-use ReeStyleIt\NumberClass\Enums\Locales;
+use ReeStyleIt\NumberClass\Enum\Locale;
 
-$locale = Locales::DE_DE;
+$locale = Locale::DE_DE;
 $identifier = $locale->value;      // 'de_DE'
 $name = $locale->name;             // 'DE_DE'
-$currency = $locale->currency();   // Currencies::EUR
+$currency = $locale->currency();   // Currency::EUR
 $symbol = $locale->symbol();       // '€'
 $position = $locale->symbolPosition(); // 'suffix'
 
-$swiss = Locales::DE_CH->currency(); // Currencies::CHF
-$swissSymbol = Locales::DE_CH->symbol(); // 'CHF'
-$austrianPosition = Locales::DE_AT->symbolPosition(); // 'prefix' in the bundled data
+$swiss = Locale::DE_CH->currency(); // Currency::CHF
+$swissSymbol = Locale::DE_CH->symbol(); // 'CHF'
+$austrianPosition = Locale::DE_AT->symbolPosition(); // 'prefix' in the bundled data
 ```
 
 Position metadata describes where the currency symbol belongs. It does not encode decimal
@@ -61,17 +61,17 @@ with `composer generate:symbols` and reflects the ICU data used at generation ti
 ## Convert and enumerate
 
 ```php
-use ReeStyleIt\NumberClass\Enums\Locales;
+use ReeStyleIt\NumberClass\Enum\Locale;
 
-$locale = Locales::from('nl_NL');       // Locales::NL_NL
-$unknown = Locales::tryFrom('xx_XX');  // null
-$all = Locales::cases();              // array of all 36 cases
+$locale = Locale::from('nl_NL');       // Locale::NL_NL
+$unknown = Locale::tryFrom('xx_XX');  // null
+$all = Locale::cases();              // array of all 36 cases
 ```
 
 The built-in `from(string $value): static` throws `ValueError` for an unknown value;
 `tryFrom(string $value): ?static` returns null. Conversion is case-sensitive and matches
 the values exactly; enum conversion does not normalize `nl-nl` to `nl_NL`.
-Enums have no public constructor.
+Enum have no public constructor.
 
 ## Helper integration
 
@@ -79,14 +79,14 @@ There is no locale factory helper. Use a case with `currencyFormatter()` and exp
 select its native currency if that is desired:
 
 ```php
-use ReeStyleIt\NumberClass\Enums\Locales;
+use ReeStyleIt\NumberClass\Enum\Locale;
 use function ReeStyleIt\NumberClass\currencyFormatter;
 
-$locale = Locales::EN_US;
+$locale = Locale::EN_US;
 (string) currencyFormatter(1234.5)
     ->currency($locale->currency())
     ->locale($locale); // $1,234.50; requires intl
 ```
 
 Setting only `locale()` on a formatter leaves its currency unchanged (EUR by default).
-For symbols of another currency in a locale, use [Currencies::symbol()](Currencies.md#symbol-lookup).
+For symbols of another currency in a locale, use [Currency::symbol()](Currency.md#symbol-lookup).

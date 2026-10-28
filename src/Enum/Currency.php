@@ -1,12 +1,12 @@
 <?php
 
-namespace ReeStyleIt\NumberClass\Enums;
+namespace ReeStyleIt\NumberClass\Enum;
 
 use NumberFormatter;
 use ReeStyleIt\NumberClass\Base;
 use ReeStyleIt\NumberClass\Exceptions\CurrencySymbolLookupException;
 
-enum Currencies: string
+enum Currency: string
 {
     case AED = 'AED';
     case AUD = 'AUD';
@@ -33,10 +33,10 @@ enum Currencies: string
     case USD = 'USD';
     case ZAR = 'ZAR';
 
-    public function symbol(Locales|string|null $locale = null): string
+    public function symbol(Locale|string|null $locale = null): string
     {
-        $locale ??= Base::getDefaultLocale() ?? Locales::EN_US;
-        $locale = $locale instanceof Locales ? $locale->value : $locale;
+        $locale ??= Base::getDefaultLocale() ?? Locale::EN_US;
+        $locale = $locale instanceof Locale ? $locale->value : $locale;
 
         if (! class_exists(NumberFormatter::class)) {
             return $this->fallbackSymbol($locale);
@@ -60,9 +60,9 @@ enum Currencies: string
     private function fallbackSymbol(string $locale): string
     {
         $locale = str_replace('-', '_', preg_split('/[.@]/', $locale)[0]);
-        $resolved = Locales::EN_US;
+        $resolved = Locale::EN_US;
 
-        foreach (Locales::cases() as $candidate) {
+        foreach (Locale::cases() as $candidate) {
             if (strcasecmp($candidate->value, $locale) === 0) {
                 $resolved = $candidate;
                 break;

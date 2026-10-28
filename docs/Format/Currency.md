@@ -9,12 +9,12 @@ locale through chainable methods. Full amount formatting requires PHP's `intl` e
 ## Format an amount
 
 ```php
-use ReeStyleIt\NumberClass\Enums\Currencies;
-use ReeStyleIt\NumberClass\Enums\Locales;
+use ReeStyleIt\NumberClass\Enum\Currency;
+use ReeStyleIt\NumberClass\Enum\Locale;
 use ReeStyleIt\NumberClass\Format\Currency;
 
 $formatter = new Currency(1234.5);
-$formatter->currency(Currencies::USD)->locale(Locales::EN_US);
+$formatter->currency(Currency::USD)->locale(Locale::EN_US);
 
 (string) $formatter;                  // $1,234.50
 $text = (string) $formatter;      // '$1,234.50'
@@ -34,8 +34,8 @@ the label and display rules; it does not convert the amount using an exchange ra
 | --- | --- |
 | `public string $currencyCode` | `'EUR'` |
 | `public string $locale` | Global default captured at construction, or `'nl_NL'` |
-| `currency(Currencies|string|null $currency = null): self` | With a code, configure and return the same formatter; without a code, create a fresh formatter |
-| `locale(Locales|string $locale): self` | Set the locale identifier and return the same formatter |
+| `currency(Currency|string|null $currency = null): self` | With a code, configure and return the same formatter; without a code, create a fresh formatter |
+| `locale(Locale|string $locale): self` | Set the locale identifier and return the same formatter |
 
 Currency strings are uppercased and must contain exactly three ASCII letters. This is a
 shape check, not a check against every valid ISO code. Locale strings must not be blank;
@@ -58,10 +58,10 @@ Setting a locale does not select its native currency. To choose both from locale
 set them explicitly:
 
 ```php
-use ReeStyleIt\NumberClass\Enums\Locales;
+use ReeStyleIt\NumberClass\Enum\Locale;
 use ReeStyleIt\NumberClass\Format\Currency;
 
-$locale = Locales::DE_CH;
+$locale = Locale::DE_CH;
 $formatter = new Currency(1250);
 $formatter->currency($locale->currency())->locale($locale);
 (string) $formatter; // Swiss franc amount using de_CH conventions
@@ -78,12 +78,12 @@ The code property has been renamed from `currency` to `currencyCode`: `$formatte
 now returns a formatter object. Use `$formatter->currencyCode` to read or directly set its code.
 
 ```php
-use ReeStyleIt\NumberClass\Enums\Currencies;
-use ReeStyleIt\NumberClass\Enums\Locales;
+use ReeStyleIt\NumberClass\Enum\Currency;
+use ReeStyleIt\NumberClass\Enum\Locale;
 use function ReeStyleIt\NumberClass\currencyFormatter;
 use function ReeStyleIt\NumberClass\number;
 
-(string) currencyFormatter(19.95)->currency(Currencies::USD)->locale(Locales::EN_US); // $19.95
+(string) currencyFormatter(19.95)->currency(Currency::USD)->locale(Locale::EN_US); // $19.95
 
 $fromProperty = number(19.95)->currency;
 // Each accessor creates a fresh Currency; keep it if reusing its configuration.
@@ -102,7 +102,7 @@ The constructor stores any value. Conversion to a string checks it and may throw
 The setters throw [InvalidCurrencyCodeException](../Exceptions/InvalidCurrencyCodeException.md)
 and [EmptyLocaleException](../Exceptions/EmptyLocaleException.md) for invalid arguments.
 
-[Currencies::symbol()](../Enums/Currencies.md) can fall back to bundled locale symbols without
+[Currency::symbol()](../Enum/Currency.md) can fall back to bundled locale symbols without
 `intl`. That fallback does not provide currency amount formatting.
 
 ## Continue with a Number
@@ -125,5 +125,5 @@ Conversion uses the raw amount; locale, currency configuration, and formatted te
 See [the shared base API](../Base.md) for numeric validation and storage.
 
 New formatters use the [global default locale](../Base.md#global-default-locale), if set.
-Configure it with `Number::setDefaultLocale(Locales::EN_US)`. Per-instance `locale()` calls
+Configure it with `Number::setDefaultLocale(Locale::EN_US)`. Per-instance `locale()` calls
 continue to override it; setting a global locale does not change the currency code.

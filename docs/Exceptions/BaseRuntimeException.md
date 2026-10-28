@@ -34,13 +34,13 @@ Exception classes have no factory helper. This example uses a value helper insid
 catch block. The operation normally succeeds; the catch handles the documented failure path.
 
 ```php
-use ReeStyleIt\NumberClass\Enums\Currencies;
+use ReeStyleIt\NumberClass\Enum\Currency;
 use ReeStyleIt\NumberClass\Exceptions\BaseRuntimeException;
 use function ReeStyleIt\NumberClass\currencyFormatter;
 
 try {
-    $formatter = currencyFormatter(12)->currency(Currencies::USD);
-    $symbol = Currencies::USD->symbol();
+    $formatter = currencyFormatter(12)->currency(Currency::USD);
+    $symbol = Currency::USD->symbol();
 } catch (BaseRuntimeException $error) {
     $message = $error->getMessage();
     // Report or handle the failure in your application.

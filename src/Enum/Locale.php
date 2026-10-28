@@ -1,8 +1,8 @@
 <?php
 
-namespace ReeStyleIt\NumberClass\Enums;
+namespace ReeStyleIt\NumberClass\Enum;
 
-enum Locales: string
+enum Locale: string
 {
     case AR_AE = 'ar_AE';
     case AR_SA = 'ar_SA';
@@ -41,9 +41,9 @@ enum Locales: string
     case ZH_CN = 'zh_CN';
     case ZH_HK = 'zh_HK';
 
-    public function currency(): Currencies
+    public function currency(): Currency
     {
-        return Currencies::from($this->currencyFormat()['currency']);
+        return Currency::from($this->currencyFormat()['currency']);
     }
 
     public function symbol(): string
