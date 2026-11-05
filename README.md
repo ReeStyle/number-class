@@ -14,30 +14,42 @@ Start with a value, calculate, then read or format the result.
 The examples assume Composer's autoloader is loaded; the quick start shows a complete setup.
 
 Set the global default locale once for currency formatting, ordinals, written values,
-and written ordinal values. These examples require the PHP `intl` extension.
+and written ordinal values. These examples may require the PHP `intl` extension (e.g. wordify).
 
 ```php
 use ReeStyleIt\NumberClass\Enum\Currency;
 use ReeStyleIt\NumberClass\Enum\Locale;
 use function ReeStyleIt\NumberClass\{number,setDefaultLocale,geometry};
 
-number(12)->add(3)->multiply(2)->get();            // 30
-geometry(3)->circleSurface()->number->format(2);   // '28.27'
-
+// Set a default locale
 setDefaultLocale(Locale::NL_NL);
+
+// Regular numbers (Can be called without `->get()`. It will use the `__toString()` method)
+number(12)->add(3)->multiply(2)->get();          // 30
+geometry(3)->circleSurface()->number->format(2); // '28.27'
 
 // All currencies use the global locale.
 (string) number(1234.5)->currency;                          // € 1.234,50
 (string) number(1234.5)->currency->currency(Currency::USD); // US$ 1.234,50
 (string) number(1234)->currency->currency(Currency::JPY);   // JP¥ 1.234
 
+// Ordinals and 'wordifiable'
 (string) number(21)->ordinal; // 21ste
 number(21)->wordify;          // eenentwintig
 number(21)->ordinal->wordify; // eenentwintigste
+
+// The same US dollar amount displays differently in US English (`en_US`) and Dutch (`nl_NL`)
+// Also note the $ notation and currency symbol placement.
+(string) number(1234.5)->currency->currency(Currency::USD);                        // US$ 1.234,50
+(string) number(1234.5)->currency->currency(Currency::USD)->locale(Locale::EN_US); // $1,234.50
 ```
 
 Currency formatting uses the global locale automatically. Use `locale()` only to override it
 for a specific formatter. Existing formatter instances keep their locale.
+
+Dutch formatting uses `US$` to identify US dollars; US English uses `$`.
+The locale also changes the decimal and thousands separators.
+
 The locale controls presentation; choose the currency separately (EUR is the default).
 Exact currency symbols and spacing follow the installed ICU data.
 Use `setDefaultLocale(null)` to restore the original defaults.
