@@ -26,17 +26,18 @@ geometry(3)->circleSurface()->number->format(2);   // '28.27'
 
 setDefaultLocale(Locale::NL_NL);
 
-// Format euros using the global locale, or choose a currency and locale explicitly.
-(string) number(1234.5)->currency;                                                 // € 1.234,50
-(string) number(1234.5)->currency->currency(Currency::USD)->locale(Locale::EN_US); // $1,234.50
-(string) number(1234)->currency->currency(Currency::JPY)->locale(Locale::JA_JP);   // ￥1,234
+// All currencies use the global locale.
+(string) number(1234.5)->currency;                          // € 1.234,50
+(string) number(1234.5)->currency->currency(Currency::USD); // US$ 1.234,50
+(string) number(1234)->currency->currency(Currency::JPY);   // JP¥ 1.234
 
 (string) number(21)->ordinal; // 21ste
 number(21)->wordify;          // eenentwintig
 number(21)->ordinal->wordify; // eenentwintigste
 ```
 
-Per-instance `locale()` settings take precedence. Existing formatter instances keep their locale.
+Currency formatting uses the global locale automatically. Use `locale()` only to override it
+for a specific formatter. Existing formatter instances keep their locale.
 The locale controls presentation; choose the currency separately (EUR is the default).
 Exact currency symbols and spacing follow the installed ICU data.
 Use `setDefaultLocale(null)` to restore the original defaults.
