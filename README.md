@@ -9,20 +9,43 @@ Start with a value, calculate, then read or format the result.
 [Installation](#installation) · [Quick start](#quick-start) · [Examples](#examples) ·
 [Documentation](#documentation) · [Development](#development) · [License](#license)
 
-```php
-use function ReeStyleIt\NumberClass\geometry;
-use function ReeStyleIt\NumberClass\number;
-
-number(12)->add(3)->multiply(2)->get();              // 30
-geometry(3)->circleSurface()->number->format(2);   // '28.27'
-```
+## Quick overview
 
 The examples assume Composer's autoloader is loaded; the quick start shows a complete setup.
+
+Set the global default locale once for currency formatting, ordinals, written values,
+and written ordinal values. These examples require the PHP `intl` extension.
+
+```php
+use ReeStyleIt\NumberClass\Enum\Currency;
+use ReeStyleIt\NumberClass\Enum\Locale;
+use function ReeStyleIt\NumberClass\{number,setDefaultLocale,geometry};
+
+number(12)->add(3)->multiply(2)->get();            // 30
+geometry(3)->circleSurface()->number->format(2);   // '28.27'
+
+setDefaultLocale(Locale::NL_NL);
+
+// Format euros using the global locale, or choose a currency and locale explicitly.
+(string) number(1234.5)->currency;                                                 // € 1.234,50
+(string) number(1234.5)->currency->currency(Currency::USD)->locale(Locale::EN_US); // $1,234.50
+(string) number(1234)->currency->currency(Currency::JPY)->locale(Locale::JA_JP);   // ￥1,234
+
+(string) number(21)->ordinal; // 21ste
+number(21)->wordify;          // eenentwintig
+number(21)->ordinal->wordify; // eenentwintigste
+```
+
+Per-instance `locale()` settings take precedence. Existing formatter instances keep their locale.
+The locale controls presentation; choose the currency separately (EUR is the default).
+Exact currency symbols and spacing follow the installed ICU data.
+Use `setDefaultLocale(null)` to restore the original defaults.
+See [global locale configuration](docs/Base.md#global-default-locale).
 
 ## Installation
 
 Requires **PHP 8.4 or later within PHP 8.x**. Install the PHP `intl` extension for full
-currency amount formatting and localized ordinals. Other calculations and bundled currency symbol lookup work without it.
+currency amount formatting, localized ordinals, and written values. Other calculations and bundled currency symbol lookup work without it.
 
 For a published Packagist release:
 
@@ -79,24 +102,6 @@ These accessors are inherited from `Base`. Each access creates a fresh instance.
 Examples prefer the property form; use methods when passing configuration arguments.
 For geographic points, pass starting latitude and
 optional elevation to `geometry()`; the stored number supplies longitude.
-
-## Global locale
-
-Set the default locale once for new ordinal and currency formatters, and currency symbol lookup:
-
-```php
-use ReeStyleIt\NumberClass\Enum\Locale;
-use function ReeStyleIt\NumberClass\setDefaultLocale;
-use function ReeStyleIt\NumberClass\number;
-
-setDefaultLocale(Locale::NL_NL);
-(string) number(21)->ordinal;          // 21ste
-number(21)->ordinal->wordify; // eenentwintigste
-```
-
-Per-instance `locale()` settings take precedence. Existing formatter instances keep their locale.
-Use `setDefaultLocale(null)` to restore the original defaults.
-See [global locale configuration](docs/Base.md#global-default-locale).
 
 ## Examples
 
