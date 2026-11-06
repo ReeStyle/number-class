@@ -83,7 +83,7 @@ use function ReeStyleIt\NumberClass\pythagoras;
 
 $rounded = geometry(3)->circleDiameter()->arithmetic->add(1)->round->nearest(5)->get(); // 5.0
 $diameter = pythagoras(3)->hypotenuse(4)->geometry->circleDiameter()->get(); // 10.0
-$text = (string) arithmetic(7)->currency->currency('USD')->locale('en_US'); // '$7.00'
+$text = (string) arithmetic(7)->currency->set('USD')->locale('en_US'); // '$7.00'
 ```
 
 Accessors pass the raw stored value; they do not copy formatter configuration or geographic

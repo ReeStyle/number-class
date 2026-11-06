@@ -39,9 +39,9 @@ it('shares the default locale across value classes for strings and enums', funct
 it('applies the default locale to currency formatting and default symbol lookup', function () {
     Base::setDefaultLocale(Locale::EN_US);
 
-    expect((string) new Currency(1234.5)->currency('USD'))->toBe('$1,234.50')
-        ->and((string) currencyFormatter(1234.5)->currency('USD'))->toBe('$1,234.50')
-        ->and((string) number(1234.5)->currency->currency('USD'))->toBe('$1,234.50');
+    expect((string) new Currency(1234.5)->set('USD'))->toBe('$1,234.50')
+        ->and((string) currencyFormatter(1234.5)->set('USD'))->toBe('$1,234.50')
+        ->and((string) number(1234.5)->currency->set('USD'))->toBe('$1,234.50');
 
     Base::setDefaultLocale('nl_NL');
 
@@ -54,7 +54,7 @@ it('preserves existing instances and allows local overrides', function () {
     $existing = ordinal(1);
     Base::setDefaultLocale('nl_NL');
     $dutch = ordinal(1);
-    $currency = currencyFormatter(7)->locale('en_US')->currency('USD');
+    $currency = currencyFormatter(7)->locale('en_US')->set('USD');
 
     Base::setDefaultLocale('fr_FR');
 

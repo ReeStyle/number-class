@@ -14,7 +14,7 @@ use ReeStyleIt\NumberClass\Enum\Locale;
 use ReeStyleIt\NumberClass\Format\Currency;
 
 $formatter = new Currency(1234.5);
-$formatter->currency(Currency::USD)->locale(Locale::EN_US);
+$formatter->set(Currency::USD)->locale(Locale::EN_US);
 
 (string) $formatter;                  // $1,234.50
 $text = (string) $formatter;      // '$1,234.50'
@@ -34,7 +34,7 @@ the label and display rules; it does not convert the amount using an exchange ra
 | --- | --- |
 | `public string $currencyCode` | `'EUR'` |
 | `public string $locale` | Global default captured at construction, or `'nl_NL'` |
-| `currency(Currency|string|null $currency = null): self` | With a code, configure and return the same formatter; without a code, create a fresh formatter |
+| `set(Currency|string $currency): self` | Configure the currency and return the same formatter |
 | `locale(Locale|string $locale): self` | Set the locale identifier and return the same formatter |
 
 Currency strings are uppercased and must contain exactly three ASCII letters. This is a
@@ -47,7 +47,7 @@ bypasses them. The amount remains readonly.
 use ReeStyleIt\NumberClass\Format\Currency;
 
 $formatter = new Currency(25);
-$same = $formatter->currency('usd')->locale('en_US');
+$same = $formatter->set('usd')->locale('en_US');
 $isSameObject = $same === $formatter; // true
 $code = $formatter->currencyCode;     // 'USD'
 $locale = $formatter->locale;         // 'en_US'
@@ -63,7 +63,7 @@ use ReeStyleIt\NumberClass\Format\Currency;
 
 $locale = Locale::DE_CH;
 $formatter = new Currency(1250);
-$formatter->currency($locale->currency())->locale($locale);
+$formatter->set($locale->currency())->locale($locale);
 (string) $formatter; // Swiss franc amount using de_CH conventions
 ```
 
@@ -71,8 +71,8 @@ $formatter->currency($locale->currency())->locale($locale);
 
 All value classes inherit the `currency()` method and read-only `currency` property from
 [Base](../Base.md#shared-helper-accessors). On a `Currency` instance, these also create
-fresh formatters with the same amount and default configuration. Passing a code to
-`currency($code)` instead configures the existing formatter.
+fresh formatters with the same amount and default configuration. Calling
+`set($code)` configures the existing formatter.
 
 The code property has been renamed from `currency` to `currencyCode`: `$formatter->currency`
 now returns a formatter object. Use `$formatter->currencyCode` to read or directly set its code.
@@ -83,11 +83,11 @@ use ReeStyleIt\NumberClass\Enum\Locale;
 use function ReeStyleIt\NumberClass\currencyFormatter;
 use function ReeStyleIt\NumberClass\number;
 
-(string) currencyFormatter(19.95)->currency(Currency::USD)->locale(Locale::EN_US); // $19.95
+(string) currencyFormatter(19.95)->set(Currency::USD)->locale(Locale::EN_US); // $19.95
 
 $fromProperty = number(19.95)->currency;
 // Each accessor creates a fresh Currency; keep it if reusing its configuration.
-$text = (string) $fromProperty->currency('USD')->locale('en_US'); // '$19.95'
+$text = (string) $fromProperty->set('USD')->locale('en_US'); // '$19.95'
 ```
 
 ## Errors and extension availability
@@ -115,7 +115,7 @@ The source instance remains unchanged.
 ```php
 use ReeStyleIt\NumberClass\Format\Currency;
 
-$value = new Currency(12.5)->currency('USD')->locale('en_US');
+$value = new Currency(12.5)->set('USD')->locale('en_US');
 $converted = $value->number->multiply(2)->get(); // 25.0
 $viaProperty = $value->number->format(2); // '12.50'
 ```

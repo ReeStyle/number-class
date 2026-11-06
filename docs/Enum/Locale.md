@@ -84,7 +84,7 @@ use function ReeStyleIt\NumberClass\currencyFormatter;
 
 $locale = Locale::EN_US;
 (string) currencyFormatter(1234.5)
-    ->currency($locale->currency())
+    ->set($locale->currency())
     ->locale($locale); // $1,234.50; requires intl
 ```
 

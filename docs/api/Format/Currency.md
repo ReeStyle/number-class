@@ -45,6 +45,7 @@
 - [ordinal()](#method-ordinal)
 - [pythagoras()](#method-pythagoras)
 - [round()](#method-round)
+- [set()](#method-set)
 - [setDefaultLocale()](#method-setdefaultlocale)
 - [time()](#method-time)
 - [trigonometry()](#method-trigonometry)
@@ -139,15 +140,13 @@ None.
 
 <a id="method-currency"></a>
 
-### `public function currency(Currency|string|null $currency = null)`
+### `public function currency()`
 
 Return: [ReeStyleIt\NumberClass\Format\Currency](Currency.md)
 
 Parameters
 
-| param | type | default |
-| :------ | :------ | :------ |
-| `$currency` | [ReeStyleIt\NumberClass\Enum\Currency](../Enum/Currency.md) \| [string](https://www.php.net/manual/en/language.types.string.php) \| [null](https://www.php.net/manual/en/language.types.null.php) | `null` |
+None.
 
 ---
 
@@ -285,6 +284,20 @@ Return: [ReeStyleIt\NumberClass\Format\Round](Round.md)
 Parameters
 
 None.
+
+---
+
+<a id="method-set"></a>
+
+### `public function set(Currency|string $currency)`
+
+Return: [ReeStyleIt\NumberClass\Format\Currency](Currency.md)
+
+Parameters
+
+| param | type | default |
+| :------ | :------ | :------ |
+| `$currency` | [ReeStyleIt\NumberClass\Enum\Currency](../Enum/Currency.md) \| [string](https://www.php.net/manual/en/language.types.string.php) | — |
 
 ---
 

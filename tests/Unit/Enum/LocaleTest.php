@@ -8,7 +8,7 @@ use ReeStyleIt\NumberClass\Enum\Locale;
 use function ReeStyleIt\NumberClass\currencyFormatter;
 
 it('uses locale enum cases for currency formatting', function (Locale $locale, Currency $currency, string $expected) {
-    $formatter = currencyFormatter(1234.5)->currency($currency);
+    $formatter = currencyFormatter(1234.5)->set($currency);
 
     expect($formatter->locale($locale))->toBe($formatter)
         ->and($formatter->locale)->toBe($locale->value)

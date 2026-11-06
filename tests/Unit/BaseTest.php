@@ -111,7 +111,7 @@ it('continues calculations from specialized results as a Number', function () {
 });
 
 it('uses the raw stored value when converting configured value objects', function () {
-    $currency = new Currency(12.5)->currency('USD')->locale('en_US');
+    $currency = new Currency(12.5)->set('USD')->locale('en_US');
     $point = new Geometry(4, 52, 10);
 
     expect($currency->number->get())->toBe(12.5)

@@ -39,7 +39,7 @@ use ReeStyleIt\NumberClass\Exceptions\BaseRuntimeException;
 use function ReeStyleIt\NumberClass\currencyFormatter;
 
 try {
-    $formatter = currencyFormatter(12)->currency(Currency::USD);
+    $formatter = currencyFormatter(12)->set(Currency::USD);
     $symbol = Currency::USD->symbol();
 } catch (BaseRuntimeException $error) {
     $message = $error->getMessage();

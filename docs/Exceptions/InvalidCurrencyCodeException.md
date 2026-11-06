@@ -4,7 +4,7 @@
 
 `ReeStyleIt\NumberClass\Exceptions\InvalidCurrencyCodeException` extends [BaseInvalidArgumentException](BaseInvalidArgumentException.md).
 
-Thrown by Currency::currency() when a string does not contain exactly three ASCII letters.
+Thrown by Currency::set() when a string does not contain exactly three ASCII letters.
 
 ## Constructor and message
 
@@ -38,7 +38,7 @@ use ReeStyleIt\NumberClass\Exceptions\InvalidCurrencyCodeException;
 use function ReeStyleIt\NumberClass\currencyFormatter;
 
 try {
-    currencyFormatter(12)->currency('EURO');
+    currencyFormatter(12)->set('EURO');
 } catch (InvalidCurrencyCodeException $error) {
     $message = $error->getMessage();
     // Report or handle the failure in your application.

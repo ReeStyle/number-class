@@ -39,7 +39,7 @@ use ReeStyleIt\NumberClass\Exceptions\CurrencySymbolLookupException;
 use function ReeStyleIt\NumberClass\currencyFormatter;
 
 try {
-    $formatter = currencyFormatter(12)->currency(Currency::USD);
+    $formatter = currencyFormatter(12)->set(Currency::USD);
     $symbol = Currency::USD->symbol();
 } catch (CurrencySymbolLookupException $error) {
     $message = $error->getMessage();

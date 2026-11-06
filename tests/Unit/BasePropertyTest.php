@@ -168,14 +168,14 @@ it('supports calculations and currency formatting through helper properties', fu
     expect(new Number(3)->arithmetic->pow(2)->get())->toBe(9)
         ->and(new Number(90)->trigonometry->deg2rad()->sin()->get())->toBe(1.0)
         ->and(new Number(3)->pythagoras->hypotenuse(4)->get())->toBe(5.0)
-        ->and((string) new Number(7)->currency->currency('USD')->locale('en_US'))->toBe('$7.00');
+        ->and((string) new Number(7)->currency->set('USD')->locale('en_US'))->toBe('$7.00');
 });
 
 it('switches between specialized classes while preserving calculation results', function () {
     expect(new Geometry(3)->circleDiameter()->arithmetic->add(1)->round->nearest(5)->get())->toBe(5.0)
         ->and(new Pythagoras(3)->hypotenuse(4)->geometry->circleDiameter()->get())->toBe(10.0)
         ->and(new Round(90)->trigonometry->deg2rad()->sin()->get())->toBe(1.0)
-        ->and((string) new Arithmetic(7)->currency->currency('USD')->locale('en_US'))->toBe('$7.00');
+        ->and((string) new Arithmetic(7)->currency->set('USD')->locale('en_US'))->toBe('$7.00');
 });
 
 it('passes geographic arguments through the inherited geometry method', function () {

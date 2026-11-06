@@ -29,7 +29,7 @@ class Line implements JsonSerializable
     public function wordify(CurrencyEnum|string $currency = CurrencyEnum::EUR, Locale|string|null $locale = null): Wordify
     {
         $locale ??= Base::getDefaultLocale() ?? Locale::EN_US;
-        $format = fn (float $amount): string => (string) new Currency($amount)->currency($currency)->locale($locale);
+        $format = fn (float $amount): string => (string) new Currency($amount)->set($currency)->locale($locale);
 
         return new Wordify(
             period: new Ordinal($this->period)->locale($locale)->wordify(),

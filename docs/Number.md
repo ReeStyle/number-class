@@ -145,7 +145,7 @@ use ReeStyleIt\NumberClass\Enum\Currency;
 use ReeStyleIt\NumberClass\Enum\Locale;
 use ReeStyleIt\NumberClass\Number;
 
-$formatter = new Number(25)->currency->currency(Currency::USD)->locale(Locale::EN_US);
+$formatter = new Number(25)->currency->set(Currency::USD)->locale(Locale::EN_US);
 (string) $formatter; // $25.00; requires intl
 ```
 

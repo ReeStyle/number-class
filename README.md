@@ -7,7 +7,7 @@ Chainable numbers, geometry, trigonometry, comparisons, rounding, and currency f
 Start with a value, calculate, then read or format the result.
 
 [Installation](#installation) · [Quick start](#quick-start) · [Examples](#examples) ·
-[Documentation](#documentation) · [Development](#development) · [License](#license)
+[Documentation](#documentation) · [Development](#development) · [API](docs/api/README.md) · [License](#license)
 
 ## Quick overview
 
@@ -30,8 +30,8 @@ geometry(3)->circleSurface()->number->format(2); // '28.27'
 
 // All currencies use the global locale.
 (string) number(1234.5)->currency;                          // € 1.234,50
-(string) number(1234.5)->currency->currency(Currency::USD); // US$ 1.234,50
-(string) number(1234)->currency->currency(Currency::JPY);   // JP¥ 1.234
+(string) number(1234.5)->currency->set(Currency::USD); // US$ 1.234,50
+(string) number(1234)->currency->set(Currency::JPY);   // JP¥ 1.234
 
 // Ordinals and 'wordifiable'
 (string) number(21)->ordinal; // 21ste
@@ -40,8 +40,8 @@ number(21)->ordinal->wordify; // eenentwintigste
 
 // The same US dollar amount displays differently in US English (`en_US`) and Dutch (`nl_NL`)
 // Also note the $ notation and currency symbol placement.
-(string) number(1234.5)->currency->currency(Currency::USD);                        // US$ 1.234,50
-(string) number(1234.5)->currency->currency(Currency::USD)->locale(Locale::EN_US); // $1,234.50
+(string) number(1234.5)->currency->set(Currency::USD);                        // US$ 1.234,50
+(string) number(1234.5)->currency->set(Currency::USD)->locale(Locale::EN_US); // $1,234.50
 ```
 
 Currency formatting uses the global locale automatically. Use `locale()` only to override it
@@ -314,7 +314,7 @@ use ReeStyleIt\NumberClass\Enum\Locale;
 use function ReeStyleIt\NumberClass\currencyFormatter;
 
 $formatter = currencyFormatter(1234.5)
-    ->currency(Currency::USD)
+    ->set(Currency::USD)
     ->locale(Locale::EN_US);
 
 (string) $formatter;                          // $1,234.50

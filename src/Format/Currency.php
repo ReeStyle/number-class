@@ -23,12 +23,8 @@ class Currency extends Base
         $this->locale = self::getDefaultLocale() ?? $this->locale;
     }
 
-    public function currency(CurrencyEnum|string|null $currency = null): self
+    public function set(CurrencyEnum|string $currency): self
     {
-        if ($currency === null) {
-            return parent::currency();
-        }
-
         $currency = $currency instanceof CurrencyEnum ? $currency->value : strtoupper($currency);
 
         if (! preg_match('/^[A-Z]{3}$/D', $currency)) {

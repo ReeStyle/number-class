@@ -54,7 +54,7 @@ use ReeStyleIt\NumberClass\Enum\Locale;
 use function ReeStyleIt\NumberClass\currencyFormatter;
 
 (string) currencyFormatter(1234.5)
-    ->currency(Currency::USD)
+    ->set(Currency::USD)
     ->locale(Locale::EN_US); // $1,234.50
 ```
 

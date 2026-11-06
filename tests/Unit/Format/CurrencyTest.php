@@ -14,7 +14,7 @@ use ReeStyleIt\NumberClass\Format\Currency;
 use ReeStyleIt\NumberClass\Number;
 
 it('formats currency for the configured locale', function (int|float $value, string $currency, string $locale, string $expected) {
-    $format = (new Currency($value))->currency($currency)->locale($locale);
+    $format = (new Currency($value))->set($currency)->locale($locale);
 
     expect((string) $format)->toBe($expected);
 })->with([
@@ -27,7 +27,7 @@ it('formats currency for the configured locale', function (int|float $value, str
 ]);
 
 it('normalizes lowercase currency codes', function () {
-    $format = (new Currency(7))->currency('usd')->locale('en_US');
+    $format = (new Currency(7))->set('usd')->locale('en_US');
 
     expect($format->currencyCode)->toBe('USD')
         ->and($format)->toBeInstanceOf(Base::class)
@@ -42,14 +42,14 @@ it('returns the inherited value through its getter', function () {
 });
 
 it('accepts a currency enum when formatting a Number', function () {
-    $format = new Number(1234.5)->currency->currency(CurrencyEnum::USD)->locale('en_US');
+    $format = new Number(1234.5)->currency->set(CurrencyEnum::USD)->locale('en_US');
 
     expect($format->currencyCode)->toBe('USD')
         ->and((string) $format)->toBe('$1,234.50');
 });
 
 it('rejects malformed currency codes', function (string $currency) {
-    expect(fn () => (new Currency(7))->currency($currency))
+    expect(fn () => (new Currency(7))->set($currency))
         ->toThrow(InvalidCurrencyCodeException::class, 'Currency must be a three-letter currency code.');
 })->with(['', 'EU', 'EURO', '123', '€']);
 
@@ -74,7 +74,7 @@ it('throws a named exception when the formatter cannot produce a string', functi
 it('formats a Number without changing its value', function () {
     $number = new Number(1234.5);
 
-    expect((string) $number->currency->currency('USD')->locale('en_US'))->toBe('$1,234.50')
+    expect((string) $number->currency->set('USD')->locale('en_US'))->toBe('$1,234.50')
         ->and($number->get())->toBe(1234.5);
 });
 
@@ -102,17 +102,17 @@ it('validates the Number before formatting currency', function (mixed $value) {
 it('returns the same formatter from configuration methods and keeps its amount', function () {
     $format = new Currency(7);
 
-    expect($format->currency(CurrencyEnum::USD))->toBe($format)
+    expect($format->set(CurrencyEnum::USD))->toBe($format)
         ->and($format->locale('en_US'))->toBe($format)
         ->and((string) $format)->toBe('$7.00')
         ->and($format->get())->toBe(7);
 
-    expect((string) $format->currency(CurrencyEnum::EUR)->locale('nl_NL'))->toBe("€\u{00A0}7,00")
+    expect((string) $format->set(CurrencyEnum::EUR)->locale('nl_NL'))->toBe("€\u{00A0}7,00")
         ->and($format->get())->toBe(7);
 });
 
 it('creates fresh currency helpers without copying formatter configuration', function () {
-    $format = new Currency(7)->currency('USD')->locale('en_US');
+    $format = new Currency(7)->set('USD')->locale('en_US');
     $method = $format->currency();
     $property = $format->currency;
 
