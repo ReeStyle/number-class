@@ -70,6 +70,25 @@ To work from a checkout of this repository, run `composer install` in the projec
 Classes and helper functions use the `ReeStyleIt\NumberClass` namespace; Composer loads the
 helpers automatically.
 
+### Laravel
+
+Laravel automatically discovers `NumberClassServiceProvider`. At application boot, it
+sets the package's global default locale from `config('app.locale')`.
+Override it with `NUMBER_CLASS_LOCALE=nl_NL` in your `.env`, or publish the config:
+
+```bash
+php artisan vendor:publish --tag=number-class-config
+```
+
+The published `config/number-class.php` accepts a locale string or a
+`ReeStyleIt\NumberClass\Enum\Locale` case in `default_locale`. A `null` value falls
+back to Laravel's app locale. Per-instance `locale()` overrides still apply.
+The default is set during boot; later calls to `App::setLocale()` do not update it.
+
+If package discovery is disabled, register
+`ReeStyleIt\NumberClass\Framework\Laravel\NumberClassServiceProvider` manually
+in your application's providers list.
+
 ## Quick start
 
 ```php
